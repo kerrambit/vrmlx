@@ -18,7 +18,7 @@ namespace vrml_proc {
 
           if (m_innerError != nullptr) {
             m_innerError->m_indentation = m_indentation + 1;
-            stream << std::string(m_innerError->m_indentation, '\t') << m_innerError->GetMessage();
+            stream << std::string(2 * m_innerError->m_indentation, ' ') << m_innerError->GetMessage();
             m_innerError->m_indentation = 0;
           }
 

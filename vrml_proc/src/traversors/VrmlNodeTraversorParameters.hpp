@@ -10,11 +10,11 @@
 namespace vrml_proc {
   namespace traversor {
 
-    struct VRMLPROCESSING_API FullParsedVrmlNodeContext {
-      FullParsedVrmlNodeContext(const vrml_proc::parser::VrmlNode& node,
-                                const vrml_proc::parser::VrmlNodeManager& manager, bool isDescendantOfShape,
-                                vrml_proc::math::TransformationMatrix transformation,
-                                const vrml_proc::core::config::VrmlProcConfig& config)
+    struct VRMLPROCESSING_API VrmlNodeTraversorParameters {
+      VrmlNodeTraversorParameters(const vrml_proc::parser::VrmlNode& node,
+                                  const vrml_proc::parser::VrmlNodeManager& manager, bool isDescendantOfShape,
+                                  vrml_proc::math::TransformationMatrix transformation,
+                                  const vrml_proc::core::config::VrmlProcConfig& config)
           : node(node),
             manager(manager),
             IsDescendantOfShape(isDescendantOfShape),

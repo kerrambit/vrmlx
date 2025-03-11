@@ -36,6 +36,7 @@ add_library(vrmlproc SHARED
     "src/core/utils/TypeToString.hpp"
     "src/core/utils/Range.hpp"
     "src/core/utils/FormatString.hpp"
+    "src/core/utils/Hash.hpp"
 
     "src/core/logger/Logger.hpp"
     "src/core/logger/Logger.cpp"
@@ -115,8 +116,8 @@ add_library(vrmlproc SHARED
     # Traversors.
     "src/traversors/VrmlNodeTraversor.hpp"
     "src/traversors/VrmlFileTraversor.hpp"
-    "src/traversors/FullParsedVrmlNodeContext.hpp"
-    "src/traversors/FullParsedVrmlFileContext.hpp"
+    "src/traversors/VrmlNodeTraversorParameters.hpp"
+    "src/traversors/VrmlFileTraversorParameters.hpp"
 
     "src/traversors/errors/FileTraversorError.hpp"
     "src/traversors/errors/NodeTraversorError.hpp"

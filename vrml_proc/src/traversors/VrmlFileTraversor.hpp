@@ -6,8 +6,8 @@
 #include "Error.hpp"
 #include "FileTraversorError.hpp"
 #include "FormatString.hpp"
-#include "FullParsedVrmlFileContext.hpp"
-#include "FullParsedVrmlNodeContext.hpp"
+#include "VrmlFileTraversorParameters.hpp"
+#include "VrmlNodeTraversorParameters.hpp"
 #include "Logger.hpp"
 #include "ManualTimer.hpp"
 #include "NullPointerError.hpp"
@@ -22,7 +22,7 @@ namespace vrml_proc::traversor::VrmlFileTraversor {
   template <typename ConversionContext>
   VRMLPROCESSING_API inline cpp::result<std::shared_ptr<ConversionContext>,
                                         std::shared_ptr<vrml_proc::core::error::Error>>
-  Traverse(const FullParsedVrmlFileContext& context,
+  Traverse(const VrmlFileTraversorParameters& context,
            const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap) {
     using namespace vrml_proc::core::logger;
     using namespace vrml_proc::core::utils;
@@ -41,8 +41,8 @@ namespace vrml_proc::traversor::VrmlFileTraversor {
 
       cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> result =
           vrml_proc::traversor::VrmlNodeTraversor::Traverse<ConversionContext>(
-              vrml_proc::traversor::FullParsedVrmlNodeContext(root, context.manager, false,
-                                                              vrml_proc::math::TransformationMatrix(), context.config),
+              vrml_proc::traversor::VrmlNodeTraversorParameters(
+                  root, context.manager, false, vrml_proc::math::TransformationMatrix(), context.config),
               actionMap);
 
       if (result.has_error()) {

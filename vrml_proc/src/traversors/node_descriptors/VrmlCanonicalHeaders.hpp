@@ -4,10 +4,12 @@
 #include <string>
 #include <map>
 
+#include "Hash.hpp"
+
 namespace vrml_proc::traversor::node_descriptor {
 
   /**
-   * @brief Groups all posible header names and thei mapping to canonical VRML header name.
+   * @brief Groups all posible header names and their mapping to canonical VRML header name.
    * Each pair is {POSSIBLE_NAME, CANONICAL_FORM}.
    */
   inline const std::map<std::string, std::string>& GetHeaderToCanonicalNameMap() {
@@ -47,6 +49,27 @@ namespace vrml_proc::traversor::node_descriptor {
     };
     return headerToCanonicalName;
   }
+
+  namespace CanonicalHeaderHashes {
+    using namespace vrml_proc::core::utils;
+
+    constexpr uint32_t WorldInfo = Hash("WorldInfo");
+    constexpr uint32_t Group = Hash("Group");
+    constexpr uint32_t Transform = Hash("Transform");
+    constexpr uint32_t Shape = Hash("Shape");
+    constexpr uint32_t IndexedFaceSet = Hash("IndexedFaceSet");
+    constexpr uint32_t Coordinate = Hash("Coordinate");
+    constexpr uint32_t Normal = Hash("Normal");
+    constexpr uint32_t TextureCoordinate = Hash("TextureCoordinate");
+    constexpr uint32_t Color = Hash("Color");
+    constexpr uint32_t Box = Hash("Box");
+    constexpr uint32_t Switch = Hash("Switch");
+    constexpr uint32_t Material = Hash("Material");
+    constexpr uint32_t ImageTexture = Hash("ImageTexture");
+    constexpr uint32_t PixelTexture = Hash("PixelTexture");
+    constexpr uint32_t TextureTransform = Hash("TextureTransform");
+    constexpr uint32_t Appearance = Hash("Appearance");
+  }  // namespace CanonicalHeaderHashes
 
   inline std::unordered_set<std::string> GetPossibleNamesForCanonical(const std::string& canonicalName) {
     std::unordered_set<std::string> result;

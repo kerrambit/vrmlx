@@ -4,32 +4,33 @@
 
 #include <result.hpp>
 
+#include "AppearanceHandler.hpp"
 #include "BoxHandler.hpp"
 #include "ColorHandler.hpp"
 #include "ConversionContextActionMap.hpp"
 #include "CoordinateHandler.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
-#include "FullParsedVrmlNodeContext.hpp"
 #include "GroupHandler.hpp"
+#include "Hash.hpp"
+#include "ImageTextureHandler.hpp"
 #include "IndexedFaceSetHandler.hpp"
 #include "Logger.hpp"
+#include "MaterialHandler.hpp"
+#include "NodeDescriptor.hpp"
 #include "NodeTraversorError.hpp"
 #include "NormalHandler.hpp"
+#include "PixelTextureHandler.hpp"
 #include "ShapeHandler.hpp"
 #include "SwitchHandler.hpp"
 #include "TextureCoordinateHandler.hpp"
+#include "TextureTransformHandler.hpp"
 #include "TransformHandler.hpp"
 #include "VrmlNode.hpp"
+#include "VrmlNodeTraversorParameters.hpp"
 #include "WorldInfoHandler.hpp"
-#include "MaterialHandler.hpp"
 #include <NodeDescriptorMap.hpp>
-#include "TextureTransformHandler.hpp"
-#include "ImageTextureHandler.hpp"
-#include "PixelTextureHandler.hpp"
-#include "AppearanceHandler.hpp"
 #include <VrmlCanonicalHeaders.hpp>
-#include "NodeDescriptor.hpp"
 
 #include "VrmlProcessingExport.hpp"
 
@@ -38,7 +39,7 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
   template <typename ConversionContext>
   VRMLPROCESSING_API inline cpp::result<std::shared_ptr<ConversionContext>,
                                         std::shared_ptr<vrml_proc::core::error::Error>>
-  Traverse(vrml_proc::traversor::FullParsedVrmlNodeContext context,
+  Traverse(vrml_proc::traversor::VrmlNodeTraversorParameters context,
            const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap) {
     using namespace vrml_proc::core::logger;
     using namespace vrml_proc::core::utils;
@@ -89,39 +90,57 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
     }
 
     cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> handlerResult;
-
-    if (canonicalHeader == "WorldInfo") {
-      handlerResult = WorldInfoHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "Group") {
-      handlerResult = GroupHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "Transform") {
-      handlerResult = TransformHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "Shape") {
-      handlerResult = ShapeHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "IndexedFaceSet") {
-      handlerResult = IndexedFaceSetHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "Coordinate") {
-      handlerResult = CoordinateHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "Normal") {
-      handlerResult = NormalHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "TextureCoordinate") {
-      handlerResult = TextureCoordinateHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "Color") {
-      handlerResult = ColorHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "Box") {
-      handlerResult = BoxHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "Switch") {
-      handlerResult = SwitchHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "Material") {
-      handlerResult = MaterialHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "ImageTexture") {
-      handlerResult = ImageTextureHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "PixelTexture") {
-      handlerResult = PixelTextureHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "TextureTransform") {
-      handlerResult = TextureTransformHandler::Handle(context, actionMap, nd);
-    } else if (canonicalHeader == "Appearance") {
-      handlerResult = AppearanceHandler::Handle(context, actionMap, nd);
+    switch (Hash(canonicalHeader)) {
+      case CanonicalHeaderHashes::WorldInfo:
+        handlerResult = WorldInfoHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::Group:
+        handlerResult = GroupHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::Transform:
+        handlerResult = TransformHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::Shape:
+        handlerResult = ShapeHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::IndexedFaceSet:
+        handlerResult = IndexedFaceSetHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::Coordinate:
+        handlerResult = CoordinateHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::Normal:
+        handlerResult = NormalHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::TextureCoordinate:
+        handlerResult = TextureCoordinateHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::Color:
+        handlerResult = ColorHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::Box:
+        handlerResult = BoxHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::Switch:
+        handlerResult = SwitchHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::Material:
+        handlerResult = MaterialHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::ImageTexture:
+        handlerResult = ImageTextureHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::PixelTexture:
+        handlerResult = PixelTextureHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::TextureTransform:
+        handlerResult = TextureTransformHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::Appearance:
+        handlerResult = AppearanceHandler::Handle(context, actionMap, nd);
+        break;
+      default:
+        break;
     }
 
     if (handlerResult.has_error()) {
