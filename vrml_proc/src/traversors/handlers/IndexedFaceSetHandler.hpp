@@ -9,7 +9,7 @@
 #include "ConversionContextActionMap.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
-#include "FullParsedVrmlNodeContext.hpp"
+#include "VrmlNodeTraversorParameters.hpp"
 #include "Int32Array.hpp"
 #include "Logger.hpp"
 #include "NodeTraversorError.hpp"
@@ -22,7 +22,7 @@ namespace vrml_proc::traversor::handler::IndexedFaceSetHandler {
 
   template <typename ConversionContext>
   VRMLPROCESSING_API cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>>
-  Handle(vrml_proc::traversor::FullParsedVrmlNodeContext context,
+  Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
          const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
          const vrml_proc::traversor::node_descriptor::NodeDescriptor& nd) {
     vrml_proc::core::logger::LogInfo(

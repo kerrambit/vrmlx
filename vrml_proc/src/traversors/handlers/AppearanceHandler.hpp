@@ -8,7 +8,7 @@
 #include "ConversionContextActionMap.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
-#include "FullParsedVrmlNodeContext.hpp"
+#include "VrmlNodeTraversorParameters.hpp"
 #include "Logger.hpp"
 #include "NodeTraversorError.hpp"
 #include "VrmlNode.hpp"
@@ -20,7 +20,7 @@
 namespace vrml_proc::traversor::VrmlNodeTraversor {
   template <typename ConversionContext>
   VRMLPROCESSING_API cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>>
-  Traverse(vrml_proc::traversor::FullParsedVrmlNodeContext context,
+  Traverse(vrml_proc::traversor::VrmlNodeTraversorParameters context,
            const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap);
 }
 
@@ -29,7 +29,7 @@ namespace vrml_proc::traversor::handler::AppearanceHandler {
   template <typename ConversionContext>
   VRMLPROCESSING_API inline cpp::result<std::shared_ptr<ConversionContext>,
                                         std::shared_ptr<vrml_proc::core::error::Error>>
-  Handle(vrml_proc::traversor::FullParsedVrmlNodeContext context,
+  Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
          const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
          const vrml_proc::traversor::node_descriptor::NodeDescriptor& nd) {
     vrml_proc::core::logger::LogInfo(
