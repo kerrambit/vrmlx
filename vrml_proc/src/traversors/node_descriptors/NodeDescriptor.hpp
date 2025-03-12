@@ -18,7 +18,7 @@
 #include "Vec4f.hpp"
 #include "Int32Array.hpp"
 #include "VrmlField.hpp"
-#include "NodeValidator.hpp"
+#include "NodeValidationUtils.hpp"
 #include "VrmlNode.hpp"
 #include "NodeValidationError.hpp"
 #include "VrmlNodeManager.hpp"
@@ -86,7 +86,7 @@ namespace vrml_proc::traversor::node_descriptor {
         return {};
       }
 
-      auto fieldsResult = vrml_proc::traversor::validator::NodeValidator::CheckForOnlyUniqueAllowedFieldNames(
+      auto fieldsResult = vrml_proc::traversor::validator::NodeValidationUtils::CheckForOnlyUniqueAllowedFieldNames(
           ExtractFieldNames(m_fieldTypes), node.fields, node.header);
       if (fieldsResult.has_error()) {
         return fieldsResult;
@@ -98,7 +98,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::Bool:
 
           {
-            auto boolean = vrml_proc::traversor::validator::NodeValidator::ExtractFieldByNameWithValidation<bool>(
+            auto boolean = vrml_proc::traversor::validator::NodeValidationUtils::ExtractFieldByNameWithValidation<bool>(
                 field.name, node.fields);
             if (boolean.has_error()) {
               return cpp::fail(boolean.error());
@@ -109,7 +109,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::String:
 
           {
-            auto string = vrml_proc::traversor::validator::NodeValidator::ExtractFieldByNameWithValidation<std::string>(
+            auto string = vrml_proc::traversor::validator::NodeValidationUtils::ExtractFieldByNameWithValidation<std::string>(
                 field.name, node.fields);
             if (string.has_error()) {
               return cpp::fail(string.error());
@@ -120,7 +120,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::Float32:
 
           {
-            auto float32_t = vrml_proc::traversor::validator::NodeValidator::ExtractFieldByNameWithValidation<
+            auto float32_t = vrml_proc::traversor::validator::NodeValidationUtils::ExtractFieldByNameWithValidation<
                 vrml_proc::parser::float32_t>(field.name, node.fields);
             if (float32_t.has_error()) {
               return cpp::fail(float32_t.error());
@@ -131,7 +131,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::Int32:
 
           {
-            auto int32 = vrml_proc::traversor::validator::NodeValidator::ExtractFieldByNameWithValidation<int32_t>(
+            auto int32 = vrml_proc::traversor::validator::NodeValidationUtils::ExtractFieldByNameWithValidation<int32_t>(
                 field.name, node.fields);
             if (int32.has_error()) {
               return cpp::fail(int32.error());
@@ -142,7 +142,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::Vec2f:
 
           {
-            auto vec2f = vrml_proc::traversor::validator::NodeValidator::ExtractFieldByNameWithValidation<
+            auto vec2f = vrml_proc::traversor::validator::NodeValidationUtils::ExtractFieldByNameWithValidation<
                 vrml_proc::parser::Vec2f>(field.name, node.fields);
             if (vec2f.has_error()) {
               return cpp::fail(vec2f.error());
@@ -153,7 +153,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::Vec3f:
 
           {
-            auto vec3f = vrml_proc::traversor::validator::NodeValidator::ExtractFieldByNameWithValidation<
+            auto vec3f = vrml_proc::traversor::validator::NodeValidationUtils::ExtractFieldByNameWithValidation<
                 vrml_proc::parser::Vec3f>(field.name, node.fields);
             if (vec3f.has_error()) {
               return cpp::fail(vec3f.error());
@@ -164,7 +164,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::Vec4f:
 
           {
-            auto vec4f = vrml_proc::traversor::validator::NodeValidator::ExtractFieldByNameWithValidation<
+            auto vec4f = vrml_proc::traversor::validator::NodeValidationUtils::ExtractFieldByNameWithValidation<
                 vrml_proc::parser::Vec4f>(field.name, node.fields);
             if (vec4f.has_error()) {
               return cpp::fail(vec4f.error());
@@ -175,7 +175,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::Vec2fArray:
 
           {
-            auto value = vrml_proc::traversor::validator::NodeValidator::ExtractFieldByNameWithValidation<
+            auto value = vrml_proc::traversor::validator::NodeValidationUtils::ExtractFieldByNameWithValidation<
                 vrml_proc::parser::Vec2fArray>(field.name, node.fields);
             if (value.has_error()) {
               return cpp::fail(value.error());
@@ -186,7 +186,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::Vec3fArray:
 
           {
-            auto value = vrml_proc::traversor::validator::NodeValidator::ExtractFieldByNameWithValidation<
+            auto value = vrml_proc::traversor::validator::NodeValidationUtils::ExtractFieldByNameWithValidation<
                 vrml_proc::parser::Vec3fArray>(field.name, node.fields);
             if (value.has_error()) {
               return cpp::fail(value.error());
@@ -197,7 +197,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::Int32Array:
 
           {
-            auto value = vrml_proc::traversor::validator::NodeValidator::ExtractFieldByNameWithValidation<
+            auto value = vrml_proc::traversor::validator::NodeValidationUtils::ExtractFieldByNameWithValidation<
                 vrml_proc::parser::Int32Array>(field.name, node.fields);
             if (value.has_error()) {
               return cpp::fail(value.error());
@@ -208,14 +208,14 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::Node:
 
           {
-            auto vrmlNode = vrml_proc::traversor::validator::NodeValidator::ExtractVrmlNodeWithValidation(
+            auto vrmlNode = vrml_proc::traversor::validator::NodeValidationUtils::ExtractVrmlNodeWithValidation(
                 field.name, node.fields, manager);
             if (vrmlNode.has_error()) {
               return cpp::fail(vrmlNode.error());
             }
 
             if (vrmlNode.value().has_value()) {
-              auto headerResult = vrml_proc::traversor::validator::NodeValidator::CheckForOnlyAllowedVrmlNodeHeaders(
+              auto headerResult = vrml_proc::traversor::validator::NodeValidationUtils::CheckForOnlyAllowedVrmlNodeHeaders(
                   m_validHeaderNames[field.name], vrmlNode.value().value().get(), field.name);
               if (headerResult.has_error()) {
                 return cpp::fail(headerResult.error());
@@ -227,7 +227,7 @@ namespace vrml_proc::traversor::node_descriptor {
           case FieldType::NodeArray:
 
           {
-            auto vrmlNodeArray = vrml_proc::traversor::validator::NodeValidator::ExtractVrmlNodeArrayWithValidation(
+            auto vrmlNodeArray = vrml_proc::traversor::validator::NodeValidationUtils::ExtractVrmlNodeArrayWithValidation(
                 field.name, node.fields, manager, true);
             if (vrmlNodeArray.has_error()) {
               return cpp::fail(vrmlNodeArray.error());

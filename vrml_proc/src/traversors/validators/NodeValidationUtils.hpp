@@ -27,7 +27,7 @@ namespace vrml_proc {
        * Part of functions work as a bridge between raw outputs of VrmlFieldExtractor and nicely formatted output of
        * NodeValidationError entities. Validate method encapsulates the underlying methods and logic into a wrapper.
        */
-      namespace NodeValidator {
+      namespace NodeValidationUtils {
         /**
          * @brief Static helper method which checks that all field names are from the given list of allowed names.
          * Method also verifies that each field name is at most once and that no unknown field name is used either.
@@ -238,7 +238,7 @@ namespace vrml_proc {
 
           return resolvedChildren;
         }
-      };  // namespace NodeValidator
+      };  // namespace NodeValidationUtils
     }     // namespace validator
   }       // namespace traversor
 }  // namespace vrml_proc
