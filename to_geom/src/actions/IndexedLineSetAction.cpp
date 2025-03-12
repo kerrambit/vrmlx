@@ -16,21 +16,7 @@
 #include "Vec3fArrayConversionContext.hpp"
 #include "VrmlNodeManager.hpp"
 #include "VrmlNodeTraversor.hpp"
-
-class HelperCoordAction
-    : public vrml_proc::action::ConversionContextAction<to_geom::conversion_context::Vec3fArrayConversionContext> {
- public:
-  HelperCoordAction(std::reference_wrapper<const vrml_proc::parser::Vec3fArray> data) : m_data(data) {}
-
-  std::shared_ptr<to_geom::conversion_context::Vec3fArrayConversionContext> Execute() {
-    auto toReturn = std::make_shared<to_geom::conversion_context::Vec3fArrayConversionContext>();
-    toReturn->CopyAndAdd(m_data);
-    return toReturn;
-  }
-
- private:
-  std::reference_wrapper<const vrml_proc::parser::Vec3fArray> m_data;
-};
+#include "HelperCoordinateAction.hpp"
 
 namespace to_geom::action {
 
@@ -58,7 +44,7 @@ namespace to_geom::action {
       if (refArgs.size() == 1 &&
           refArgs[0].get().type() == typeid(std::reference_wrapper<const vrml_proc::parser::Vec3fArray>)) {
         auto coord = std::any_cast<std::reference_wrapper<const vrml_proc::parser::Vec3fArray>>(refArgs[0]);
-        return std::make_shared<HelperCoordAction>(coord);
+        return std::make_shared<HelperCoordinateAction>(coord);
       }
       vrml_proc::core::logger::LogFatal("Invalid arguments for CoordinateAction!", LOGGING_INFO);
       throw std::runtime_error("Invalid arguments for CoordinateAction");

@@ -24,6 +24,7 @@ add_library(togeom SHARED
     "src/core/config/ToGeomConfig.hpp"
 
     # Actions.
+    "src/actions/HelperCoordinateAction.hpp"
     "src/actions/GeometryAction.hpp"
     "src/actions/IndexedFaceSetAction.hpp"
     "src/actions/IndexedFaceSetAction.cpp"      
