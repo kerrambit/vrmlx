@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "NodeDescriptor.hpp"
 #include "VrmlCanonicalHeaders.hpp"
 #include "Vec2fArray.hpp"
@@ -11,7 +13,7 @@ namespace vrml_proc::traversor::node_descriptor {
   using NodeDescriptorFactory = std::function<NodeDescriptor()>;
   using NodeDescriptorMap = std::map<std::string, NodeDescriptorFactory>;
 
-  inline NodeDescriptorMap CreateNodeDescriptorMap() {
+  inline NodeDescriptorMap GetNodeDescriptorMap() {
     static NodeDescriptorMap nodeDescriptionMap;
     static bool initialized = false;
 
@@ -275,5 +277,15 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     return nodeDescriptionMap;
+  }
+
+  inline std::optional<NodeDescriptor> CreateNodeDescriptor(const std::string& header) {
+    auto descriptorMap = GetNodeDescriptorMap();
+    auto it = descriptorMap.find(ConvertToCanonicalHeader(header));
+    if (it != descriptorMap.end()) {
+      return it->second();
+    }
+
+    return std::nullopt;
   }
 }  // namespace vrml_proc::traversor::node_descriptor

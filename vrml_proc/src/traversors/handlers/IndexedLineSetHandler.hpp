@@ -40,12 +40,9 @@ namespace vrml_proc::traversor::handler::IndexedLineSetHandler {
     // be validated nonetheless.
     {
       auto node = nd.GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>("color");
-      auto descriptorMap = CreateNodeDescriptorMap();
-      auto it = descriptorMap.find(ConvertToCanonicalName(node.get().header));
-      NodeDescriptor nd;
-      if (it != descriptorMap.end()) {
-        nd = it->second();
-        auto validationResult = nd.Validate(node.get(), context.manager);
+      auto nd = CreateNodeDescriptor(node.get().header);
+      if (nd.has_value()) {
+        auto validationResult = nd.value().Validate(node.get(), context.manager);
         if (validationResult.has_error()) {
           LogError(FormatString("Validation for geometry primitive node <", node.get().header, "> failed!"),
                    LOGGING_INFO);
@@ -56,12 +53,9 @@ namespace vrml_proc::traversor::handler::IndexedLineSetHandler {
 
     {
       auto node = nd.GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>("coord");
-      auto descriptorMap = CreateNodeDescriptorMap();
-      auto it = descriptorMap.find(ConvertToCanonicalName(node.get().header));
-      NodeDescriptor nd;
-      if (it != descriptorMap.end()) {
-        nd = it->second();
-        auto validationResult = nd.Validate(node.get(), context.manager);
+      auto nd = CreateNodeDescriptor(node.get().header);
+      if (nd.has_value()) {
+        auto validationResult = nd.value().Validate(node.get(), context.manager);
         if (validationResult.has_error()) {
           LogError(FormatString("Validation for geometry primitive node <", node.get().header, "> failed!"),
                    LOGGING_INFO);

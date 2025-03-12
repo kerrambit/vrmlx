@@ -57,25 +57,8 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
       return std::make_shared<ConversionContext>();
     }
 
-    std::string canonicalHeader;
-    {
-      auto it = GetHeaderToCanonicalNameMap().find(context.node.header);
-      if (it != GetHeaderToCanonicalNameMap().end()) {
-        canonicalHeader = it->second;
-      }
-    }
-
-    auto descriptorMap = CreateNodeDescriptorMap();
-    auto it = descriptorMap.find(canonicalHeader);
-    NodeDescriptor nd;
-    if (it != descriptorMap.end()) {
-      nd = it->second();
-      auto validationResult = nd.Validate(context.node, context.manager);
-      if (validationResult.has_error()) {
-        LogError(FormatString("Validation for node <", context.node.header, "> failed!"), LOGGING_INFO);
-        return cpp::fail(std::make_shared<NodeTraversorError>(validationResult.error(), context.node));
-      }
-    } else {
+    auto ndResult = CreateNodeDescriptor(context.node.header);
+    if (!ndResult.has_value()) {
       if (ignoreUnknownNodeFlag) {
         LogInfo(FormatString("No handler for VRML node with name <", context.node.header,
                              "> was found! The unknown node will be ignored."),
@@ -84,14 +67,21 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
       }
 
       LogError(FormatString("No handler for VRML node with name <", context.node.header,
-                            "> was found! It is unknown VRML node."),
+                            "> was found! It is unknown VRML node!"),
                LOGGING_INFO);
       std::shared_ptr<UnknownVrmlNode> innerError = std::make_shared<UnknownVrmlNode>(context.node.header);
       return cpp::fail(std::make_shared<NodeTraversorError>(innerError, context.node));
     }
 
+    auto& nd = ndResult.value();
+    auto validationResult = nd.Validate(context.node, context.manager);
+    if (validationResult.has_error()) {
+      LogError(FormatString("Validation for node <", context.node.header, "> failed!"), LOGGING_INFO);
+      return cpp::fail(std::make_shared<NodeTraversorError>(validationResult.error(), context.node));
+    }
+
     cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> handlerResult;
-    switch (Hash(canonicalHeader)) {
+    switch (Hash(ConvertToCanonicalHeader(context.node.header))) {
       case CanonicalHeaderHashes::WorldInfo:
         handlerResult = WorldInfoHandler::Handle(context, actionMap, nd);
         break;

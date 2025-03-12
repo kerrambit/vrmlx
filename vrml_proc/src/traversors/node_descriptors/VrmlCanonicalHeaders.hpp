@@ -77,16 +77,16 @@ namespace vrml_proc::traversor::node_descriptor {
   /**
    * @brief Converts a header name to canonical form.
    *
-   * @param name node header name to convert
+   * @param header header to convert
    *
-   * @returns canonical name or if no canonical name was found, the same name is returned
+   * @returns canonical header or if no canonical header was found, the passed header is returned
    */
-  inline std::string ConvertToCanonicalName(const std::string& name) {
-    auto it = GetHeaderToCanonicalNameMap().find(name);
+  inline std::string ConvertToCanonicalHeader(const std::string& header) {
+    auto it = GetHeaderToCanonicalNameMap().find(header);
     if (it != GetHeaderToCanonicalNameMap().end()) {
       return it->second;
     }
-    return name;
+    return header;
   }
 
   inline std::unordered_set<std::string> GetPossibleNamesForCanonical(const std::string& canonicalName) {
