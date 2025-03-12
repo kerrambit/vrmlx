@@ -334,6 +334,30 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Appearance node 
   CHECK_FALSE(TraverseVrmlFileToMeshTask(parseResult, manager));
 }
 
+TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - IndexedLineSet node I.", "[parsing][valid]") {
+  vrml_proc::parser::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(validIndexedLineSetNode, manager);
+  REQUIRE(parseResult);
+
+  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 1));
+}
+
+TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - IndexedLineSet node I.", "[parsing][invalid]") {
+  vrml_proc::parser::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(invalidIndexedLineSetNodeWrongUnknownField, manager);
+  REQUIRE(parseResult);
+
+  CHECK_FALSE(TraverseVrmlFileToMeshTask(parseResult, manager));
+}
+
+TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - IndexedLineSet node II.", "[parsing][invalid]") {
+  vrml_proc::parser::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(invalidIndexedLineSetNodeWrongFieldType, manager);
+  REQUIRE(parseResult);
+
+  CHECK_FALSE(TraverseVrmlFileToMeshTask(parseResult, manager));
+}
+
 TEST_CASE("Parse VRMLFile From File - Valid Input - Actin", "[parsing][valid][fromfile]") {
   vrml_proc::parser::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(

@@ -82,4 +82,19 @@ namespace to_geom::calculator::error {
       return stream.str();
     }
   };
+
+  class IndexedLineSetCalculatorError : public CalculatorError {
+   public:
+    IndexedLineSetCalculatorError(std::shared_ptr<vrml_proc::core::error::Error> innerError) {
+      SetInnerError(innerError);
+    }
+    IndexedLineSetCalculatorError() = default;
+
+   protected:
+    std::string GetMessageInternal() const override {
+      std::ostringstream stream;
+      stream << CalculatorError::GetMessageInternal() << "[IndexedLineSetCalculatorError]: error occured!\n";
+      return stream.str();
+    }
+  };
 }  // namespace to_geom::calculator::error

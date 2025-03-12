@@ -27,6 +27,8 @@ add_library(togeom SHARED
     "src/actions/GeometryAction.hpp"
     "src/actions/IndexedFaceSetAction.hpp"
     "src/actions/IndexedFaceSetAction.cpp"      
+    "src/actions/IndexedLineSetAction.hpp"
+    "src/actions/IndexedLineSetAction.cpp" 
     "src/actions/GroupAction.hpp"
     "src/actions/GroupAction.cpp"
     "src/actions/BoxAction.hpp"
@@ -49,6 +51,8 @@ add_library(togeom SHARED
     "src/calculators/BoxCalculator.cpp"
     "src/calculators/IndexedFaceSetCalculator.hpp"
     "src/calculators/IndexedFaceSetCalculator.cpp"
+    "src/calculators/IndexedLineSetCalculator.hpp"
+    "src/calculators/IndexedLineSetCalculator.cpp"
     "src/calculators/MeshSimplificator.hpp"
     "src/calculators/errors/CalculatorError.hpp"
 )

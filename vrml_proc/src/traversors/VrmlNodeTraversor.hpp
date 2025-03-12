@@ -24,6 +24,7 @@
 #include "ShapeHandler.hpp"
 #include "SwitchHandler.hpp"
 #include "TextureCoordinateHandler.hpp"
+#include "IndexedLineSetHandler.hpp"
 #include "TextureTransformHandler.hpp"
 #include "TransformHandler.hpp"
 #include "VrmlNode.hpp"
@@ -105,6 +106,9 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
         break;
       case CanonicalHeaderHashes::IndexedFaceSet:
         handlerResult = IndexedFaceSetHandler::Handle(context, actionMap, nd);
+        break;
+      case CanonicalHeaderHashes::IndexedLineSet:
+        handlerResult = IndexedLineSetHandler::Handle(context, actionMap, nd);
         break;
       case CanonicalHeaderHashes::Coordinate:
         handlerResult = CoordinateHandler::Handle(context, actionMap, nd);

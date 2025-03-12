@@ -135,6 +135,7 @@ add_library(vrmlproc SHARED
     "src/traversors/handlers/WorldInfoHandler.hpp"
     "src/traversors/handlers/BoxHandler.hpp"
     "src/traversors/handlers/IndexedFaceSetHandler.hpp"
+    "src/traversors/handlers/IndexedLineSetHandler.hpp"
     "src/traversors/handlers/CoordinateHandler.hpp"
     "src/traversors/handlers/NormalHandler.hpp"
     "src/traversors/handlers/ColorHandler.hpp"

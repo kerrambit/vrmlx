@@ -127,6 +127,26 @@ namespace vrml_proc::traversor::node_descriptor {
       return nd;
     };
 
+    nodeDescriptionMap["IndexedLineSet"] = []() {
+      auto nd = NodeDescriptor("IndexedLineSet", GetPossibleNamesForCanonical("IndexedLineSet"));
+
+      static vrml_proc::parser::VrmlNode defaultColor;
+      static vrml_proc::parser::VrmlNode defaultCoord;
+
+      static vrml_proc::parser::Int32Array defaultColorIndex;
+      static bool defaultColorPerVertex = true;
+      static vrml_proc::parser::Int32Array defaultCoordIndex;
+
+      nd.BindField("colorIndex", defaultColorIndex);
+      nd.BindField("colorPerVertex", defaultColorPerVertex);
+      nd.BindField("coordIndex", defaultCoordIndex);
+
+      nd.BindVrmlNode("color", GetPossibleNamesForCanonical("Color"), defaultColor);
+      nd.BindVrmlNode("coord", GetPossibleNamesForCanonical("Coordinate"), defaultCoord);
+
+      return nd;
+    };
+
     nodeDescriptionMap["Normal"] = []() {
       auto nd = NodeDescriptor("Normal", GetPossibleNamesForCanonical("Normal"));
       static vrml_proc::parser::Vec3fArray defaultVector;
