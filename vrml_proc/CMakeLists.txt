@@ -129,6 +129,7 @@ add_library(vrmlproc SHARED
 
     "src/traversors/utils/ConversionContextActionExecutor.hpp"
 
+    "src/traversors/handlers/HandlerUtils.hpp"
     "src/traversors/handlers/ShapeHandler.hpp"
     "src/traversors/handlers/GroupHandler.hpp"
     "src/traversors/handlers/TransformHandler.hpp"
@@ -142,7 +143,7 @@ add_library(vrmlproc SHARED
     "src/traversors/handlers/TextureCoordinateHandler.hpp"
     "src/traversors/handlers/SwitchHandler.hpp"
 
-    "src/traversors/validators/NodeValidator.hpp"
+    "src/traversors/validators/NodeValidationUtils.hpp"
     "src/traversors/validators/errors/NodeValidationError.hpp"
 
     # Actions.

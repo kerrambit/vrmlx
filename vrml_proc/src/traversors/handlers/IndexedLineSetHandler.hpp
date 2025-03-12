@@ -15,9 +15,7 @@
 #include "NodeTraversorError.hpp"
 #include "VrmlNode.hpp"
 #include "VrmlUnits.hpp"
-#include "VrmlCanonicalHeaders.hpp"
-#include "NodeDescriptor.hpp"
-#include "NodeDescriptorMap.hpp"
+#include "HandlerUtils.hpp"
 
 #include "VrmlProcessingExport.hpp"
 
@@ -32,6 +30,7 @@ namespace vrml_proc::traversor::handler::IndexedLineSetHandler {
     using namespace vrml_proc::core::utils;
     using namespace vrml_proc::traversor::node_descriptor;
     using namespace vrml_proc::traversor::error;
+    using namespace vrml_proc::traversor::handler::HandlerUtils;
 
     LogInfo(FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
 
@@ -39,28 +38,16 @@ namespace vrml_proc::traversor::handler::IndexedLineSetHandler {
     // they can be traversed if needed. The main point is they are not traversed inside this handler. But they have to
     // be validated nonetheless.
     {
-      auto node = nd.GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>("color");
-      auto nd = CreateNodeDescriptor(node.get().header);
-      if (nd.has_value()) {
-        auto validationResult = nd.value().Validate(node.get(), context.manager);
-        if (validationResult.has_error()) {
-          LogError(FormatString("Validation for geometry primitive node <", node.get().header, "> failed!"),
-                   LOGGING_INFO);
-          return cpp::fail(std::make_shared<NodeTraversorError>(validationResult.error(), node.get()));
-        }
+      auto validationResult = ValidateGeometryPrimitiveNode(nd, context.manager, "color");
+      if (validationResult.has_error()) {
+        return cpp::fail(validationResult.error());
       }
     }
 
     {
-      auto node = nd.GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>("coord");
-      auto nd = CreateNodeDescriptor(node.get().header);
-      if (nd.has_value()) {
-        auto validationResult = nd.value().Validate(node.get(), context.manager);
-        if (validationResult.has_error()) {
-          LogError(FormatString("Validation for geometry primitive node <", node.get().header, "> failed!"),
-                   LOGGING_INFO);
-          return cpp::fail(std::make_shared<NodeTraversorError>(validationResult.error(), node.get()));
-        }
+      auto validationResult = ValidateGeometryPrimitiveNode(nd, context.manager, "coord");
+      if (validationResult.has_error()) {
+        return cpp::fail(validationResult.error());
       }
     }
 
