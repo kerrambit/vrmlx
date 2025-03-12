@@ -31,13 +31,6 @@ namespace vrml_proc {
       class NodeValidator {
        public:
         /**
-         * @brief Pure virtual method. Method validates an entity.
-         *
-         * @returns result type representing NodeValidationError if error occurs, else void
-         */
-        virtual cpp::result<void, std::shared_ptr<error::NodeValidationError>> Validate() = 0;
-
-        /**
          * @brief Static helper method which checks that all field names are from the given list of allowed names.
          * Method also verifies that each field name is at most once and that no unknown field name is used either.
          *

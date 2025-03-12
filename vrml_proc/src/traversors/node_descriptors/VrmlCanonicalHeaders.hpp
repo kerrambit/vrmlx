@@ -71,6 +71,21 @@ namespace vrml_proc::traversor::node_descriptor {
     constexpr uint32_t Appearance = Hash("Appearance");
   }  // namespace CanonicalHeaderHashes
 
+  /**
+   * @brief Converts a header name to canonical form.
+   *
+   * @param name node header name to convert
+   *
+   * @returns canonical name or if no canonical name was found, the same name is returned
+   */
+  inline std::string ConvertToCanonicalName(const std::string& name) {
+    auto it = GetHeaderToCanonicalNameMap().find(name);
+    if (it != GetHeaderToCanonicalNameMap().end()) {
+      return it->second;
+    }
+    return name;
+  }
+
   inline std::unordered_set<std::string> GetPossibleNamesForCanonical(const std::string& canonicalName) {
     std::unordered_set<std::string> result;
     for (const auto& [possible, canonical] : GetHeaderToCanonicalNameMap()) {
