@@ -55,6 +55,7 @@ add_library(togeom SHARED
     "src/calculators/IndexedLineSetCalculator.hpp"
     "src/calculators/IndexedLineSetCalculator.cpp"
     "src/calculators/MeshSimplificator.hpp"
+     "src/calculators/AlphaShapeCalculator.hpp"
     "src/calculators/errors/CalculatorError.hpp"
 )
 

@@ -97,4 +97,17 @@ namespace to_geom::calculator::error {
       return stream.str();
     }
   };
+
+  class AlphaShapeCalculatorError : public CalculatorError {
+   public:
+    AlphaShapeCalculatorError(std::shared_ptr<vrml_proc::core::error::Error> innerError) { SetInnerError(innerError); }
+    AlphaShapeCalculatorError() = default;
+
+   protected:
+    std::string GetMessageInternal() const override {
+      std::ostringstream stream;
+      stream << CalculatorError::GetMessageInternal() << "[AlphaShapeCalculatorError]: error occured!\n";
+      return stream.str();
+    }
+  };
 }  // namespace to_geom::calculator::error
