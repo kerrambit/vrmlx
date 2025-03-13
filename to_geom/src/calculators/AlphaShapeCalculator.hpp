@@ -37,6 +37,9 @@ using AlphaShape = CGAL::Alpha_shape_3<Delaunay>;
 
 namespace to_geom::calculator::AlphaShapeCalculator {
 
+  /**
+   * @note Source: https://doc.cgal.org/latest/Alpha_shapes_3/index.html.
+   */
   cpp::result<std::shared_ptr<core::Mesh>, std::shared_ptr<vrml_proc::core::error::Error>>
   Generate3DAlphaShapeMeshForPointCloud(std::reference_wrapper<const vrml_proc::parser::Vec3fArray> pointCloud,
                                         double alphaValue, const vrml_proc::math::TransformationMatrix& matrix) {
