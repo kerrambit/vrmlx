@@ -1064,3 +1064,123 @@ std::string invalidAppearanceNodeWrongDataType = R"(
         ]
     }
 )";
+
+std::string validIndexedLineSetNode = R"(
+
+    #VRML V2.0 utf8
+
+    Group {
+        bboxCenter 0 0 0
+        bboxSize 0 0 0
+        children [
+            Shape {
+                geometry IndexedLineSet {
+                
+                    coord Coordinate {
+                        point [
+                            0 0 0, 1 0 0, 1 1 0, 0 1 0,
+                            0 0 1, 1 0 1, 1 1 1, 0 1 1
+                        ]
+                    }
+                    coordIndex [
+                        0, 1, 2, 3, -1,
+                        4, 5, 6, 7, -1,
+                        0, 1, 5, 4, -1,
+                        2, 3, 7, 6, -1,
+                        0, 3, 7, 4, -1,
+                        1, 2, 6, 5, -1
+                    ]
+
+                    color Color {
+                        color [
+                            1 0 0, 0 1 0, 0 0 1, 1 1 0
+                        ]
+                    }
+                    colorIndex [0, 1, 2, 3, -1, 3, 2, 1, 0, -1]
+
+                    colorPerVertex TRUE
+                }
+            }
+        ]
+    }
+)";
+
+std::string invalidIndexedLineSetNodeWrongFieldType = R"(
+
+    #VRML V2.0 utf8
+
+    Group {
+        bboxCenter 0 0 0
+        bboxSize 0 0 0
+        children [
+            Shape {
+                geometry IndexedLineSet {
+                
+                    coord Coordinate {
+                        point [
+                            0, 5, 0
+                        ]
+                    }
+                    coordIndex [
+                        0, 1, 2, 3, -1,
+                        4, 5, 6, 7, -1,
+                        0, 1, 5, 4, -1,
+                        2, 3, 7, 6, -1,
+                        0, 3, 7, 4, -1,
+                        1, 2, 6, 5, -1
+                    ]
+
+                    color Color {
+                        color [
+                            1 0 0, 0 1 0, 0 0 1, 1 1 0
+                        ]
+                    }
+                    colorIndex [0, 1, 2, 3, -1, 3, 2, 1, 0, -1]
+
+                    colorPerVertex TRUE
+                }
+            }
+        ]
+    }
+)";
+
+std::string invalidIndexedLineSetNodeWrongUnknownField = R"(
+
+    #VRML V2.0 utf8
+
+    Group {
+        bboxCenter 0 0 0
+        bboxSize 0 0 0
+        children [
+            Shape {
+                geometry IndexedLineSet {
+                
+                    coord Coordinate {
+                        point [
+                            0 0 0, 1 0 0, 1 1 0, 0 1 0,
+                            0 0 1, 1 0 1, 1 1 1, 0 1 1
+                        ]
+                    }
+                    coordIndex [
+                        0, 1, 2, 3, -1,
+                        4, 5, 6, 7, -1,
+                        0, 1, 5, 4, -1,
+                        2, 3, 7, 6, -1,
+                        0, 3, 7, 4, -1,
+                        1, 2, 6, 5, -1
+                    ]
+
+                    color Color {
+                        color [
+                            1 0 0, 0 1 0, 0 0 1, 1 1 0
+                        ]
+                    }
+                    colorIndex [0, 1, 2, 3, -1, 3, 2, 1, 0, -1]
+
+                    colorPerVertex TRUE
+                    convex FALSE
+                }
+            }
+        ]
+    }
+)";

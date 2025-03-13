@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "NodeDescriptor.hpp"
 #include "VrmlCanonicalHeaders.hpp"
 #include "Vec2fArray.hpp"
@@ -11,7 +13,7 @@ namespace vrml_proc::traversor::node_descriptor {
   using NodeDescriptorFactory = std::function<NodeDescriptor()>;
   using NodeDescriptorMap = std::map<std::string, NodeDescriptorFactory>;
 
-  inline NodeDescriptorMap CreateNodeDescriptorMap() {
+  inline NodeDescriptorMap GetNodeDescriptorMap() {
     static NodeDescriptorMap nodeDescriptionMap;
     static bool initialized = false;
 
@@ -123,6 +125,26 @@ namespace vrml_proc::traversor::node_descriptor {
       nd.BindVrmlNode("coord", GetPossibleNamesForCanonical("Coordinate"), defaultCoord);
       nd.BindVrmlNode("normal", GetPossibleNamesForCanonical("Normal"), defaultNormal);
       nd.BindVrmlNode("texCoord", GetPossibleNamesForCanonical("TextureCoordinate"), defaultTexCoord);
+
+      return nd;
+    };
+
+    nodeDescriptionMap["IndexedLineSet"] = []() {
+      auto nd = NodeDescriptor("IndexedLineSet", GetPossibleNamesForCanonical("IndexedLineSet"));
+
+      static vrml_proc::parser::VrmlNode defaultColor;
+      static vrml_proc::parser::VrmlNode defaultCoord;
+
+      static vrml_proc::parser::Int32Array defaultColorIndex;
+      static bool defaultColorPerVertex = true;
+      static vrml_proc::parser::Int32Array defaultCoordIndex;
+
+      nd.BindField("colorIndex", defaultColorIndex);
+      nd.BindField("colorPerVertex", defaultColorPerVertex);
+      nd.BindField("coordIndex", defaultCoordIndex);
+
+      nd.BindVrmlNode("color", GetPossibleNamesForCanonical("Color"), defaultColor);
+      nd.BindVrmlNode("coord", GetPossibleNamesForCanonical("Coordinate"), defaultCoord);
 
       return nd;
     };
@@ -255,5 +277,15 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     return nodeDescriptionMap;
+  }
+
+  inline std::optional<NodeDescriptor> CreateNodeDescriptor(const std::string& header) {
+    auto descriptorMap = GetNodeDescriptorMap();
+    auto it = descriptorMap.find(ConvertToCanonicalHeader(header));
+    if (it != descriptorMap.end()) {
+      return it->second();
+    }
+
+    return std::nullopt;
   }
 }  // namespace vrml_proc::traversor::node_descriptor

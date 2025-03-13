@@ -23,20 +23,11 @@ namespace vrml_proc {
   namespace traversor {
     namespace validator {
       /**
-       * @brief Class representing a generic NodeValidator. Subclasses have to implement Validate() method.
-       * The interface offers also several static helper methods.
-       * Static methods work as bridge between raw outputs of VrmlFieldExtractor and nicely formatted output of
-       * NodeValidationError entities.
+       * @brief Groups static helper functions to work with VRML node more easily.
+       * Part of functions work as a bridge between raw outputs of VrmlFieldExtractor and nicely formatted output of
+       * NodeValidationError entities. Validate method encapsulates the underlying methods and logic into a wrapper.
        */
-      class NodeValidator {
-       public:
-        /**
-         * @brief Pure virtual method. Method validates an entity.
-         *
-         * @returns result type representing NodeValidationError if error occurs, else void
-         */
-        virtual cpp::result<void, std::shared_ptr<error::NodeValidationError>> Validate() = 0;
-
+      namespace NodeValidationUtils {
         /**
          * @brief Static helper method which checks that all field names are from the given list of allowed names.
          * Method also verifies that each field name is at most once and that no unknown field name is used either.
@@ -45,7 +36,7 @@ namespace vrml_proc {
          * @param fields list of fields to verify
          * @returns result type where error stores the NodeValidationError subtype
          */
-        static cpp::result<void, std::shared_ptr<error::NodeValidationError>> CheckForOnlyUniqueAllowedFieldNames(
+        inline cpp::result<void, std::shared_ptr<error::NodeValidationError>> CheckForOnlyUniqueAllowedFieldNames(
             const std::unordered_set<std::string>& validFieldNames,
             const std::vector<vrml_proc::parser::VrmlField>& fields, const std::string& nodeName) {
           std::unordered_set<std::string> alreadyFoundFieldNames;
@@ -72,7 +63,7 @@ namespace vrml_proc {
          *
          * @returns result type where error stores the NodeValidationError subtype
          */
-        static cpp::result<void, std::shared_ptr<error::NodeValidationError>> CheckForOnlyAllowedVrmlNodeHeaders(
+        inline cpp::result<void, std::shared_ptr<error::NodeValidationError>> CheckForOnlyAllowedVrmlNodeHeaders(
             const std::unordered_set<std::string>& validHeaders, const vrml_proc::parser::VrmlNode& node,
             const std::string& field) {
           if (validHeaders.find(node.header) == validHeaders.end()) {
@@ -93,7 +84,7 @@ namespace vrml_proc {
          * @returns NodeValidationError if failure occurs (invalid field type, missing VrmlNode for UseNode id);
          * otherwise it returns empty optional (field is missing) or optional containing const reference to VRML node
          */
-        static cpp::result<std::optional<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>,
+        inline cpp::result<std::optional<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>,
                            std::shared_ptr<error::NodeValidationError>>
         ExtractVrmlNodeWithValidation(const std::string& fieldName,
                                       const std::vector<vrml_proc::parser::VrmlField>& fields,
@@ -133,7 +124,7 @@ namespace vrml_proc {
          * (field is missing) or optional containing const reference to T
          */
         template <typename T>
-        static cpp::result<std::optional<std::reference_wrapper<const T>>, std::shared_ptr<error::NodeValidationError>>
+        inline cpp::result<std::optional<std::reference_wrapper<const T>>, std::shared_ptr<error::NodeValidationError>>
         ExtractFieldByNameWithValidation(const std::string& fieldName,
                                          const std::vector<vrml_proc::parser::VrmlField>& fields) {
           std::string invalidType = "";
@@ -167,7 +158,7 @@ namespace vrml_proc {
          * DEF node); otherwise it returns empty optional (field is missing) or optional containing vector of const
          * references to VRML nodes
          */
-        static cpp::result<std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>,
+        inline cpp::result<std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>,
                            std::shared_ptr<error::NodeValidationError>>
         ExtractVrmlNodeArrayWithValidation(const std::string& fieldName,
                                            const std::vector<vrml_proc::parser::VrmlField>& fields,
@@ -247,7 +238,7 @@ namespace vrml_proc {
 
           return resolvedChildren;
         }
-      };
-    }  // namespace validator
-  }    // namespace traversor
+      };  // namespace NodeValidationUtils
+    }     // namespace validator
+  }       // namespace traversor
 }  // namespace vrml_proc

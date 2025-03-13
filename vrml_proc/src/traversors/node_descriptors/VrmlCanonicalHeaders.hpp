@@ -22,6 +22,8 @@ namespace vrml_proc::traversor::node_descriptor {
         {"VRMLSwitch", "Switch"},
         {"IndexedFaceSet", "IndexedFaceSet"},
         {"VRMLIndexedFaceSet", "IndexedFaceSet"},
+        {"IndexedLineSet", "IndexedLineSet"},
+        {"VRMLIndexedLineSet", "IndexedLineSet"},
         {"Box", "Box"},
         {"VRMLBox", "Box"},
         {"Shape", "Shape"},
@@ -58,6 +60,7 @@ namespace vrml_proc::traversor::node_descriptor {
     constexpr uint32_t Transform = Hash("Transform");
     constexpr uint32_t Shape = Hash("Shape");
     constexpr uint32_t IndexedFaceSet = Hash("IndexedFaceSet");
+    constexpr uint32_t IndexedLineSet = Hash("IndexedLineSet");
     constexpr uint32_t Coordinate = Hash("Coordinate");
     constexpr uint32_t Normal = Hash("Normal");
     constexpr uint32_t TextureCoordinate = Hash("TextureCoordinate");
@@ -70,6 +73,21 @@ namespace vrml_proc::traversor::node_descriptor {
     constexpr uint32_t TextureTransform = Hash("TextureTransform");
     constexpr uint32_t Appearance = Hash("Appearance");
   }  // namespace CanonicalHeaderHashes
+
+  /**
+   * @brief Converts a header name to canonical form.
+   *
+   * @param header header to convert
+   *
+   * @returns canonical header or if no canonical header was found, the passed header is returned
+   */
+  inline std::string ConvertToCanonicalHeader(const std::string& header) {
+    auto it = GetHeaderToCanonicalNameMap().find(header);
+    if (it != GetHeaderToCanonicalNameMap().end()) {
+      return it->second;
+    }
+    return header;
+  }
 
   inline std::unordered_set<std::string> GetPossibleNamesForCanonical(const std::string& canonicalName) {
     std::unordered_set<std::string> result;

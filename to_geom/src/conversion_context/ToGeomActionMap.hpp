@@ -11,6 +11,7 @@
 #include "MeshTaskConversionContext.hpp"
 #include "ShapeAction.hpp"
 #include "SwitchAction.hpp"
+#include "IndexedLineSetAction.hpp"
 #include "TransformAction.hpp"
 
 namespace to_geom::conversion_context {
@@ -195,6 +196,39 @@ namespace to_geom::conversion_context {
 
           vrml_proc::core::logger::LogFatal("Invalid arguments for IndexedFaceSetAction!", LOGGING_INFO);
           throw std::runtime_error("Invalid arguments for IndexedFaceSetAction");
+        });
+
+    actionMap.AddAction(
+        "IndexedLineSet", [](const vrml_proc::action::ConversionContextActionMap<
+                                 to_geom::conversion_context::MeshTaskConversionContext>::ReferencedArguments& refArgs,
+                             const vrml_proc::action::ConversionContextActionMap<
+                                 to_geom::conversion_context::MeshTaskConversionContext>::CopiedArguments& copyArgs) {
+          using vrml_proc::parser::VrmlNode;
+          using vrml_proc::parser::Int32Array;
+          using vrml_proc::parser::float32_t;
+
+          if (refArgs.size() == 5 && copyArgs.size() == 2 && copyArgs[0].type() == typeid(bool) &&
+              copyArgs[1].type() == typeid(vrml_proc::math::TransformationMatrix) &&
+              refArgs[0].get().type() == typeid(std::reference_wrapper<const VrmlNode>) &&
+              refArgs[1].get().type() == typeid(std::reference_wrapper<const VrmlNode>) &&
+              refArgs[2].get().type() == typeid(std::reference_wrapper<const Int32Array>) &&
+              refArgs[3].get().type() == typeid(std::reference_wrapper<const bool>) &&
+              refArgs[4].get().type() == typeid(std::reference_wrapper<const Int32Array>)) {
+            to_geom::action::IndexedLineSetAction::Properties properties{
+                std::any_cast<std::reference_wrapper<const VrmlNode>>(refArgs[0]),
+                std::any_cast<std::reference_wrapper<const VrmlNode>>(refArgs[1]),
+                std::any_cast<std::reference_wrapper<const Int32Array>>(refArgs[2]),
+                std::any_cast<std::reference_wrapper<const bool>>(refArgs[3]),
+                std::any_cast<std::reference_wrapper<const Int32Array>>(refArgs[4])};
+
+            return std::make_shared<to_geom::action::IndexedLineSetAction>(
+                properties, to_geom::action::GeometryAction::Properties{
+                                std::any_cast<bool>(copyArgs[0]),
+                                std::any_cast<vrml_proc::math::TransformationMatrix>(copyArgs[1])});
+          }
+
+          vrml_proc::core::logger::LogFatal("Invalid arguments for IndexedLineSetAction!", LOGGING_INFO);
+          throw std::runtime_error("IndexedLineSetAction");
         });
 
     return actionMap;

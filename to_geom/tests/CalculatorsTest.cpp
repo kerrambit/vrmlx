@@ -18,6 +18,7 @@
 #include <TransformationMatrix.hpp>
 #include <Vec3f.hpp>
 #include <VrmlUnits.hpp>
+#include <AlphaShapeCalculator.hpp>
 
 #include "../../test_utils/TestCommon.hpp"
 
@@ -649,5 +650,34 @@ TEST_CASE("IndexedFaceSetCalculator - valid III.", "[valid]") {
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result.value()));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
                               std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+  }
+}
+
+TEST_CASE("AlphaShapeCalculator - valid I.", "[valid]") {
+  using vrml_proc::parser::Vec3f;
+
+  std::vector<Vec3f> testPoints = {
+      {5.0f, 0.0f, 1.0f},    {1.0f, 9.0f, 1.0f},    {1.0f, 1.0f, -5.0f},   {0.0f, 10.0f, 10.0f},  {-11.0f, 0.0f, 12.0f},
+      {1.0f, 0.0f, 9.0f},    {1.0f, 7.0f, 8.0f},    {0.0f, -1.0f, 0.0f},   {0.25f, 0.25f, 0.25f}, {0.75f, 0.25f, 0.25f},
+      {0.75f, 0.75f, 0.25f}, {0.25f, 0.75f, 0.25f}, {0.25f, 0.25f, 0.75f}, {0.75f, 0.25f, 0.75f}, {0.75f, 0.75f, 0.75f},
+      {0.25f, 0.75f, 0.75f}, {-0.5f, 0.5f, 0.5f},   {5.0f, -0.5f, 0.0f},   {9.0f, 0.5f, -1.0f},   {5.5f, -4.0f, 10.5f},
+      {12.5f, 1.0f, 8.5f},   {-9.0f, 0.5f, 69.5f},  {1.0f, 7.5f, 2.5f}};
+
+  vrml_proc::parser::Vec3fArray pointCloud;
+  pointCloud.vectors.insert(pointCloud.vectors.end(), std::make_move_iterator(testPoints.begin()),
+                            std::make_move_iterator(testPoints.end()));
+  vrml_proc::math::TransformationMatrix matrix;
+
+  {
+    auto result = to_geom::calculator::AlphaShapeCalculator::Generate3DAlphaShapeMeshForPointCloud(
+        std::cref(pointCloud), 0.5, matrix);
+#ifdef __linux__
+    REQUIRE(result.has_value());
+    GENERATE_TEST_OUTPUT_FILENAME(filepath);
+    to_geom::core::io::StlFileWriter writer;
+    writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result.value()));
+    CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
+                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+#endif
   }
 }

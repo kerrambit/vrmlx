@@ -57,6 +57,8 @@ This project is licensed under the **GNU General Public License v3.0 or later** 
 - It is recommended to develop in *Visual Studio*.
 - To open the project, navigate yourself to ```File - Open - Cmake...``` and choose the root *CMakeLists.txt*.
 - *Visual Studio* should handle the process of generating and building the library automatically.
+- **Note that some functionality is not supported on Windows yet as they are linking issues!** For example ```AlphaSphereCalculator``` returns
+  ```UnsupportedOperationError``` on Windows in the current state.
 
 ## Run C++ executable files
 ### Linux

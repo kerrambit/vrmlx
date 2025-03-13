@@ -86,7 +86,9 @@ namespace vrml_proc {
 
         m_useNode = boost::spirit::qi::lit("USE") >> m_identifier->GetStartRule();
 
-        this->m_start = *(m_vrmlNode);
+        this->m_start =
+            boost::spirit::qi::skip(boost::spirit::ascii::space)[boost::spirit::qi::lit("#VRML V2.0 utf8")] >>
+            *(m_vrmlNode);
 
         BOOST_SPIRIT_DEBUG_NODE(this->m_start);
         BOOST_SPIRIT_DEBUG_NODE(m_vrmlFieldValue);

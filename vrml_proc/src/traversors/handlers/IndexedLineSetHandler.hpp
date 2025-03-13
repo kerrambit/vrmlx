@@ -19,41 +19,33 @@
 
 #include "VrmlProcessingExport.hpp"
 
-namespace vrml_proc::traversor::handler::IndexedFaceSetHandler {
+namespace vrml_proc::traversor::handler::IndexedLineSetHandler {
 
   template <typename ConversionContext>
   VRMLPROCESSING_API cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>>
   Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
          const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
          const vrml_proc::traversor::node_descriptor::NodeDescriptor& nd) {
+    using namespace vrml_proc::core::logger;
+    using namespace vrml_proc::core::utils;
+    using namespace vrml_proc::traversor::node_descriptor;
+    using namespace vrml_proc::traversor::error;
     using namespace vrml_proc::traversor::handler::HandlerUtils;
 
-    vrml_proc::core::logger::LogInfo(
-        vrml_proc::core::utils::FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
+    LogInfo(FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
 
-    // There are geometry primitive nodes 'coord', 'color', 'normal' and 'texCoord'. They are sent as VrmlNodes into the
-    // given action where they can be traversed if needed. The main point is they are not traversed inside this handler.
-    // But they have to be validated nonetheless.
+    // There are geometry primitive nodes 'coord' and 'color'. They are sent as VrmlNodes into the given action where
+    // they can be traversed if needed. The main point is they are not traversed inside this handler. But they have to
+    // be validated nonetheless.
     {
       auto validationResult = ValidateGeometryPrimitiveNode(nd, context.manager, "color");
       if (validationResult.has_error()) {
         return cpp::fail(validationResult.error());
       }
     }
+
     {
       auto validationResult = ValidateGeometryPrimitiveNode(nd, context.manager, "coord");
-      if (validationResult.has_error()) {
-        return cpp::fail(validationResult.error());
-      }
-    }
-    {
-      auto validationResult = ValidateGeometryPrimitiveNode(nd, context.manager, "normal");
-      if (validationResult.has_error()) {
-        return cpp::fail(validationResult.error());
-      }
-    }
-    {
-      auto validationResult = ValidateGeometryPrimitiveNode(nd, context.manager, "texCoord");
       if (validationResult.has_error()) {
         return cpp::fail(validationResult.error());
       }
@@ -61,37 +53,19 @@ namespace vrml_proc::traversor::handler::IndexedFaceSetHandler {
 
     std::any color = nd.GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>("color");
     std::any coord = nd.GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>("coord");
-    std::any normal = nd.GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>("normal");
-    std::any texCoord = nd.GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>("texCoord");
-    std::any ccw = nd.GetField<std::reference_wrapper<const bool>>("ccw");
     std::any colorIndex = nd.GetField<std::reference_wrapper<const vrml_proc::parser::Int32Array>>("colorIndex");
     std::any colorPerVertex = nd.GetField<std::reference_wrapper<const bool>>("colorPerVertex");
-    std::any convex = nd.GetField<std::reference_wrapper<const bool>>("convex");
     std::any coordIndex = nd.GetField<std::reference_wrapper<const vrml_proc::parser::Int32Array>>("coordIndex");
-    std::any creaseAngle = nd.GetField<std::reference_wrapper<const vrml_proc::parser::float32_t>>("creaseAngle");
-    std::any normalIndex = nd.GetField<std::reference_wrapper<const vrml_proc::parser::Int32Array>>("normalIndex");
-    std::any normalPerVertex = nd.GetField<std::reference_wrapper<const bool>>("normalPerVertex");
-    std::any solid = nd.GetField<std::reference_wrapper<const bool>>("solid");
-    std::any texCoordIndex = nd.GetField<std::reference_wrapper<const vrml_proc::parser::Int32Array>>("texCoordIndex");
 
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
         actionMap, nd.GetId(),
         {
             std::cref(color),
             std::cref(coord),
-            std::cref(normal),
-            std::cref(texCoord),
-            std::cref(ccw),
             std::cref(colorIndex),
             std::cref(colorPerVertex),
-            std::cref(convex),
             std::cref(coordIndex),
-            std::cref(creaseAngle),
-            std::cref(normalIndex),
-            std::cref(normalPerVertex),
-            std::cref(solid),
-            std::cref(texCoordIndex),
         },
         {context.IsDescendantOfShape, context.transformation});
   }
-}  // namespace vrml_proc::traversor::handler::IndexedFaceSetHandler
+}  // namespace vrml_proc::traversor::handler::IndexedLineSetHandler

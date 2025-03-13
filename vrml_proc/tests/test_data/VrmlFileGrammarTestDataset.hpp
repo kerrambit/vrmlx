@@ -209,7 +209,7 @@ std::string nodeWithUtf8 = R"(
 )";
 
 std::string emptyNode = R"(
-
+#VRML V2.0 utf8
     Group {
        subgroup Group {
            subsubgroup Group {}
