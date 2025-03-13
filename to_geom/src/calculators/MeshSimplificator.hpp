@@ -9,7 +9,7 @@
 
 #include "VrmlToGeomExport.hpp"
 
-namespace to_geom::calculator {
+namespace to_geom::calculator::MeshUtils {
 
   inline VRMLTOGEOM_API void SimplifyMesh(to_geom::core::Mesh& mesh, double stopRation) {
     using namespace vrml_proc::core::logger;
@@ -25,4 +25,4 @@ namespace to_geom::calculator {
 
     LogDebug(FormatString("Simplification finished. ", collapsedEdgesCount, " were collapsed."), LOGGING_INFO);
   }
-}  // namespace to_geom::calculator
+}  // namespace to_geom::calculator::MeshUtils

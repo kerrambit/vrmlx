@@ -93,7 +93,7 @@ target_include_directories(vrmlxpy PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/vrml_proc
     ${CMAKE_CURRENT_SOURCE_DIR}/to_geom
-    ${CMAKE_CURRENT_SOURCE_DIR}/../vendor/pybind11/include/pybind11
+    #${CMAKE_CURRENT_SOURCE_DIR}/../vendor/pybind11/include/pybind11
 )
 
 # Copy vrmlproc.dll and togeom.dll to the folder for the binding to run.
