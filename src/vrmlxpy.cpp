@@ -27,38 +27,42 @@
 
 static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
     const std::string& outputFilename,
-    const to_geom::core::config::ToGeomConfig& config) {
-  vrml_proc::core::io::MemoryMappedFileReader reader;
-  auto readResult = reader.Read(std::filesystem::path(inputFilename));
+    const to_geom::core::config::ToGeomConfig& config) {  //
+
+  using namespace std::filesystem;
+  using namespace vrml_proc::parser;
+  using namespace vrml_proc::traversor::VrmlFileTraversor;
+  using namespace to_geom::conversion_context;
+  using namespace vrml_proc::core::io;
+  using namespace to_geom::core::io;
+
+  MemoryMappedFileReader reader;
+  auto readResult = reader.Read(path(inputFilename));
   if (readResult.has_error()) {
     std::cout << "Caught an application error:\n" << readResult.error()->GetMessage() << std::endl;
     return false;
   }
 
-  std::cout << "2/6: file <" << std::filesystem::path(inputFilename).string() << "> was succesfully read." << std::endl;
+  std::cout << "2/6: file <" << path(inputFilename).string() << "> was succesfully read." << std::endl;
 
-  vrml_proc::parser::VrmlNodeManager manager;
-  vrml_proc::parser::VrmlParser parser(manager);
-  auto parseResult =
-      parser.Parse(vrml_proc::parser::BufferView(readResult.value().GetBegin(), readResult.value().GetEnd()));
+  VrmlNodeManager manager;
+  VrmlParser parser(manager);
+  auto parseResult = parser.Parse(BufferView(readResult.value().GetBegin(), readResult.value().GetEnd()));
   if (parseResult.has_error()) {
     std::cout << "Caught an application error:\n" << parseResult.error()->GetMessage() << std::endl;
     return false;
   }
 
-  std::cout << "3/6: file <" << std::filesystem::path(inputFilename).string() << "> was succesfully parsed."
-            << std::endl;
+  std::cout << "3/6: file <" << path(inputFilename).string() << "> was succesfully parsed." << std::endl;
 
   auto convertResult =
-      vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
-          {parseResult.value(), manager, config.vrmlProcConfig}, to_geom::conversion_context::GetActionMap());
+      Traverse<MeshTaskConversionContext>({parseResult.value(), manager, config.vrmlProcConfig}, GetActionMap());
   if (convertResult.has_error()) {
     std::cout << "Caught an application error:\n" << convertResult.error()->GetMessage() << std::endl;
     return false;
   }
 
-  std::cout << "4/6: file <" << std::filesystem::path(inputFilename).string() << "> was succesfully traversed."
-            << std::endl;
+  std::cout << "4/6: file <" << path(inputFilename).string() << "> was succesfully traversed." << std::endl;
 
   std::vector<std::future<to_geom::calculator::CalculatorResult>> results;
   for (const auto& task : convertResult.value()->GetData()) {
@@ -79,30 +83,29 @@ static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
 
   std::cout << "5/6: mesh was succesfully generated." << std::endl;
 
-  std::unique_ptr<vrml_proc::core::io::FileWriter<to_geom::core::Mesh>> writer;
+  std::unique_ptr<FileWriter<to_geom::core::Mesh>> writer;
   switch (config.exportFormat) {
-    case to_geom::core::io::ExportFormat::Stl:
-      writer = std::make_unique<to_geom::core::io::StlFileWriter>();
+    case ExportFormat::Stl:
+      writer = std::make_unique<StlFileWriter>();
       break;
-    case to_geom::core::io::ExportFormat::Ply:
-      writer = std::make_unique<to_geom::core::io::PlyFileWriter>();
+    case ExportFormat::Ply:
+      writer = std::make_unique<PlyFileWriter>();
       break;
-    case to_geom::core::io::ExportFormat::Obj:
-      writer = std::make_unique<to_geom::core::io::ObjFileWriter>();
+    case ExportFormat::Obj:
+      writer = std::make_unique<ObjFileWriter>();
       break;
     default:
-      writer = std::make_unique<to_geom::core::io::StlFileWriter>();
+      writer = std::make_unique<StlFileWriter>();
       break;
   }
 
-  auto writeResult = writer->Write(std::filesystem::path(outputFilename), mesh);
+  auto writeResult = writer->Write(path(outputFilename), mesh);
   if (writeResult.has_error()) {
     std::cout << "Caught an aplication error:\n" << writeResult.error()->GetMessage() << std::endl;
     return false;
   }
 
-  std::cout << "6/6: file <" << std::filesystem::path(outputFilename).string() << "> was succesfully written."
-            << std::endl;
+  std::cout << "6/6: file <" << path(outputFilename).string() << "> was succesfully written." << std::endl;
 
   std::cout << "Converting VRML to geometry format finished succesfully." << std::endl;
   return true;
@@ -112,19 +115,23 @@ namespace vrmlxpy {
 
   void PrintVersion() { std::cout << "(TMP): vrmlxpy 0.1 (togeom 0.1; vrmlproc 1.0)" << std::endl; }
 
-  std::string GetExpectedOutputFileExtension(const std::string& configFilename) {
-    to_geom::core::config::ToGeomConfig config;
+  std::string GetExpectedOutputFileExtension(const std::string& configFilename) {  //
+
+    using namespace to_geom::core::io;
+    using namespace to_geom::core::config;
+
+    ToGeomConfig config;
     auto configResult = config.Load(configFilename);
     if (configResult.has_error()) {
       return "txt";
     }
 
     switch (config.exportFormat) {
-      case to_geom::core::io::ExportFormat::Stl:
+      case ExportFormat::Stl:
         return "stl";
-      case to_geom::core::io::ExportFormat::Ply:
+      case ExportFormat::Ply:
         return "ply";
-      case to_geom::core::io::ExportFormat::Obj:
+      case ExportFormat::Obj:
         return "obj";
       default:
         "txt";
@@ -134,25 +141,30 @@ namespace vrmlxpy {
   }
 
   bool ConvertVrmlToGeom(
-      const std::string& inputFilename, const std::string& outputFilename, const std::string& configFilename) {
+      const std::string& inputFilename, const std::string& outputFilename, const std::string& configFilename) {  //
+
+    using namespace std::filesystem;
+    using namespace to_geom::core::config;
+    using namespace vrml_proc::core::logger;
+
     std::cout << "Converting VRML to geometry format..." << std::endl;
 
-    to_geom::core::config::ToGeomConfig config;
+    ToGeomConfig config;
     auto configResult = config.Load(configFilename);
     if (configResult.has_error()) {
       std::cout << "Caught an application error:\n" << configResult.error()->GetMessage() << std::endl;
-      vrml_proc::core::logger::InitLogging(std::filesystem::current_path().string(), "vrmlxpy");
-      std::cout << "[Warning]: log file was created on the current path (" << std::filesystem::current_path()
+      InitLogging(current_path().string(), "vrmlxpy");
+      std::cout << "[Warning]: log file was created on the current path (" << current_path()
                 << "). If there was a log directory specified inside "
                    "the configuration file, do not look for it on this path as loading of configuration file failed!"
                 << std::endl;
       return false;
     }
 
-    vrml_proc::core::logger::InitLogging(config.vrmlProcConfig.logFileDirectory, config.vrmlProcConfig.logFileName);
+    InitLogging(config.vrmlProcConfig.logFileDirectory, config.vrmlProcConfig.logFileName);
 
-    std::cout << "1/6: configuration file <" << std::filesystem::path(configFilename).string()
-              << "> was succesfully parsed." << std::endl;
+    std::cout << "1/6: configuration file <" << path(configFilename).string() << "> was succesfully parsed."
+              << std::endl;
 
     bool result = HelperConvertVrmlToGeom(inputFilename, outputFilename, config);
     return result;
