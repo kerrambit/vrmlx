@@ -14,7 +14,7 @@ namespace to_geom {
   namespace action {
 
     BoxAction::BoxAction(Properties properties, GeometryAction::Properties geometryProperties)
-        : to_geom::action::GeometryAction(geometryProperties), m_size(properties.size) {}
+        : to_geom::action::GeometryAction(geometryProperties), m_properties(properties) {}
 
     std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> BoxAction::Execute() {
       vrml_proc::core::logger::LogInfo("Execute BoxAction.", LOGGING_INFO);
@@ -26,7 +26,7 @@ namespace to_geom {
         return result;
       }
 
-      std::reference_wrapper<const vrml_proc::parser::Vec3f> size = m_size;
+      std::reference_wrapper<const vrml_proc::parser::Vec3f> size = m_properties.size;
       vrml_proc::math::TransformationMatrix matrix = m_geometryProperties.matrix;
 
       result->Add([=]() {

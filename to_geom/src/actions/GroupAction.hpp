@@ -12,35 +12,36 @@
 namespace to_geom {
   namespace action {
     /**
-     * @brief Represents a concrete type of Action.
+     * @brief Represents an action for the Group VRML node.
      *
-     * @implements ConversionContextAction
+     * Inherits from `ConversionContextAction<MeshTaskConversionContext>` to integrate with the conversion system.
      */
     class VRMLPROCESSING_API GroupAction
         : public vrml_proc::action::ConversionContextAction<to_geom::conversion_context::MeshTaskConversionContext> {
      public:
       /**
-       * @brief Default constructor.
-       *
-       * @param children vector of shared pointers which own objects inherited from `BaseConversionContext`
-       * @param bboxCenter `Vec3f` representing bboxCenter field in VRML 2.0 specification
-       * @param bboxSize `Vec3f` representing bboxSize field in VRML 2.0 specification
+       * @brief Properties for `GroupAction`. See VRML 2.0 specification for more information.
        */
-      GroupAction(std::vector<std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext>> children,
-                  std::reference_wrapper<const vrml_proc::parser::Vec3f> bboxCenter,
-                  std::reference_wrapper<const vrml_proc::parser::Vec3f> bboxSize);
+      struct Properties {
+        std::vector<std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext>> children;
+        std::reference_wrapper<const vrml_proc::parser::Vec3f> bboxCenter;
+        std::reference_wrapper<const vrml_proc::parser::Vec3f> bboxSize;
+      };
       /**
-       * @brief Overriden implemented interface method from `BaseConversionContextAction`. The method is focused only on
-       * `m_chidlren` member field. All children are merged together and returned as a pointer.
-       *
-       * @returns shared pointer owning the object of merged ConversionContext objects
+       * @brief Constructs a GroupAction with specified properties.
+       * @param properties properties for GroupAction
+       */
+      GroupAction(Properties properties);
+
+      /**
+       * @brief The method is focused only on children field. All children are merged together and returned as a
+       * pointer.
+       * @return A shared pointer to the MeshTaskConversionContext.
        */
       std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> Execute() override;
 
      private:
-      std::vector<std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext>> m_children;
-      std::reference_wrapper<const vrml_proc::parser::Vec3f> m_bboxCenter;
-      std::reference_wrapper<const vrml_proc::parser::Vec3f> m_bboxSize;
+      Properties m_properties;
     };
   }  // namespace action
 }  // namespace to_geom

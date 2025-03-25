@@ -11,22 +11,28 @@
 namespace to_geom {
   namespace action {
     /**
-     * @brief Represents a concrete type of Action.
+     * @brief Represents an action for Shape VRML node.
      *
-     * @implements ConversionContextAction
+     * Process a VRML `Shape` node.
+     * Inherits from `ConversionContextAction<MeshTaskConversionContext>` to integrate with the conversion system.
      */
     class VRMLPROCESSING_API ShapeAction
         : public vrml_proc::action::ConversionContextAction<to_geom::conversion_context::MeshTaskConversionContext> {
      public:
       /**
-       * @brief Default constructor.
-       *
-       * @param children vector of shared pointers which own objects inherited from `BaseConversionContext`
-       * @param appearance data representing appearance of the shape
-       * @param geometry data representing geometry of the shape
+       * @brief Properties for `ShapeAction`. See VRML 2.0 specification for more information.
        */
-      ShapeAction(std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> appearance,
-                  std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> geometry);
+      struct Properties {
+        std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> appearance;
+        std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> geometry;
+      };
+
+      /**
+       * @brief Constructs a ShapeAction with specified properties.
+       * @param properties properties for ShapeAction
+       */
+      ShapeAction(Properties properties);
+
       /**
        * @brief Overriden implemented interface method from `BaseConversionContextAction`. The method is focused only on
        * `m_geometry` member field.
@@ -36,8 +42,7 @@ namespace to_geom {
       std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> Execute() override;
 
      private:
-      std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> m_appearance;
-      std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> m_geometry;
+      Properties m_properties;
     };
   }  // namespace action
 }  // namespace to_geom

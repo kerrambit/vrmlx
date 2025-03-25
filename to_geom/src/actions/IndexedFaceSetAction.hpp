@@ -13,9 +13,17 @@
 
 namespace to_geom {
   namespace action {
-
+    /**
+     * @brief Represents an action for IndexedFaceSet VRML node.
+     *
+     * Converts a VRML `IndexedFaceSet` node into a geometric representation.
+     * Inherits from `GeometryAction` to integrate with the conversion system.
+     */
     class VRMLPROCESSING_API IndexedFaceSetAction : public to_geom::action::GeometryAction {
      public:
+      /**
+       * @brief Properties for `IndexedFaceSetAction`. See VRML 2.0 specification for more information.
+       */
       struct Properties {
         std::reference_wrapper<const vrml_proc::parser::VrmlNode> color;
         std::reference_wrapper<const vrml_proc::parser::VrmlNode> coord;
@@ -33,7 +41,19 @@ namespace to_geom {
         std::reference_wrapper<const vrml_proc::parser::Int32Array> texCoordIndex;
       };
 
+      /**
+       * @brief Constructs a IndexedFaceSetAction with specified properties.
+       * @param properties properties for IndexedFaceSetAction
+       * @param geometryProperties geometry properties
+       */
       IndexedFaceSetAction(Properties properties, GeometryAction::Properties geometryProperties);
+
+      /**
+       * @brief The method is focused only on geometry field, which is only passed through this method with no
+       * modification.
+       *
+       * @return A shared pointer to the MeshTaskConversionContext.
+       */
       std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> Execute() override;
 
      private:
