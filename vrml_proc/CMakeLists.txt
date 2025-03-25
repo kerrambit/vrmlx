@@ -25,6 +25,7 @@ add_library(vrmlproc SHARED
     "src/core/io/JsonFileReader.hpp"
     "src/core/io/errors/IoError.hpp"
     "src/core/config/VrmlProcConfig.hpp"
+    "src/core/config/Config.hpp"
 
     "src/core/errors/Error.hpp"
     "src/core/errors/NullPointerError.hpp"
