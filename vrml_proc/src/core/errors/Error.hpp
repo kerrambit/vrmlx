@@ -8,11 +8,23 @@ namespace vrml_proc {
   namespace core {
     namespace error {
 
+      /**
+       * @brief Base class for Error.
+       */
       class Error {
        public:
+        /**
+         * @brief Virtual destructor.
+         */
         virtual ~Error() = default;
 
-        virtual std::string GetMessage() const {
+        /**
+         * @brief Retrieves an error message formatted as a string describing error (and inner errors).
+         *
+         * @returns error message
+         */
+        virtual std::string GetMessage() const {  //
+
           std::ostringstream stream;
           stream << GetMessageInternal();
 
@@ -24,12 +36,43 @@ namespace vrml_proc {
 
           return stream.str();
         }
-        void SetInnerError(std::shared_ptr<Error> inner) { m_innerError = inner; }
+
+        /**
+         * @brief Sets an inner error.
+         *
+         * @param innerError inner error
+         */
+        void SetInnerError(std::shared_ptr<Error> innerError) { m_innerError = innerError; }
+
+        /**
+         * @brief Retrieves an inner error.
+         *
+         * @returns inner error
+         */
         const std::shared_ptr<Error> GetInnerError() const { return m_innerError; }
+
+        /**
+         * @brief Operator <<, which sets an inner error;
+         *
+         * @param innerError inner error
+         * @returns reference to itself
+         */
         Error& operator<<(std::shared_ptr<Error> innerError) {
           SetInnerError(innerError);
           return *this;
         }
+
+        /**
+         * @brief Retrieves the innermost error in a nested error chain.
+         *
+         * This utility method traverses through the chain of errors to find
+         * the deepest (most specific) error in the hierarchy.
+         *
+         * @param error The starting error to traverse.
+         * @return A shared pointer to the innermost error, or nullptr if
+         *         the input error is nullptr or error has no inner errors.
+         */
+
         static std::shared_ptr<Error> GetInnermostError(std::shared_ptr<Error> error) {
           if (error == nullptr) {
             return nullptr;
@@ -44,7 +87,18 @@ namespace vrml_proc {
         }
 
        protected:
+        /**
+         * @brief Internal method which gets an error message.
+         *
+         * Used by GetMessage() internally. Each subclass should implement this method.
+         *
+         * @returns error message
+         */
         virtual std::string GetMessageInternal() const = 0;
+
+        /**
+         * @brief Current indentation level.
+         */
         size_t m_indentation = 0;
 
        private:
@@ -55,8 +109,11 @@ namespace vrml_proc {
   }    // namespace core
 }  // namespace vrml_proc
 
-inline std::shared_ptr<vrml_proc::core::error::Error> operator<<(std::shared_ptr<vrml_proc::core::error::Error> left,
-                                                                 std::shared_ptr<vrml_proc::core::error::Error> right) {
+/**
+ * @brief Sets inner error (using shared_ptr).
+ */
+inline std::shared_ptr<vrml_proc::core::error::Error> operator<<(
+    std::shared_ptr<vrml_proc::core::error::Error> left, std::shared_ptr<vrml_proc::core::error::Error> right) {
   if (left) {
     *left << right;
   }

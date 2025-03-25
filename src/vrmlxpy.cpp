@@ -25,8 +25,9 @@
 #include <ExportFormats.hpp>
 #include <FileWriter.hpp>
 
-static bool HelperConvertVrmlToGeom(const std::string& inputFilename, const std::string& outputFilename,
-                                    const to_geom::core::config::ToGeomConfig& config) {
+static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
+    const std::string& outputFilename,
+    const to_geom::core::config::ToGeomConfig& config) {
   vrml_proc::core::io::MemoryMappedFileReader reader;
   auto readResult = reader.Read(std::filesystem::path(inputFilename));
   if (readResult.has_error()) {
@@ -50,7 +51,7 @@ static bool HelperConvertVrmlToGeom(const std::string& inputFilename, const std:
 
   auto convertResult =
       vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
-          {parseResult.value(), manager, config.vrmlProcConfig}, to_geom::conversion_context::CreateActionMap());
+          {parseResult.value(), manager, config.vrmlProcConfig}, to_geom::conversion_context::GetActionMap());
   if (convertResult.has_error()) {
     std::cout << "Caught an application error:\n" << convertResult.error()->GetMessage() << std::endl;
     return false;
@@ -113,7 +114,7 @@ namespace vrmlxpy {
 
   std::string GetExpectedOutputFileExtension(const std::string& configFilename) {
     to_geom::core::config::ToGeomConfig config;
-    auto configResult = config.LoadFromJsonFile(configFilename);
+    auto configResult = config.Load(configFilename);
     if (configResult.has_error()) {
       return "txt";
     }
@@ -132,12 +133,12 @@ namespace vrmlxpy {
     return "txt";
   }
 
-  bool ConvertVrmlToGeom(const std::string& inputFilename, const std::string& outputFilename,
-                         const std::string& configFilename) {
+  bool ConvertVrmlToGeom(
+      const std::string& inputFilename, const std::string& outputFilename, const std::string& configFilename) {
     std::cout << "Converting VRML to geometry format..." << std::endl;
 
     to_geom::core::config::ToGeomConfig config;
-    auto configResult = config.LoadFromJsonFile(configFilename);
+    auto configResult = config.Load(configFilename);
     if (configResult.has_error()) {
       std::cout << "Caught an application error:\n" << configResult.error()->GetMessage() << std::endl;
       vrml_proc::core::logger::InitLogging(std::filesystem::current_path().string(), "vrmlxpy");

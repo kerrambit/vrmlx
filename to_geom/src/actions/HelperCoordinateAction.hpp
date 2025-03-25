@@ -8,19 +8,39 @@
 #include "Vec3fArrayConversionContext.hpp"
 
 namespace to_geom::action {
-
+  /**
+   * @brief Represents an action for Coordinate VRML node.
+   *
+   * Inherits from ConversionContextAction<Vec3fArrayConversionContext>.
+   */
   class HelperCoordinateAction
       : public vrml_proc::action::ConversionContextAction<to_geom::conversion_context::Vec3fArrayConversionContext> {
    public:
-    HelperCoordinateAction(std::reference_wrapper<const vrml_proc::parser::Vec3fArray> data) : m_data(data) {}
+    /**
+     * @brief Properties for `HelperCoordinateAction`.
+     */
+    struct Properties {
+      /** @brief Points inside Coordinate VRML node. */
+      std::reference_wrapper<const vrml_proc::parser::Vec3fArray> points;
+    };
 
+    /**
+     * @brief Constructs a HelperCoordinateAction with specified properties.
+     * @param properties properties for HelperCoordinateAction
+     */
+    HelperCoordinateAction(Properties properties) : m_properties(properties) {}
+
+    /**
+     * @brief Takes all points by a reference and add them to Vec3fArrayConversionContext.
+     * @return A shared pointer to the Vec3fArrayConversionContext.
+     */
     std::shared_ptr<to_geom::conversion_context::Vec3fArrayConversionContext> Execute() {
-      auto toReturn = std::make_shared<to_geom::conversion_context::Vec3fArrayConversionContext>();
-      toReturn->CopyAndAdd(m_data);
-      return toReturn;
+      auto result = std::make_shared<to_geom::conversion_context::Vec3fArrayConversionContext>();
+      result->CopyAndAdd(m_properties.points);
+      return result;
     }
 
    private:
-    std::reference_wrapper<const vrml_proc::parser::Vec3fArray> m_data;
+    Properties m_properties;
   };
 }  // namespace to_geom::action

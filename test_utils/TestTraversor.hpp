@@ -36,20 +36,19 @@
  * @return false if traversing fails or if the expected count is not met, otherwise true
  */
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
-                                       const vrml_proc::parser::VrmlNodeManager& manager,
-                                       size_t expectedConversionContextSize) {
+    const vrml_proc::parser::VrmlNodeManager& manager,
+    size_t expectedConversionContextSize) {
   vrml_proc::core::config::VrmlProcConfig config;
   auto traversorResult =
       vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
-          {parseResult.value(), manager, config}, to_geom::conversion_context::CreateActionMap());
+          {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
   if (traversorResult.has_error()) {
     LogError(traversorResult.error());
     return false;
   } else {
     if (traversorResult.value()->GetData().size() != expectedConversionContextSize) {
-      LogError(vrml_proc::core::utils::FormatString(
-          "Size of traversor result is not the same as expected: ", traversorResult.value()->GetData().size(),
-          " != ", expectedConversionContextSize, "."));
+      LogError(vrml_proc::core::utils::FormatString("Size of traversor result is not the same as expected: ",
+          traversorResult.value()->GetData().size(), " != ", expectedConversionContextSize, "."));
       return false;
     }
     return true;
@@ -69,22 +68,22 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
  * true
  */
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
-                                       const vrml_proc::parser::VrmlNodeManager& manager,
-                                       size_t expectedConversionContextSize,
-                                       const std::filesystem::path& outputFilepath, size_t expectedSubmeshesCount) {
+    const vrml_proc::parser::VrmlNodeManager& manager,
+    size_t expectedConversionContextSize,
+    const std::filesystem::path& outputFilepath,
+    size_t expectedSubmeshesCount) {
   vrml_proc::core::config::VrmlProcConfig config;
   auto traversorResult =
       vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
-          {parseResult.value(), manager, config}, to_geom::conversion_context::CreateActionMap());
+          {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
   if (traversorResult.has_error()) {
     LogError(traversorResult.error());
     return false;
   }
 
   if (traversorResult.value()->GetData().size() != expectedConversionContextSize) {
-    LogError(vrml_proc::core::utils::FormatString(
-        "Size of traversor result is not the same as expected: ", traversorResult.value()->GetData().size(),
-        " != ", expectedConversionContextSize, "."));
+    LogError(vrml_proc::core::utils::FormatString("Size of traversor result is not the same as expected: ",
+        traversorResult.value()->GetData().size(), " != ", expectedConversionContextSize, "."));
     return false;
   }
 
@@ -108,8 +107,8 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
   };
 
   if (currentSubmesh != expectedSubmeshesCount) {
-    LogError(vrml_proc::core::utils::FormatString("Count of submeshes is not equal to expected count: ", currentSubmesh,
-                                                  " != ", expectedSubmeshesCount, "."));
+    LogError(vrml_proc::core::utils::FormatString(
+        "Count of submeshes is not equal to expected count: ", currentSubmesh, " != ", expectedSubmeshesCount, "."));
     return false;
   }
 
@@ -137,22 +136,22 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
  * true
  */
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
-                                       const vrml_proc::parser::VrmlNodeManager& manager,
-                                       size_t expectedConversionContextSize,
-                                       const std::filesystem::path& outputFilepath, size_t expectedSubmeshesCount,
-                                       const vrml_proc::core::config::VrmlProcConfig& config) {
+    const vrml_proc::parser::VrmlNodeManager& manager,
+    size_t expectedConversionContextSize,
+    const std::filesystem::path& outputFilepath,
+    size_t expectedSubmeshesCount,
+    const vrml_proc::core::config::VrmlProcConfig& config) {
   auto traversorResult =
       vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
-          {parseResult.value(), manager, config}, to_geom::conversion_context::CreateActionMap());
+          {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
   if (traversorResult.has_error()) {
     LogError(traversorResult.error());
     return false;
   }
 
   if (traversorResult.value()->GetData().size() != expectedConversionContextSize) {
-    LogError(vrml_proc::core::utils::FormatString(
-        "Size of traversor result is not the same as expected: ", traversorResult.value()->GetData().size(),
-        " != ", expectedConversionContextSize, "."));
+    LogError(vrml_proc::core::utils::FormatString("Size of traversor result is not the same as expected: ",
+        traversorResult.value()->GetData().size(), " != ", expectedConversionContextSize, "."));
     return false;
   }
 
@@ -176,8 +175,8 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
   };
 
   if (currentSubmesh != expectedSubmeshesCount) {
-    LogError(vrml_proc::core::utils::FormatString("Count of submeshes is not equal to expected count: ", currentSubmesh,
-                                                  " != ", expectedSubmeshesCount, "."));
+    LogError(vrml_proc::core::utils::FormatString(
+        "Count of submeshes is not equal to expected count: ", currentSubmesh, " != ", expectedSubmeshesCount, "."));
     return false;
   }
 
@@ -198,11 +197,11 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
  * @return false if traversing fails, otherwise true
  */
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
-                                       const vrml_proc::parser::VrmlNodeManager& manager) {
+    const vrml_proc::parser::VrmlNodeManager& manager) {
   vrml_proc::core::config::VrmlProcConfig config;
   auto traversorResult =
       vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
-          {parseResult.value(), manager, config}, to_geom::conversion_context::CreateActionMap());
+          {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
   if (traversorResult.has_error()) {
     LogError(traversorResult.error());
     return false;

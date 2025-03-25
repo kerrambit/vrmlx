@@ -10,18 +10,37 @@
 #include "Error.hpp"
 #include "JsonError.hpp"
 #include "JsonFileReader.hpp"
+#include "Config.hpp"
 
 namespace vrml_proc::core::config {
-
-  struct VrmlProcConfig {
+  /**
+   * @brief Represents a configuration file for `vrmlproc` library.
+   *
+   * Configuration file for `vrmlproc` has following properties:
+   *  - ignoreUnknownNode (bool),
+   *  - logFileDirectory (string),
+   *  - logFileName (string).
+   *
+   * @implements `Config` class with Load() method.
+   */
+  struct VrmlProcConfig : public Config {
+    /**
+     * @brief Defaul constructor.
+     */
     VrmlProcConfig() = default;
 
     bool ignoreUnknownNode = false;
     std::string logFileDirectory = std::filesystem::current_path().string();
     std::string logFileName = "vrmlproc";
 
-    cpp::result<void, std::shared_ptr<vrml_proc::core::error::Error>> LoadFromJsonFile(
-        const std::filesystem::path& filepath) {
+    /**
+     * @brief Loads configuration file from JSON file.
+     *
+     * @param filepath path to the file to load
+     * @return result containing error on failure, else empty
+     */
+    cpp::result<void, std::shared_ptr<vrml_proc::core::error::Error>> Load(
+        const std::filesystem::path& filepath) override {
       vrml_proc::core::io::JsonFileReader reader;
       auto json = reader.Read(filepath);
 

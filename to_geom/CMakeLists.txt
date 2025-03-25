@@ -40,11 +40,11 @@ add_library(togeom SHARED
     "src/actions/TransformAction.cpp"
     "src/actions/SwitchAction.hpp"
     "src/actions/SwitchAction.cpp"
+    "src/actions/ToGeomActionMap.hpp"
 
     # Conversion contexts
     "src/conversion_context/Vec3fArrayConversionContext.hpp"
     "src/conversion_context/MeshTaskConversionContext.hpp"
-    "src/conversion_context/ToGeomActionMap.hpp"
 
     # Calculators.
     "src/calculators/CalculatorResult.hpp"
