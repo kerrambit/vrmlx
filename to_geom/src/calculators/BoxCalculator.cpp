@@ -8,8 +8,8 @@
 
 #include <result.hpp>
 
-#include "BoxAction.hpp"
 #include "CalculatorError.hpp"
+#include "CalculatorResult.hpp"
 #include "CGALBaseTypesForVrml.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
@@ -20,18 +20,24 @@
 
 namespace to_geom {
   namespace calculator {
-    cpp::result<std::shared_ptr<to_geom::core::Mesh>, std::shared_ptr<vrml_proc::core::error::Error>>
-    BoxCalculator::Generate3DMesh(std::reference_wrapper<const vrml_proc::parser::Vec3f> size,
-                                  const vrml_proc::math::TransformationMatrix& matrix) {
-      vrml_proc::core::logger::LogInfo("Generate 3D mesh using BoxCalculator.", LOGGING_INFO);
+    to_geom::calculator::CalculatorResult BoxCalculator::Generate3DMesh(
+        std::reference_wrapper<const vrml_proc::parser::Vec3f> size,
+        const vrml_proc::math::TransformationMatrix& matrix) {  //
 
-      auto checkResult = vrml_proc::parser::model::validator::CheckVec3fIsGreaterThanZero(size.get());
+      using namespace vrml_proc::core::logger;
+      using namespace vrml_proc::core::utils;
+      using namespace vrml_proc::parser::model::validator;
+      using vrml_proc::math::cgal::CGALPoint;
+
+      LogInfo("Generate 3D mesh using BoxCalculator.", LOGGING_INFO);
+
+      auto checkResult = CheckVec3fIsGreaterThanZero(size.get());
       if (checkResult.has_error()) {
-        return cpp::fail(std::make_shared<to_geom::calculator::error::BoxCalculatorError>()
-                         << (std::make_shared<to_geom::calculator::error::PropertiesError>() << checkResult.error()));
+        return cpp::fail(std::make_shared<error::BoxCalculatorError>()
+                         << (std::make_shared<error::PropertiesError>() << checkResult.error()));
       }
 
-      auto timer = vrml_proc::core::utils::ManualTimer();
+      auto timer = ManualTimer();
       timer.Start();
 
       auto mesh = std::make_shared<to_geom::core::Mesh>();
@@ -41,25 +47,25 @@ namespace to_geom {
       double half_z = size.get().z / 2.0;
 
       vrml_proc::math::cgal::CGALPoint vertices[8] = {/** Left back down. */
-                                                      vrml_proc::math::cgal::CGALPoint(-half_x, -half_y, -half_z),
-                                                      /** Right back down. */
-                                                      vrml_proc::math::cgal::CGALPoint(half_x, -half_y, -half_z),
-                                                      /** Right back up. */
-                                                      vrml_proc::math::cgal::CGALPoint(half_x, half_y, -half_z),
-                                                      /** Left back up. */
-                                                      vrml_proc::math::cgal::CGALPoint(-half_x, half_y, -half_z),
-                                                      /** Left front down. */
-                                                      vrml_proc::math::cgal::CGALPoint(-half_x, -half_y, half_z),
-                                                      /** Right front down. */
-                                                      vrml_proc::math::cgal::CGALPoint(half_x, -half_y, half_z),
-                                                      /** Right front up. */
-                                                      vrml_proc::math::cgal::CGALPoint(half_x, half_y, half_z),
-                                                      /** Left front up. */
-                                                      vrml_proc::math::cgal::CGALPoint(-half_x, half_y, half_z)};
+          CGALPoint(-half_x, -half_y, -half_z),
+          /** Right back down. */
+          CGALPoint(half_x, -half_y, -half_z),
+          /** Right back up. */
+          CGALPoint(half_x, half_y, -half_z),
+          /** Left back up. */
+          CGALPoint(-half_x, half_y, -half_z),
+          /** Left front down. */
+          CGALPoint(-half_x, -half_y, half_z),
+          /** Right front down. */
+          CGALPoint(half_x, -half_y, half_z),
+          /** Right front up. */
+          CGALPoint(half_x, half_y, half_z),
+          /** Left front up. */
+          CGALPoint(-half_x, half_y, half_z)};
 
       to_geom::core::Mesh::Vertex_index v[8];
       for (size_t i = 0; i < 8; ++i) {
-        vrml_proc::math::cgal::CGALPoint transformedPoint = matrix.transform(vertices[i]);
+        CGALPoint transformedPoint = matrix.transform(vertices[i]);
         v[i] = mesh->add_vertex(transformedPoint);
       }
 
@@ -88,9 +94,7 @@ namespace to_geom {
       mesh->add_face(v[0], v[7], v[3]);
 
       double time = timer.End();
-      vrml_proc::core::logger::LogInfo(vrml_proc::core::utils::FormatString(
-                                           "Mesh was generated successfully. The generation took ", time, " seconds."),
-                                       LOGGING_INFO);
+      LogInfo(FormatString("Mesh was generated successfully. The generation took ", time, " seconds."), LOGGING_INFO);
 
       return mesh;
     }

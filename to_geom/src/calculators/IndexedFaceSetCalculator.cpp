@@ -22,9 +22,10 @@
 #include "ModelValidationError.hpp"
 #include "Range.hpp"
 #include "UnsupportedOperationError.hpp"
+#include "CalculatorResult.hpp"
 
-static cpp::result<std::shared_ptr<to_geom::core::Mesh>, std::shared_ptr<vrml_proc::core::error::Error>>
-ReturnVertexIndexOutOfRangeError(const vrml_proc::core::utils::Range<int32_t>& range, int32_t actualValue) {  //
+static to_geom::calculator::CalculatorResult ReturnVertexIndexOutOfRangeError(
+    const vrml_proc::core::utils::Range<int32_t>& range, int32_t actualValue) {  //
 
   return cpp::fail(
       std::make_shared<to_geom::calculator::error::IndexedFaceSetCalculatorError>()
@@ -35,8 +36,7 @@ ReturnVertexIndexOutOfRangeError(const vrml_proc::core::utils::Range<int32_t>& r
 }
 
 namespace to_geom::calculator {
-  cpp::result<std::shared_ptr<core::Mesh>, std::shared_ptr<vrml_proc::core::error::Error>>
-  IndexedFaceSetCalculator::Generate3DMesh(
+  to_geom::calculator::CalculatorResult IndexedFaceSetCalculator::Generate3DMesh(
       std::reference_wrapper<const vrml_proc::parser::Int32Array> coordinateIndices,
       std::reference_wrapper<const vrml_proc::parser::Vec3fArray> coordinates,
       std::reference_wrapper<const bool> isConvex,

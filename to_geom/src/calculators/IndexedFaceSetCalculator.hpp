@@ -1,22 +1,21 @@
 #pragma once
 
-#include <memory>
+#include <functional>
 
-#include <result.hpp>
-
-#include "Error.hpp"
-#include "IndexedFaceSetAction.hpp"
-#include "Mesh.hpp"
+#include "CalculatorResult.hpp"
 #include "TransformationMatrix.hpp"
+#include "Int32Array.hpp"
+#include "Vec3fArray.hpp"
 
 #include "VrmlToGeomExport.hpp"
 
 namespace to_geom::calculator {
   class VRMLTOGEOM_API IndexedFaceSetCalculator {
    public:
-    cpp::result<std::shared_ptr<core::Mesh>, std::shared_ptr<vrml_proc::core::error::Error>> Generate3DMesh(
+    to_geom::calculator::CalculatorResult Generate3DMesh(
         std::reference_wrapper<const vrml_proc::parser::Int32Array> coordinateIndices,
         std::reference_wrapper<const vrml_proc::parser::Vec3fArray> coordinates,
-        std::reference_wrapper<const bool> isConvex, const vrml_proc::math::TransformationMatrix& matrix);
+        std::reference_wrapper<const bool> isConvex,
+        const vrml_proc::math::TransformationMatrix& matrix);
   };
 }  // namespace to_geom::calculator
