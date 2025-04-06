@@ -108,6 +108,8 @@ add_library(vrmlproc SHARED
     "src/traversors/errors/NodeTraversorError.hpp"
 
     "src/traversors/node_descriptors/NodeDescriptor.hpp"
+    "src/traversors/node_descriptors/NodeDescriptorFieldType.hpp"
+    "src/traversors/node_descriptors/NodeView.hpp"
     
     "src/traversors/node_descriptors/NodeDescriptorMap.hpp"
     "src/traversors/node_descriptors/VrmlCanonicalHeaders.hpp"
