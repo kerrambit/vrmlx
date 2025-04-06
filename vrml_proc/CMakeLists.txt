@@ -16,6 +16,7 @@ add_library(vrmlproc SHARED
     "src/VrmlProcessingExport.hpp"
 
     # Core.
+    "src/core/Object.hpp"
     "src/core/io/FileReader.hpp"
     "src/core/io/FileWriter.hpp"
     "src/core/io/SimpleFileReader.hpp"
