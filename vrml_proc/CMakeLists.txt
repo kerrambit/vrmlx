@@ -16,6 +16,7 @@ add_library(vrmlproc SHARED
     "src/VrmlProcessingExport.hpp"
 
     # Core.
+    "src/core/Object.hpp"
     "src/core/io/FileReader.hpp"
     "src/core/io/FileWriter.hpp"
     "src/core/io/SimpleFileReader.hpp"
@@ -49,31 +50,14 @@ add_library(vrmlproc SHARED
     "src/parser/models/VrmlFile.hpp"
 
     "src/parser/models/VrmlField.hpp"
-    "src/parser/models/VrmlField.cpp"
-
     "src/parser/models/Vec3f.hpp"
-    "src/parser/models/Vec3f.cpp"
-
     "src/parser/models/Vec2f.hpp"
-    "src/parser/models/Vec2f.cpp"
-
     "src/parser/models/Vec4f.hpp"
-    "src/parser/models/Vec4f.cpp"
-
     "src/parser/models/Vec2fArray.hpp"
-    "src/parser/models/Vec2fArray.cpp"
-
     "src/parser/models/Vec3fArray.hpp"
-    "src/parser/models/Vec3fArray.cpp"
-
     "src/parser/models/Int32Array.hpp"
-    "src/parser/models/Int32Array.cpp"
-
     "src/parser/models/VrmlNode.hpp"
-    "src/parser/models/VrmlNode.cpp"
-
     "src/parser/models/UseNode.hpp"
-    "src/parser/models/UseNode.cpp"
 
     "src/parser/models/utils/VrmlFieldExtractor.hpp"
     "src/parser/models/utils/ExtractorCache.hpp"
@@ -85,8 +69,8 @@ add_library(vrmlproc SHARED
     "src/parser/services/VrmlNodeManagerPopulator.hpp"
     "src/parser/services/VrmlNodeManagerPopulator.cpp"
 
-    "src/parser/interfaces/Printable.hpp"
-    "src/parser/interfaces/Printable.cpp"
+    "src/parser/models/utils/VrmlTreePrinter.hpp"
+    "src/parser/models/utils/VrmlTreePrinter.cpp"
 
     "src/parser/BufferView.hpp"
     "src/parser/Parser.hpp"

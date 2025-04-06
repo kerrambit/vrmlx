@@ -15,29 +15,36 @@
 #include "Vec4f.hpp"
 #include "VrmlUnits.hpp"
 
-#include "Printable.hpp"
 #include "VrmlProcessingExport.hpp"
 
 namespace vrml_proc {
   namespace parser {
 
     struct VrmlNode;
-    using VrmlFieldValue = boost::variant<std::string, bool, Vec3fArray, Vec2fArray, Int32Array, float32_t, int32_t,
-                                          Vec4f, Vec3f, Vec2f, UseNode, boost::recursive_wrapper<struct VrmlNode>,
-                                          std::vector<boost::variant<boost::recursive_wrapper<struct VrmlNode>,
-                                                                     boost::recursive_wrapper<struct UseNode>>>>;
+    using VrmlFieldValue = boost::variant<std::string,
+        bool,
+        Vec3fArray,
+        Vec2fArray,
+        Int32Array,
+        float32_t,
+        int32_t,
+        Vec4f,
+        Vec3f,
+        Vec2f,
+        UseNode,
+        boost::recursive_wrapper<struct VrmlNode>,
+        std::vector<
+            boost::variant<boost::recursive_wrapper<struct VrmlNode>, boost::recursive_wrapper<struct UseNode>>>>;
     using VrmlNodeArray = std::vector<
         boost::variant<boost::recursive_wrapper<struct VrmlNode>, boost::recursive_wrapper<struct UseNode>>>;
 
-    struct VRMLPROCESSING_API VrmlField : public Printable {
+    struct VRMLPROCESSING_API VrmlField {
       std::string name;
       VrmlFieldValue value;
 
-      VrmlField() : Printable(std::cout) {}
+      VrmlField() {}
 
-      VrmlField(const std::string& n, const VrmlFieldValue& v) : Printable(std::cout), name(n), value(v) {}
-
-      void Print(Printable::IndentationLevel indentationLevel) const override;
+      VrmlField(const std::string& n, const VrmlFieldValue& v) : name(n), value(v) {}
     };
   }  // namespace parser
 }  // namespace vrml_proc
