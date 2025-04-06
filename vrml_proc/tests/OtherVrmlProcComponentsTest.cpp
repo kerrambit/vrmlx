@@ -6,7 +6,6 @@
 #include <NodeDescriptor.hpp>
 #include <Int32Array.hpp>
 #include <Logger.hpp>
-#include <ParserResult.hpp>
 #include <UseNode.hpp>
 #include <Vec2f.hpp>
 #include <Vec2fArray.hpp>
@@ -126,7 +125,7 @@ TEST_CASE("NodeDescriptor - Valid", "[valid]") {  //
 
   // ------------------------------------------------------------------- //
 
-  {
+  {  // Expected no fields.
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Root");
 
     vrml_proc::parser::VrmlNode node;
@@ -138,7 +137,7 @@ TEST_CASE("NodeDescriptor - Valid", "[valid]") {  //
     LogError(result.error());
   }
 
-  {
+  {  // Valid case.
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Root");
     std::string s = "";
     bool b = false;
@@ -182,6 +181,60 @@ TEST_CASE("NodeDescriptor - Valid", "[valid]") {  //
     manager.AddDefinitionNode("ID", n);
     auto result = nd.Validate(node, manager);
     REQUIRE(result.has_value());
+    CHECK(result.value()->GetId() == "Root");
+
+    CHECK(result.value()->FieldExists("string"));
+    CHECK_FALSE(result.value()->FieldExists("unknown"));
+    CHECK(result.value()->GetFieldType("string") == vrml_proc::traversor::node_descriptor::FieldType::String);
+    CHECK(result.value()->GetField<std::reference_wrapper<const std::string>>("string").get() == "value");
+  }
+
+  {  // Valid case, checking that default value is used.
+    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Root");
+    std::string s = "";
+    bool b = false;
+    float f = 0.0f;
+    int32_t i = 1;
+    vrml_proc::parser::Vec2f v2;
+    vrml_proc::parser::Vec3f v3;
+    vrml_proc::parser::Vec4f v4;
+    vrml_proc::parser::Vec3fArray v3a;
+    vrml_proc::parser::Vec2fArray v2a;
+    vrml_proc::parser::Int32Array ia;
+    vrml_proc::parser::VrmlNode p;
+    nd.BindField("string", s);
+    nd.BindField("bool", b);
+    nd.BindField("float32", f);
+    nd.BindField("int32", i);
+    nd.BindField("vec2f", v2);
+    nd.BindField("vec3f", v3);
+    nd.BindField("vec4f", v4);
+    nd.BindField("vec2farray", v2a);
+    nd.BindField("int32array", ia);
+    nd.BindField("vec3farray", v3a);
+    nd.BindVrmlNode("node", {"child"}, p);
+    nd.BindVrmlNodeArray("node array");
+
+    vrml_proc::parser::VrmlNode node;
+    node.header = "Root";
+    node.fields.push_back(f2);
+    node.fields.push_back(f3);
+    node.fields.push_back(f4);
+    node.fields.push_back(f5);
+    node.fields.push_back(f6);
+    node.fields.push_back(f7);
+    node.fields.push_back(f8);
+    node.fields.push_back(f9);
+    node.fields.push_back(f10);
+    node.fields.push_back(f11);
+    node.fields.push_back(f12);
+    vrml_proc::parser::VrmlNodeManager manager;
+    manager.AddDefinitionNode("ID", n);
+    auto result = nd.Validate(node, manager);
+    REQUIRE(result.has_value());
     if (result.has_error()) LogError(result.error());
+
+    CHECK(result.value()->FieldExists("string"));
+    CHECK(result.value()->GetField<std::reference_wrapper<const std::string>>("string").get() == "");
   }
 }

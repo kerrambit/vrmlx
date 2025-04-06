@@ -82,7 +82,7 @@ namespace vrml_proc::traversor::node_descriptor {
       return *this;
     }
 
-    Builder& SetDefaultValues(
+    Builder& SetDefaultValues(const std::map<std::string, FieldType>& fieldTypes,
         const std::map<std::string, std::optional<std::reference_wrapper<const bool>>>& boolFields,
         const std::map<std::string, std::optional<std::reference_wrapper<const std::string>>>& stringFields,
         const std::map<std::string, std::optional<std::reference_wrapper<const vrml_proc::parser::float32_t>>>&
@@ -101,6 +101,7 @@ namespace vrml_proc::traversor::node_descriptor {
             nodeFields,
         const std::map<std::string,
             std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>>& nodeArrayFields) {
+      m_view->m_fieldTypes = fieldTypes;
       m_view->m_boolFields = boolFields;
       m_view->m_stringFields = stringFields;
       m_view->m_float32Fields = float32Fields;
@@ -127,74 +128,84 @@ namespace vrml_proc::traversor::node_descriptor {
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const bool> value) {
+    Builder& AddField(const std::string& name, std::optional<std::reference_wrapper<const bool>> value) {
       m_view->m_boolFields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::Bool;
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const std::string> value) {
+    Builder& AddField(const std::string& name, std::optional<std::reference_wrapper<const std::string>> value) {
       m_view->m_stringFields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::String;
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const vrml_proc::parser::float32_t> value) {
+    Builder& AddField(
+        const std::string& name, std::optional<std::reference_wrapper<const vrml_proc::parser::float32_t>> value) {
       m_view->m_float32Fields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::Float32;
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const int32_t> value) {
+    Builder& AddField(const std::string& name, std::optional<std::reference_wrapper<const int32_t>> value) {
       m_view->m_int32Fields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::Int32;
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const vrml_proc::parser::Vec2f> value) {
+    Builder& AddField(
+        const std::string& name, std::optional<std::reference_wrapper<const vrml_proc::parser::Vec2f>> value) {
       m_view->m_vec2fFields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::Vec2f;
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const vrml_proc::parser::Vec3f> value) {
+    Builder& AddField(
+        const std::string& name, std::optional<std::reference_wrapper<const vrml_proc::parser::Vec3f>> value) {
       m_view->m_vec3fFields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::Vec3f;
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const vrml_proc::parser::Vec4f> value) {
+    Builder& AddField(
+        const std::string& name, std::optional<std::reference_wrapper<const vrml_proc::parser::Vec4f>> value) {
       m_view->m_vec4fFields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::Vec4f;
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const vrml_proc::parser::Vec2fArray> value) {
+    Builder& AddField(
+        const std::string& name, std::optional<std::reference_wrapper<const vrml_proc::parser::Vec2fArray>> value) {
       m_view->m_vec2fArrayFields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::Vec2fArray;
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const vrml_proc::parser::Vec3fArray> value) {
+    Builder& AddField(
+        const std::string& name, std::optional<std::reference_wrapper<const vrml_proc::parser::Vec3fArray>> value) {
       m_view->m_vec3fArrayFields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::Vec3fArray;
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const vrml_proc::parser::Int32Array> value) {
+    Builder& AddField(
+        const std::string& name, std::optional<std::reference_wrapper<const vrml_proc::parser::Int32Array>> value) {
       m_view->m_int32ArrayFields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::Int32Array;
       return *this;
     }
 
-    Builder& AddField(const std::string& name, std::reference_wrapper<const vrml_proc::parser::VrmlNode> value) {
+    Builder& AddField(
+        const std::string& name, std::optional<std::reference_wrapper<const vrml_proc::parser::VrmlNode>> value) {
       m_view->m_nodeFields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::Node;
       return *this;
     }
 
     Builder& AddField(const std::string& name,
-        std::reference_wrapper<const std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>> value) {
+        std::optional<
+            std::reference_wrapper<const std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>>
+            value) {
       m_view->m_nodeArrayFields[name] = value;
       m_view->m_fieldTypes[name] = FieldType::NodeArray;
       return *this;

@@ -79,9 +79,9 @@ namespace vrml_proc::traversor::node_descriptor {
       NodeView::Builder builder;
       builder.SetId(m_id);
       builder.AddAdditionalId(m_additionalIds);
-      builder.SetDefaultValues(m_boolFields, m_stringFields, m_float32Fields, m_int32Fields, m_vec2fFields,
-          m_vec3fFields, m_vec4fFields, m_vec2fArrayFields, m_vec3fArrayFields, m_int32ArrayFields, m_nodeFields,
-          m_nodeArrayFields);
+      builder.SetDefaultValues(m_fieldTypes, m_boolFields, m_stringFields, m_float32Fields, m_int32Fields,
+          m_vec2fFields, m_vec3fFields, m_vec4fFields, m_vec2fArrayFields, m_vec3fArrayFields, m_int32ArrayFields,
+          m_nodeFields, m_nodeArrayFields);
 
       if (node.fields.empty()) {
         return builder.Build();
@@ -103,6 +103,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (boolean.has_error()) {
               return cpp::fail(boolean.error());
             }
+            builder.AddField(field.name, boolean.value());
             m_boolFields[field.name] = boolean.value();
           } break;
 
@@ -113,6 +114,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (string.has_error()) {
               return cpp::fail(string.error());
             }
+            builder.AddField(field.name, string.value());
             m_stringFields[field.name] = string.value();
           } break;
 
@@ -123,6 +125,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (float32_t.has_error()) {
               return cpp::fail(float32_t.error());
             }
+            builder.AddField(field.name, float32_t.value());
             m_float32Fields[field.name] = float32_t.value();
           } break;
 
@@ -133,6 +136,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (int32.has_error()) {
               return cpp::fail(int32.error());
             }
+            builder.AddField(field.name, int32.value());
             m_int32Fields[field.name] = int32.value();
           } break;
 
@@ -143,6 +147,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (vec2f.has_error()) {
               return cpp::fail(vec2f.error());
             }
+            builder.AddField(field.name, vec2f.value());
             m_vec2fFields[field.name] = vec2f.value();
           } break;
 
@@ -153,6 +158,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (vec3f.has_error()) {
               return cpp::fail(vec3f.error());
             }
+            builder.AddField(field.name, vec3f.value());
             m_vec3fFields[field.name] = vec3f.value();
           } break;
 
@@ -163,6 +169,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (vec4f.has_error()) {
               return cpp::fail(vec4f.error());
             }
+            builder.AddField(field.name, vec4f.value());
             m_vec4fFields[field.name] = vec4f.value();
           } break;
 
@@ -173,6 +180,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (value.has_error()) {
               return cpp::fail(value.error());
             }
+            builder.AddField(field.name, value.value());
             m_vec2fArrayFields[field.name] = value.value();
           } break;
 
@@ -183,6 +191,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (value.has_error()) {
               return cpp::fail(value.error());
             }
+            builder.AddField(field.name, value.value());
             m_vec3fArrayFields[field.name] = value.value();
           } break;
 
@@ -193,6 +202,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (value.has_error()) {
               return cpp::fail(value.error());
             }
+            builder.AddField(field.name, value.value());
             m_int32ArrayFields[field.name] = value.value();
           } break;
 
@@ -211,6 +221,7 @@ namespace vrml_proc::traversor::node_descriptor {
                 return cpp::fail(headerResult.error());
               }
             }
+            builder.AddField(field.name, vrmlNode.value());
             m_nodeFields[field.name] = vrmlNode.value();
           } break;
 
@@ -221,7 +232,7 @@ namespace vrml_proc::traversor::node_descriptor {
             if (vrmlNodeArray.has_error()) {
               return cpp::fail(vrmlNodeArray.error());
             }
-
+            builder.AddField(field.name, vrmlNodeArray.value());
             m_nodeArrayFields[field.name] = vrmlNodeArray.value();
           } break;
 

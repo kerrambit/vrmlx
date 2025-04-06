@@ -221,6 +221,7 @@ add_executable(Vec4fGrammarUnitTests "tests/Vec4fGrammarTest.cpp")
 add_executable(Vec3fArrayGrammarUnitTests "tests/Vec3fArrayGrammarTest.cpp")
 add_executable(Int32ArrayGrammarUnitTests "tests/Int32ArrayGrammarTest.cpp")
 add_executable(VrmlFieldExtractorUnitTests "tests/VrmlFieldExtractorTest.cpp")
+add_executable(OtherVrmlProcComponentsTest "tests/OtherVrmlProcComponentsTest.cpp")
 
 # Link Catch2 with the test executables.
 target_link_libraries(VrmlFileGrammarUnitTests PRIVATE Catch2::Catch2WithMain vrmlproc)
