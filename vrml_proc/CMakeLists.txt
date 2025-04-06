@@ -68,6 +68,8 @@ add_library(vrmlproc SHARED
     "src/parser/services/VrmlNodeManagerPopulator.hpp"
     "src/parser/services/VrmlNodeManagerPopulator.cpp"
 
+    "src/parser/models/utils/VrmlTreePrinter.hpp"
+    "src/parser/models/utils/VrmlTreePrinter.cpp"
 
     "src/parser/BufferView.hpp"
     "src/parser/Parser.hpp"
