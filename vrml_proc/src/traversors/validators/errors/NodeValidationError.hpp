@@ -16,10 +16,43 @@ namespace vrml_proc {
           virtual std::string GetMessageInternal() const { return "[NodeValidationError]"; }
         };
 
+        class InvalidVrmlNodeHeader : public NodeValidationError {
+         public:
+          InvalidVrmlNodeHeader(const std::string& name, const std::unordered_set<std::string>& expectedNames)
+              : m_name(name) {
+            AddExpectedNames(expectedNames);
+          }
+
+         protected:
+          std::string GetMessageInternal() const override {
+            std::ostringstream oss;
+            oss << NodeValidationError::GetMessageInternal() << "[InvalidVrmlNodeHeader]: <" << m_name
+                << "> is not expected header! Expected name are [" << m_expectedNames << "]!\n";
+            return oss.str();
+          }
+
+         private:
+          void AddExpectedNames(const std::unordered_set<std::string>& names) {
+            std::ostringstream stream;
+            bool isFirst = true;
+            for (const auto& header : names) {
+              if (!isFirst) {
+                stream << ", ";
+              }
+              stream << "<" << header << ">";
+              isFirst = false;
+            }
+            m_expectedNames = stream.str();
+          }
+          std::string m_name;
+          std::string m_expectedNames;
+        };
+
         class InvalidVrmlFieldName : public NodeValidationError {
          public:
-          InvalidVrmlFieldName(const std::string& nodeName, const std::string& actualName,
-                               const std::unordered_set<std::string>& expectedNames)
+          InvalidVrmlFieldName(const std::string& nodeName,
+              const std::string& actualName,
+              const std::unordered_set<std::string>& expectedNames)
               : m_node(nodeName), m_actualName(actualName) {
             AddExpectedNames(expectedNames);
           }
@@ -53,8 +86,9 @@ namespace vrml_proc {
 
         class InvalidVrmlNodeForGivenField : public NodeValidationError {
          public:
-          InvalidVrmlNodeForGivenField(const std::string& field, const std::string& actualHeader,
-                                       const std::unordered_set<std::string>& expectedHeaders)
+          InvalidVrmlNodeForGivenField(const std::string& field,
+              const std::string& actualHeader,
+              const std::unordered_set<std::string>& expectedHeaders)
               : m_field(field), m_actualHeader(actualHeader) {
             AddExpectedHeaders(expectedHeaders);
           }
@@ -105,8 +139,8 @@ namespace vrml_proc {
 
         class InvalidFieldValueType : public NodeValidationError {
          public:
-          InvalidFieldValueType(const std::string& fieldName, const std::string& expectedType,
-                                const std::string& actualType)
+          InvalidFieldValueType(
+              const std::string& fieldName, const std::string& expectedType, const std::string& actualType)
               : m_fieldName(fieldName), m_expectedType(expectedType), m_actualType(actualType) {}
 
          protected:
