@@ -116,6 +116,8 @@ add_library(vrmlproc SHARED
 
     "src/traversors/utils/ConversionContextActionExecutor.hpp"
 
+    "src/traversors/handlers/HandlerResult.hpp"
+    "src/traversors/handlers/HandlerToActionBundle.hpp"
     "src/traversors/handlers/HandlerUtils.hpp"
     "src/traversors/handlers/ShapeHandler.hpp"
     "src/traversors/handlers/GroupHandler.hpp"
