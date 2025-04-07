@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 
-#include <NodeDescriptor.hpp>
 #include <Int32Array.hpp>
 #include <Logger.hpp>
+#include <NodeDescriptor.hpp>
 #include <UseNode.hpp>
 #include <Vec2f.hpp>
 #include <Vec2fArray.hpp>
@@ -97,6 +97,12 @@ TEST_CASE("NodeDescriptor - Valid", "[valid]") {  //
   }
 
   {
+    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("VRML");
+    CHECK(nd.GetId() == "VRML");
+    CHECK(nd.GetAdditionalIds().size() == 0);
+  }
+
+  {
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("vrml", "A");
     CHECK(nd.GetId() == "vrml");
     CHECK(nd.GetAdditionalIds().size() == 1);
@@ -120,6 +126,17 @@ TEST_CASE("NodeDescriptor - Valid", "[valid]") {  //
     vrml_proc::parser::VrmlNodeManager manager;
     CHECK(nd.Validate(node, manager).has_value());
     nd = vrml_proc::traversor::node_descriptor::NodeDescriptor("vrml");
+    CHECK(nd.Validate(node, manager, true).has_error());
+  }
+
+  {
+    vrml_proc::traversor::node_descriptor::NodeDescriptor nd(
+        "vrml", std::unordered_set<std::string>{"vrml2.0", "vrml3.0"});
+    vrml_proc::parser::VrmlNode node;
+    node.header = "vrml2.0";
+    vrml_proc::parser::VrmlNodeManager manager;
+    CHECK(nd.Validate(node, manager, true).has_value());
+    node.header = "vrml4.0";
     CHECK(nd.Validate(node, manager, true).has_error());
   }
 
@@ -185,8 +202,89 @@ TEST_CASE("NodeDescriptor - Valid", "[valid]") {  //
 
     CHECK(result.value()->FieldExists("string"));
     CHECK_FALSE(result.value()->FieldExists("unknown"));
+
     CHECK(result.value()->GetFieldType("string") == vrml_proc::traversor::node_descriptor::FieldType::String);
     CHECK(result.value()->GetField<std::reference_wrapper<const std::string>>("string").get() == "value");
+
+    CHECK(result.value()->GetFieldType("bool") == vrml_proc::traversor::node_descriptor::FieldType::Bool);
+    CHECK(result.value()->GetField<std::reference_wrapper<const bool>>("bool").get() == true);
+
+    CHECK(result.value()->GetFieldType("float32") == vrml_proc::traversor::node_descriptor::FieldType::Float32);
+    CHECK(
+        result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::float32_t>>("float32").get() == 5.0f);
+
+    CHECK(result.value()->GetFieldType("int32") == vrml_proc::traversor::node_descriptor::FieldType::Int32);
+    CHECK(result.value()->GetField<std::reference_wrapper<const int32_t>>("int32").get() == 8);
+
+    CHECK(result.value()->GetFieldType("vec2f") == vrml_proc::traversor::node_descriptor::FieldType::Vec2f);
+    CHECK(result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::Vec2f>>("vec2f").get().v == 1.0f);
+
+    CHECK(result.value()->GetFieldType("vec3f") == vrml_proc::traversor::node_descriptor::FieldType::Vec3f);
+    CHECK(result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::Vec3f>>("vec3f").get().z == 2.0f);
+
+    CHECK(result.value()->GetFieldType("vec4f") == vrml_proc::traversor::node_descriptor::FieldType::Vec4f);
+    CHECK(result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::Vec4f>>("vec4f").get().w == 3.0f);
+
+    CHECK(result.value()->GetFieldType("int32array") == vrml_proc::traversor::node_descriptor::FieldType::Int32Array);
+    {
+      const auto& arr = result.value()
+                            ->GetField<std::reference_wrapper<const vrml_proc::parser::Int32Array>>("int32array")
+                            .get()
+                            .integers;
+      CHECK(arr.size() == 2);
+      CHECK(arr[0] == 0);
+      CHECK(arr[1] == 1);
+    }
+
+    CHECK(result.value()->GetFieldType("vec2farray") == vrml_proc::traversor::node_descriptor::FieldType::Vec2fArray);
+    {
+      const auto& arr = result.value()
+                            ->GetField<std::reference_wrapper<const vrml_proc::parser::Vec2fArray>>("vec2farray")
+                            .get()
+                            .vectors;
+      CHECK(arr.size() == 2);
+      CHECK(arr[0].u == 0.0f);
+      CHECK(arr[1].v == 1.0f);
+    }
+
+    CHECK(result.value()->GetFieldType("vec3farray") == vrml_proc::traversor::node_descriptor::FieldType::Vec3fArray);
+    {
+      const auto& arr = result.value()
+                            ->GetField<std::reference_wrapper<const vrml_proc::parser::Vec3fArray>>("vec3farray")
+                            .get()
+                            .vectors;
+      CHECK(arr.size() == 2);
+      CHECK(arr[0].z == 2.0f);
+      CHECK(arr[1].z == 2.0f);
+    }
+
+    CHECK(result.value()->GetFieldType("node") == vrml_proc::traversor::node_descriptor::FieldType::Node);
+    {
+      const auto& node =
+          result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>("node").get();
+      CHECK(node.header == "child");
+      CHECK(node.definitionName.value() == "ID");
+    }
+
+    CHECK(result.value()->GetFieldType("node array") == vrml_proc::traversor::node_descriptor::FieldType::NodeArray);
+    {
+      const auto& nodes =
+          result.value()->GetField<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>(
+              "node array");
+      CHECK(nodes.size() == 2);
+    }
+
+    CHECK_FALSE(result.value()->IsNodeShapeDescendant());
+    result.value()->SetShapeDescendant(true);
+    CHECK(result.value()->IsNodeShapeDescendant());
+
+    vrml_proc::math::TransformationMatrix defaultMatrix;
+    CHECK(result.value()->GetTransformationMatrix() == defaultMatrix);
+    vrml_proc::math::Transformation data;
+    data.center = vrml_proc::parser::Vec3f(5.0f, -8.0f, -10.5);
+    auto updatedMatrix = vrml_proc::math::UpdateTransformationMatrix(defaultMatrix, data);
+    result.value()->SetTransformationMatrix(updatedMatrix);
+    CHECK(result.value()->GetTransformationMatrix() == updatedMatrix);
   }
 
   {  // Valid case, checking that default value is used.
