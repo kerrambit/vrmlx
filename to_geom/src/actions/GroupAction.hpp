@@ -24,8 +24,6 @@ namespace to_geom {
        */
       struct Properties {
         std::vector<std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext>> children;
-        std::reference_wrapper<const vrml_proc::parser::Vec3f> bboxCenter;
-        std::reference_wrapper<const vrml_proc::parser::Vec3f> bboxSize;
       };
       /**
        * @brief Constructs a GroupAction with specified properties.
