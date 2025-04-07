@@ -1,12 +1,12 @@
 #pragma once
 
-#include <any>
 #include <functional>
 #include <memory>
 
 #include "BoxAction.hpp"
 #include "ConversionContextActionMap.hpp"
 #include "GroupAction.hpp"
+#include "HandlerToActionBundle.hpp"
 #include "IndexedFaceSetAction.hpp"
 #include "IndexedLineSetAction.hpp"
 #include "MeshTaskConversionContext.hpp"
@@ -14,17 +14,19 @@
 #include "SwitchAction.hpp"
 #include "TransformAction.hpp"
 #include "Vec3f.hpp"
+#include "VrmlNode.hpp"
 
 namespace to_geom::conversion_context {
-
   /**
-   * @brief Gets an action map. Action map maps VRML node name to an corresponding actions. Or rather, it maps it to a
-   * lambda which will create given action class.
+   * @brief Retrieves action map. Action map maps VRML node name to an corresponding actions. Or rather, it maps it to a
+   * lambda which will create given action class. This given returns a map which is basically a cookbook to create an
+   * individual action instance.
    *
    * @returns action map with MeshTaskConversionContext as conversion context
    */
   inline vrml_proc::action::ConversionContextActionMap<to_geom::conversion_context::MeshTaskConversionContext>&
-  GetActionMap() {
+  GetActionMap() {  //
+
     using to_geom::conversion_context::MeshTaskConversionContext;
     using vrml_proc::action::ConversionContextActionMap;
     using vrml_proc::math::TransformationMatrix;
@@ -44,127 +46,53 @@ namespace to_geom::conversion_context {
     }
 
     actionMap.AddAction(
-        "Box", [](const ConversionContextActionMap<MeshTaskConversionContext>::ReferencedArguments& refArgs,
-                   const ConversionContextActionMap<MeshTaskConversionContext>::CopiedArguments& copyArgs) {
-          try {
-            return std::make_shared<BoxAction>(
-                BoxAction::Properties{std::any_cast<std::reference_wrapper<const Vec3f>>(refArgs[0])},
-                GeometryAction::Properties{
-                    std::any_cast<bool>(copyArgs[0]), std::any_cast<TransformationMatrix>(copyArgs[1])});
-          } catch (const std::bad_any_cast& e) {
-            LogFatal("Invalid arguments for BoxAction!", LOGGING_INFO);
-            throw;
-          }
+        "Box", [](vrml_proc::traversor::handler::HandlerToActionBundle<MeshTaskConversionContext> data) {
+          return std::make_shared<BoxAction>(
+              BoxAction::Properties{data.nodeView->GetField<std::reference_wrapper<const Vec3f>>("size")},
+              GeometryAction::Properties{
+                  data.nodeView->IsNodeShapeDescendant(), data.nodeView->GetTransformationMatrix()});
         });
 
     actionMap.AddAction(
-        "Group", [](const ConversionContextActionMap<MeshTaskConversionContext>::ReferencedArguments& refArgs,
-                     const ConversionContextActionMap<MeshTaskConversionContext>::CopiedArguments& copyArgs) {
-          try {
-            auto children = std::any_cast<std::vector<std::shared_ptr<MeshTaskConversionContext>>>(copyArgs[0]);
-            auto bboxCenter = std::any_cast<std::reference_wrapper<const Vec3f>>(refArgs[0]);
-            auto bboxSize = std::any_cast<std::reference_wrapper<const Vec3f>>(refArgs[1]);
-
-            return std::make_shared<GroupAction>(GroupAction::Properties{children, bboxCenter, bboxSize});
-          } catch (const std::bad_any_cast& e) {
-            LogFatal("Invalid arguments for GroupAction!", LOGGING_INFO);
-            throw;
-          }
+        "Group", [](vrml_proc::traversor::handler::HandlerToActionBundle<MeshTaskConversionContext> data) {
+          return std::make_shared<GroupAction>(GroupAction::Properties{data.ccGroup});
         });
 
     actionMap.AddAction(
-        "Transform", [](const ConversionContextActionMap<MeshTaskConversionContext>::ReferencedArguments& refArgs,
-                         const ConversionContextActionMap<MeshTaskConversionContext>::CopiedArguments& copyArgs) {
-          try {
-            TransformAction::Properties properties{std::any_cast<std::reference_wrapper<const Vec3f>>(refArgs[0]),
-                std::any_cast<std::reference_wrapper<const Vec4f>>(refArgs[1]),
-                std::any_cast<std::reference_wrapper<const Vec3f>>(refArgs[2]),
-                std::any_cast<std::reference_wrapper<const Vec4f>>(refArgs[3]),
-                std::any_cast<std::reference_wrapper<const Vec3f>>(refArgs[4]),
-                std::any_cast<std::reference_wrapper<const Vec3f>>(refArgs[5]),
-                std::any_cast<std::reference_wrapper<const Vec3f>>(refArgs[6]),
-                std::any_cast<std::vector<std::shared_ptr<MeshTaskConversionContext>>>(copyArgs[0])};
-
-            return std::make_shared<TransformAction>(properties);
-          } catch (const std::bad_any_cast& e) {
-            LogFatal("Invalid arguments for TransformAction!", LOGGING_INFO);
-            throw;
-          }
+        "Transform", [](vrml_proc::traversor::handler::HandlerToActionBundle<MeshTaskConversionContext> data) {
+          return std::make_shared<TransformAction>(TransformAction::Properties{data.ccGroup});
         });
 
     actionMap.AddAction(
-        "Switch", [](const ConversionContextActionMap<MeshTaskConversionContext>::ReferencedArguments& refArgs,
-                      const ConversionContextActionMap<MeshTaskConversionContext>::CopiedArguments& copyArgs) {
-          try {
-            SwitchAction::SwitchProperties properties{
-                std::any_cast<std::shared_ptr<MeshTaskConversionContext>>(copyArgs[0])};
-            return std::make_shared<SwitchAction>(properties);
-          } catch (const std::bad_any_cast& e) {
-            LogFatal("Invalid arguments for SwitchAction!", LOGGING_INFO);
-            throw;
-          }
+        "Switch", [](vrml_proc::traversor::handler::HandlerToActionBundle<MeshTaskConversionContext> data) {
+          return std::make_shared<SwitchAction>(SwitchAction::SwitchProperties{data.cc1});
         });
 
     actionMap.AddAction(
-        "Shape", [](const ConversionContextActionMap<MeshTaskConversionContext>::ReferencedArguments& refArgs,
-                     const ConversionContextActionMap<MeshTaskConversionContext>::CopiedArguments& copyArgs) {
-          try {
-            auto appearance = std::any_cast<std::shared_ptr<MeshTaskConversionContext>>(copyArgs[0]);
-            auto geometry = std::any_cast<std::shared_ptr<MeshTaskConversionContext>>(copyArgs[1]);
-            return std::make_shared<ShapeAction>(ShapeAction::Properties{appearance, geometry});
-          } catch (const std::bad_any_cast& e) {
-            LogFatal("Invalid arguments for ShapeAction!", LOGGING_INFO);
-            throw;
-          }
+        "Shape", [](vrml_proc::traversor::handler::HandlerToActionBundle<MeshTaskConversionContext> data) {
+          return std::make_shared<ShapeAction>(ShapeAction::Properties{data.cc1, data.cc2});
         });
 
     actionMap.AddAction(
-        "IndexedFaceSet", [](const ConversionContextActionMap<MeshTaskConversionContext>::ReferencedArguments& refArgs,
-                              const ConversionContextActionMap<MeshTaskConversionContext>::CopiedArguments& copyArgs) {
-          try {
-            IndexedFaceSetAction::Properties properties{
-                std::any_cast<std::reference_wrapper<const VrmlNode>>(refArgs[0]),
-                std::any_cast<std::reference_wrapper<const VrmlNode>>(refArgs[1]),
-                std::any_cast<std::reference_wrapper<const VrmlNode>>(refArgs[2]),
-                std::any_cast<std::reference_wrapper<const VrmlNode>>(refArgs[3]),
-                std::any_cast<std::reference_wrapper<const bool>>(refArgs[4]),
-                std::any_cast<std::reference_wrapper<const Int32Array>>(refArgs[5]),
-                std::any_cast<std::reference_wrapper<const bool>>(refArgs[6]),
-                std::any_cast<std::reference_wrapper<const bool>>(refArgs[7]),
-                std::any_cast<std::reference_wrapper<const Int32Array>>(refArgs[8]),
-                std::any_cast<std::reference_wrapper<const float32_t>>(refArgs[9]),
-                std::any_cast<std::reference_wrapper<const Int32Array>>(refArgs[10]),
-                std::any_cast<std::reference_wrapper<const bool>>(refArgs[11]),
-                std::any_cast<std::reference_wrapper<const bool>>(refArgs[12]),
-                std::any_cast<std::reference_wrapper<const Int32Array>>(refArgs[13])};
+        "IndexedFaceSet", [](vrml_proc::traversor::handler::HandlerToActionBundle<MeshTaskConversionContext> data) {
+          auto coord = data.nodeView->GetField<std::reference_wrapper<const VrmlNode>>("coord");
+          auto coordIndex = data.nodeView->GetField<std::reference_wrapper<const Int32Array>>("coordIndex");
+          auto convex = data.nodeView->GetField<std::reference_wrapper<const bool>>("convex");
 
-            return std::make_shared<IndexedFaceSetAction>(
-                properties, GeometryAction::Properties{
-                                std::any_cast<bool>(copyArgs[0]), std::any_cast<TransformationMatrix>(copyArgs[1])});
-          } catch (const std::bad_any_cast& e) {
-            LogFatal("Invalid arguments for IndexedFaceSet!", LOGGING_INFO);
-            throw;
-          }
+          IndexedFaceSetAction::Properties properties{coord, convex, coordIndex};
+
+          return std::make_shared<IndexedFaceSetAction>(
+              properties, GeometryAction::Properties{
+                              data.nodeView->IsNodeShapeDescendant(), data.nodeView->GetTransformationMatrix()});
         });
 
     actionMap.AddAction(
-        "IndexedLineSet", [](const ConversionContextActionMap<MeshTaskConversionContext>::ReferencedArguments& refArgs,
-                              const ConversionContextActionMap<MeshTaskConversionContext>::CopiedArguments& copyArgs) {
-          try {
-            to_geom::action::IndexedLineSetAction::Properties properties{
-                std::any_cast<std::reference_wrapper<const VrmlNode>>(refArgs[0]),
-                std::any_cast<std::reference_wrapper<const VrmlNode>>(refArgs[1]),
-                std::any_cast<std::reference_wrapper<const Int32Array>>(refArgs[2]),
-                std::any_cast<std::reference_wrapper<const bool>>(refArgs[3]),
-                std::any_cast<std::reference_wrapper<const Int32Array>>(refArgs[4])};
-
-            return std::make_shared<IndexedLineSetAction>(
-                properties, GeometryAction::Properties{
-                                std::any_cast<bool>(copyArgs[0]), std::any_cast<TransformationMatrix>(copyArgs[1])});
-          } catch (const std::bad_any_cast& e) {
-            LogFatal("Invalid arguments for IndexedLineSetAction!", LOGGING_INFO);
-            throw;
-          }
+        "IndexedLineSet", [](vrml_proc::traversor::handler::HandlerToActionBundle<MeshTaskConversionContext> data) {
+          auto coord = data.nodeView->GetField<std::reference_wrapper<const VrmlNode>>("coord");
+          auto coordIndex = data.nodeView->GetField<std::reference_wrapper<const Int32Array>>("coordIndex");
+          return std::make_shared<IndexedLineSetAction>(IndexedLineSetAction::Properties{coord, coordIndex},
+              GeometryAction::Properties{
+                  data.nodeView->IsNodeShapeDescendant(), data.nodeView->GetTransformationMatrix()});
         });
 
     return actionMap;

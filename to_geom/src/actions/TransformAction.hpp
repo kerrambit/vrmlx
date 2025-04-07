@@ -24,13 +24,6 @@ namespace to_geom {
        * @brief Properties for `TransformAction`. See VRML 2.0 specification for more information.
        */
       struct Properties {
-        std::reference_wrapper<const vrml_proc::parser::Vec3f> center;
-        std::reference_wrapper<const vrml_proc::parser::Vec4f> rotation;
-        std::reference_wrapper<const vrml_proc::parser::Vec3f> scale;
-        std::reference_wrapper<const vrml_proc::parser::Vec4f> scaleOrientation;
-        std::reference_wrapper<const vrml_proc::parser::Vec3f> translation;
-        std::reference_wrapper<const vrml_proc::parser::Vec3f> bboxCenter;
-        std::reference_wrapper<const vrml_proc::parser::Vec3f> bboxSize;
         std::vector<std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext>> children;
       };
 

@@ -3,6 +3,10 @@ project(vrmlxpy)
 
 set(CMAKE_CXX_STANDARD 20)
 
+if (MSVC)
+    add_compile_options(/bigobj)
+endif()
+
 if(WIN32)
     # On Windows, use static Boost libraries to avoid DLL dependency issues.
     # This ensures that Boost is linked statically into the executable, making distribution easier.

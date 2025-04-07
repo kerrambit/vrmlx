@@ -25,20 +25,9 @@ namespace to_geom {
        * @brief Properties for `IndexedFaceSetAction`. See VRML 2.0 specification for more information.
        */
       struct Properties {
-        std::reference_wrapper<const vrml_proc::parser::VrmlNode> color;
         std::reference_wrapper<const vrml_proc::parser::VrmlNode> coord;
-        std::reference_wrapper<const vrml_proc::parser::VrmlNode> normal;
-        std::reference_wrapper<const vrml_proc::parser::VrmlNode> texCoord;
-        std::reference_wrapper<const bool> ccw;
-        std::reference_wrapper<const vrml_proc::parser::Int32Array> colorIndex;
-        std::reference_wrapper<const bool> colorPerVertex;
         std::reference_wrapper<const bool> convex;
         std::reference_wrapper<const vrml_proc::parser::Int32Array> coordIndex;
-        std::reference_wrapper<const vrml_proc::parser::float32_t> creaseangle;
-        std::reference_wrapper<const vrml_proc::parser::Int32Array> normalIndex;
-        std::reference_wrapper<const bool> normalPerVertex;
-        std::reference_wrapper<const bool> solid;
-        std::reference_wrapper<const vrml_proc::parser::Int32Array> texCoordIndex;
       };
 
       /**

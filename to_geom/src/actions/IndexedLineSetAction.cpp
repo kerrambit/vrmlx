@@ -19,12 +19,13 @@
 #include "VrmlNodeManager.hpp"
 #include "VrmlNodeTraversor.hpp"
 #include "VrmlProcConfig.hpp"
-#include <any>
+#include "NodeView.hpp"
+#include "HandlerToActionBundle.hpp"
 
 namespace to_geom::action {
 
-  IndexedLineSetAction::IndexedLineSetAction(IndexedLineSetAction::Properties properties,
-                                             GeometryAction::Properties geometryProperties)
+  IndexedLineSetAction::IndexedLineSetAction(
+      IndexedLineSetAction::Properties properties, GeometryAction::Properties geometryProperties)
       : to_geom::action::GeometryAction(geometryProperties), m_properties(properties) {}
 
   std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> IndexedLineSetAction::Execute() {
@@ -55,15 +56,16 @@ namespace to_geom::action {
     vrml_proc::parser::VrmlNodeManager manager;
     vrml_proc::action::ConversionContextActionMap<Vec3fArrayConversionContext> map;
 
-    map.AddAction("Coordinate", [this](const auto& refArgs, const auto& copyArgs) {
-      try {
-        return std::make_shared<HelperCoordinateAction>(
-            HelperCoordinateAction::Properties{std::any_cast<std::reference_wrapper<const Vec3fArray>>(refArgs[0])});
-      } catch (const std::bad_any_cast& e) {
-        LogFatal("Invalid arguments for HelperCoordinateAction!", LOGGING_INFO);
-        throw;
-      }
-    });
+    map.AddAction(
+        "Coordinate", [this](vrml_proc::traversor::handler::HandlerToActionBundle<Vec3fArrayConversionContext> data) {
+          try {
+            return std::make_shared<HelperCoordinateAction>(HelperCoordinateAction::Properties{
+                data.nodeView->GetField<std::reference_wrapper<const vrml_proc::parser::Vec3fArray>>("point")});
+          } catch (const std::bad_any_cast& e) {
+            LogFatal("Invalid arguments for HelperCoordinateAction!", LOGGING_INFO);
+            throw;
+          }
+        });
 
     auto coordResult = Traverse<Vec3fArrayConversionContext>(
         {m_properties.coord.get(), manager, false, TransformationMatrix(), VrmlProcConfig()}, map);

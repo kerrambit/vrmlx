@@ -108,12 +108,16 @@ add_library(vrmlproc SHARED
     "src/traversors/errors/NodeTraversorError.hpp"
 
     "src/traversors/node_descriptors/NodeDescriptor.hpp"
+    "src/traversors/node_descriptors/NodeDescriptorFieldType.hpp"
+    "src/traversors/node_descriptors/NodeView.hpp"
     
     "src/traversors/node_descriptors/NodeDescriptorMap.hpp"
     "src/traversors/node_descriptors/VrmlCanonicalHeaders.hpp"
 
     "src/traversors/utils/ConversionContextActionExecutor.hpp"
 
+    "src/traversors/handlers/HandlerResult.hpp"
+    "src/traversors/handlers/HandlerToActionBundle.hpp"
     "src/traversors/handlers/HandlerUtils.hpp"
     "src/traversors/handlers/ShapeHandler.hpp"
     "src/traversors/handlers/GroupHandler.hpp"
@@ -219,6 +223,7 @@ add_executable(Vec4fGrammarUnitTests "tests/Vec4fGrammarTest.cpp")
 add_executable(Vec3fArrayGrammarUnitTests "tests/Vec3fArrayGrammarTest.cpp")
 add_executable(Int32ArrayGrammarUnitTests "tests/Int32ArrayGrammarTest.cpp")
 add_executable(VrmlFieldExtractorUnitTests "tests/VrmlFieldExtractorTest.cpp")
+add_executable(OtherVrmlProcComponentsTest "tests/OtherVrmlProcComponentsTest.cpp")
 
 # Link Catch2 with the test executables.
 target_link_libraries(VrmlFileGrammarUnitTests PRIVATE Catch2::Catch2WithMain vrmlproc)
@@ -227,6 +232,7 @@ target_link_libraries(Vec4fGrammarUnitTests PRIVATE Catch2::Catch2WithMain vrmlp
 target_link_libraries(Vec3fArrayGrammarUnitTests PRIVATE Catch2::Catch2WithMain vrmlproc)
 target_link_libraries(Int32ArrayGrammarUnitTests PRIVATE Catch2::Catch2WithMain vrmlproc)
 target_link_libraries(VrmlFieldExtractorUnitTests PRIVATE Catch2::Catch2WithMain vrmlproc)
+target_link_libraries(OtherVrmlProcComponentsTest PRIVATE Catch2::Catch2WithMain vrmlproc)
 
 # Enable testing (use CTest to run the unit tests).
 enable_testing()
@@ -236,5 +242,6 @@ add_test(NAME Vec4fGrammarUnitTests COMMAND Vec4fGrammarUnitTests)
 add_test(NAME Vec3fArrayGrammarUnitTests COMMAND Vec3fArrayGrammarUnitTests)
 add_test(NAME Int32ArrayGrammarUnitTests COMMAND Int32ArrayGrammarUnitTests)
 add_test(NAME VrmlFieldExtractorUnitTests COMMAND VrmlFieldExtractorUnitTests)
+add_test(NAME OtherVrmlProcComponentsTest COMMAND OtherVrmlProcComponentsTest)
 
 endif()
