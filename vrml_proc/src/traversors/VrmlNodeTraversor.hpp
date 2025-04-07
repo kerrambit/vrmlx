@@ -32,6 +32,7 @@
 #include "WorldInfoHandler.hpp"
 #include "NodeDescriptorMap.hpp"
 #include "VrmlCanonicalHeaders.hpp"
+#include "NodeView.hpp"
 
 #include "VrmlProcessingExport.hpp"
 
@@ -39,9 +40,10 @@
 
 template <typename ConversionContext>
 static cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> RunHandler(
-    const std::string& header, const vrml_proc::traversor::VrmlNodeTraversorParameters& context,
+    const std::string& header,
+    const vrml_proc::traversor::VrmlNodeTraversorParameters& context,
     const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
-    const vrml_proc::traversor::node_descriptor::NodeDescriptor& nd) {
+    std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {
   using namespace vrml_proc::core::utils;
   using namespace vrml_proc::core::error;
   using namespace vrml_proc::traversor::handler;
@@ -112,9 +114,10 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
 
   template <typename ConversionContext>
   VRMLPROCESSING_API inline cpp::result<std::shared_ptr<ConversionContext>,
-                                        std::shared_ptr<vrml_proc::core::error::Error>>
+      std::shared_ptr<vrml_proc::core::error::Error>>
   Traverse(vrml_proc::traversor::VrmlNodeTraversorParameters context,
-           const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap) {
+      const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap) {  //
+
     using namespace vrml_proc::core::logger;
     using namespace vrml_proc::core::utils;
     using namespace vrml_proc::traversor::handler;
@@ -134,14 +137,14 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
     if (!ndResult.has_value()) {
       if (ignoreUnknownNodeFlag) {
         LogInfo(FormatString("No handler for VRML node with name <", context.node.header,
-                             "> was found! The unknown node will be ignored."),
-                LOGGING_INFO);
+                    "> was found! The unknown node will be ignored."),
+            LOGGING_INFO);
         return std::make_shared<ConversionContext>();
       }
 
       LogError(FormatString("No handler for VRML node with name <", context.node.header,
-                            "> was found! It is unknown VRML node!"),
-               LOGGING_INFO);
+                   "> was found! It is unknown VRML node!"),
+          LOGGING_INFO);
       std::shared_ptr<UnknownVrmlNode> innerError = std::make_shared<UnknownVrmlNode>(context.node.header);
       return cpp::fail(std::make_shared<NodeTraversorError>(innerError, context.node));
     }
@@ -153,7 +156,8 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
       return cpp::fail(std::make_shared<NodeTraversorError>(validationResult.error(), context.node));
     }
 
-    auto handlerResult = RunHandler<ConversionContext>(context.node.header, context, actionMap, nd);
+    auto handlerResult =
+        RunHandler<ConversionContext>(context.node.header, context, actionMap, validationResult.value());
     if (handlerResult.has_error()) {
       return cpp::fail(std::make_shared<NodeTraversorError>(handlerResult.error(), context.node));
     }
