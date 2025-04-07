@@ -12,6 +12,7 @@
 
 #include "Int32Array.hpp"
 #include "NodeDescriptorFieldType.hpp"
+#include "TransformationMatrix.hpp"
 #include "Vec2f.hpp"
 #include "Vec2fArray.hpp"
 #include "Vec3f.hpp"
@@ -19,19 +20,62 @@
 #include "Vec4f.hpp"
 #include "VrmlNode.hpp"
 #include "VrmlUnits.hpp"
-#include "TransformationMatrix.hpp"
 
 namespace vrml_proc::traversor::node_descriptor {
-
+  /**
+   * @brief Represents a wrapper around VrmlNode. Enables to retrieve node's data in strctured manner, to store
+   * addtional information.
+   */
   class NodeView {
    public:
-    NodeView() = default;
+    /**
+     * @brief Constructs default object.
+     */
+    NodeView()
+        : m_id(""),
+          m_additionalIds(),
+          m_fieldTypes(),
+          m_boolFields(),
+          m_stringFields(),
+          m_float32Fields(),
+          m_int32Fields(),
+          m_vec2fFields(),
+          m_vec3fFields(),
+          m_vec4fFields(),
+          m_vec2fArrayFields(),
+          m_vec3fArrayFields(),
+          m_int32ArrayFields(),
+          m_nodeFields(),
+          m_nodeArrayFields(),
+          m_isDescendantOfShape(false),
+          m_transformationMatrix() {}
 
+    /**
+     * @brief Checks if given field exists in the node.
+     *
+     * @param fieldName name of the field
+     * @returns true if field exists, otherwise false
+     */
+    bool FieldExists(const std::string& fieldName) const { return m_fieldTypes.find(fieldName) != m_fieldTypes.end(); }
+
+    /**
+     * @brief Retrieve node's data stored in the given field. It is templated
+     *
+     * @param fieldName name of the field
+     * @tparam Type type of the data to get (full type must be provided; e.g. if you retrieve
+     * std::reference_wrapper<const std::string> - full must be provided)
+     * @returns data
+     * @warning Make sure that field name exists, otherwise an exception from underlying data strucures might be thrown.
+     */
     template <typename Type>
     Type GetField(const std::string& fieldName) const;
 
-    bool FieldExists(const std::string& fieldName) const { return m_fieldTypes.find(fieldName) != m_fieldTypes.end(); }
-
+    /**
+     * @brief Retrieves a type of the field.
+     *
+     * @param fieldName name of the field
+     * @returns type of the field, if field is not found, FieldType::Unknown is returned!
+     */
     FieldType GetFieldType(const std::string& fieldName) const {
       if (FieldExists(fieldName)) {
         return m_fieldTypes.at(fieldName);
@@ -39,6 +83,11 @@ namespace vrml_proc::traversor::node_descriptor {
       return FieldType::Unknown;
     }
 
+    /**
+     * @brief Retrieves node's id (aka header name).
+     *
+     * @returns node's header as string
+     */
     std::string GetId() const { return m_id; }
 
     const std::unordered_set<std::string>& GetAdditionalIds() const { return m_additionalIds; }
@@ -77,8 +126,8 @@ namespace vrml_proc::traversor::node_descriptor {
     std::map<std::string, std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>>
         m_nodeArrayFields;
 
-    bool m_isDescendantOfShape = false;
-    vrml_proc::math::TransformationMatrix m_transformationMatrix;
+    bool m_isDescendantOfShape;
+    vrml_proc::math::TransformationMatrix m_transformationMatrix = vrml_proc::math::TransformationMatrix();
   };
 
   class NodeView::Builder {
