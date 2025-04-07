@@ -18,12 +18,13 @@
 #include "Vec3fArrayConversionContext.hpp"
 #include "VrmlNodeManager.hpp"
 #include "VrmlNodeTraversor.hpp"
+#include "HandlerToActionBundle.hpp"
 
 namespace to_geom {
   namespace action {
 
-    IndexedFaceSetAction::IndexedFaceSetAction(IndexedFaceSetAction::Properties properties,
-                                               GeometryAction::Properties geometryProperties)
+    IndexedFaceSetAction::IndexedFaceSetAction(
+        IndexedFaceSetAction::Properties properties, GeometryAction::Properties geometryProperties)
         : to_geom::action::GeometryAction(geometryProperties), m_properties(properties) {}
 
     std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> IndexedFaceSetAction::Execute() {
@@ -53,15 +54,16 @@ namespace to_geom {
       vrml_proc::parser::VrmlNodeManager manager;
       vrml_proc::action::ConversionContextActionMap<Vec3fArrayConversionContext> map;
 
-      map.AddAction("Coordinate", [this](const auto& refArgs, const auto& copyArgs) {
-        try {
-          return std::make_shared<HelperCoordinateAction>(
-              HelperCoordinateAction::Properties{std::any_cast<std::reference_wrapper<const Vec3fArray>>(refArgs[0])});
-        } catch (const std::bad_any_cast& e) {
-          LogFatal("Invalid arguments for HelperCoordinateAction!", LOGGING_INFO);
-          throw;
-        }
-      });
+      map.AddActionForHandlerToActionBundle(
+          "Coordinate", [this](vrml_proc::traversor::handler::HandlerToActionBundle<Vec3fArrayConversionContext> data) {
+            try {
+              return std::make_shared<HelperCoordinateAction>(HelperCoordinateAction::Properties{
+                  data.nodeView->GetField<std::reference_wrapper<const vrml_proc::parser::Vec3fArray>>("point")});
+            } catch (const std::bad_any_cast& e) {
+              LogFatal("Invalid arguments for HelperCoordinateAction!", LOGGING_INFO);
+              throw;
+            }
+          });
 
       auto coordResult = Traverse<Vec3fArrayConversionContext>(
           {m_properties.coord.get(), manager, false, TransformationMatrix(), VrmlProcConfig()}, map);
