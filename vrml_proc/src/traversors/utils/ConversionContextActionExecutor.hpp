@@ -1,67 +1,35 @@
 #pragma once
 
-#include <any>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "NodeView.hpp"
+#include "ConversionContextActionMap.hpp"
 #include "HandlerToActionBundle.hpp"
 
-#include "ConversionContextActionMap.hpp"
+namespace vrml_proc::traversor::utils::ConversionContextActionExecutor {
 
-namespace vrml_proc {
-  namespace traversor {
-    namespace utils {
+  /**
+   * @brief Tries to execute an action. Action to execute is chosen by `key` from `actionMap`.
+   * If no action is found, default ConversionContext is returned.
+   *
+   * @param actionMap map storing all actions
+   * @param key string which chooses action from the map
+   * @param data object which will be passed into action constructor when creating action instance from the map
+   */
+  template <typename ConversionContext>
+  static std::shared_ptr<ConversionContext> TryToExecute(
+      const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
+      const std::string& key,
+      vrml_proc::traversor::handler::HandlerToActionBundle<ConversionContext> data) {  //
 
-      namespace ConversionContextActionExecutor {
-
-        template <typename ConversionContextType>
-        static std::shared_ptr<ConversionContextType> TryToExecute(
-            const vrml_proc::action::ConversionContextActionMap<ConversionContextType>& actionMap,
-            const std::string& key,
-            const std::vector<std::reference_wrapper<const std::any>>& refArgs,
-            const std::vector<std::any>& copyArgs) {
-          if (actionMap.VerifyKey(key)) {
-            std::shared_ptr<ConversionContextType> result = actionMap.GetAction(key, refArgs, copyArgs)->Execute();
-            auto derivedContext = std::dynamic_pointer_cast<ConversionContextType>(result);
-            if (derivedContext != nullptr) {
-              return derivedContext;
-            }
-          }
-          return std::make_shared<ConversionContextType>();
-        }
-
-        /*template <typename ConversionContextType>
-        static std::shared_ptr<ConversionContextType> TryToExecute(
-            const vrml_proc::action::ConversionContextActionMap<ConversionContextType>& actionMap,
-            const std::string& key,
-            std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nodeView) {
-          if (actionMap.VerifyKeyForNodeView(key)) {
-            std::shared_ptr<ConversionContextType> result = actionMap.GetAction(key, nodeView)->Execute();
-            auto derivedContext = std::dynamic_pointer_cast<ConversionContextType>(result);
-            if (derivedContext != nullptr) {
-              return derivedContext;
-            }
-          }
-          return std::make_shared<ConversionContextType>();
-        }*/
-
-        template <typename ConversionContextType>
-        static std::shared_ptr<ConversionContextType> TryToExecute(
-            const vrml_proc::action::ConversionContextActionMap<ConversionContextType>& actionMap,
-            const std::string& key,
-            vrml_proc::traversor::handler::HandlerToActionBundle<ConversionContextType> data) {
-          if (actionMap.VerifyKeyForHandlerToActionBundle(key)) {
-            std::shared_ptr<ConversionContextType> result = actionMap.GetAction(key, data)->Execute();
-            auto derivedContext = std::dynamic_pointer_cast<ConversionContextType>(result);
-            if (derivedContext != nullptr) {
-              return derivedContext;
-            }
-          }
-          return std::make_shared<ConversionContextType>();
-        }
-      }  // namespace ConversionContextActionExecutor
-    }    // namespace utils
-  }      // namespace traversor
-}  // namespace vrml_proc
+    if (actionMap.VerifyKey(key)) {
+      std::shared_ptr<ConversionContext> result = actionMap.GetAction(key, data)->Execute();
+      auto derivedContext = std::dynamic_pointer_cast<ConversionContext>(result);
+      if (derivedContext != nullptr) {
+        return derivedContext;
+      }
+    }
+    return std::make_shared<ConversionContext>();
+  }
+}  // namespace vrml_proc::traversor::utils::ConversionContextActionExecutor

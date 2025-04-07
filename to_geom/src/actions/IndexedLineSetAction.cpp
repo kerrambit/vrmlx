@@ -56,7 +56,7 @@ namespace to_geom::action {
     vrml_proc::parser::VrmlNodeManager manager;
     vrml_proc::action::ConversionContextActionMap<Vec3fArrayConversionContext> map;
 
-    map.AddActionForHandlerToActionBundle(
+    map.AddAction(
         "Coordinate", [this](vrml_proc::traversor::handler::HandlerToActionBundle<Vec3fArrayConversionContext> data) {
           try {
             return std::make_shared<HelperCoordinateAction>(HelperCoordinateAction::Properties{
