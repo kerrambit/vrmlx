@@ -11,18 +11,15 @@
 #include <result.hpp>
 
 #include "Int32Array.hpp"
-#include "NodeValidationError.hpp"
-#include "NodeValidationUtils.hpp"
+#include "NodeDescriptorFieldType.hpp"
 #include "Vec2f.hpp"
 #include "Vec2fArray.hpp"
 #include "Vec3f.hpp"
 #include "Vec3fArray.hpp"
 #include "Vec4f.hpp"
-#include "VrmlField.hpp"
 #include "VrmlNode.hpp"
-#include "VrmlNodeManager.hpp"
 #include "VrmlUnits.hpp"
-#include "NodeDescriptorFieldType.hpp"
+#include "TransformationMatrix.hpp"
 
 namespace vrml_proc::traversor::node_descriptor {
 
@@ -45,6 +42,16 @@ namespace vrml_proc::traversor::node_descriptor {
     std::string GetId() const { return m_id; }
 
     const std::unordered_set<std::string>& GetAdditionalIds() const { return m_additionalIds; }
+
+    void SetShapeDescendant(bool isNodeShapeDescendant) { m_isDescendantOfShape = isNodeShapeDescendant; }
+
+    bool IsNodeShapeDescendant() const { return m_isDescendantOfShape; }
+
+    void SetTransformationMatrix(const vrml_proc::math::TransformationMatrix& matrix) {
+      m_transformationMatrix = matrix;
+    }
+
+    vrml_proc::math::TransformationMatrix GetTransformationMatrix() const { return m_transformationMatrix; }
 
     class Builder;
 
@@ -71,16 +78,14 @@ namespace vrml_proc::traversor::node_descriptor {
     std::map<std::string, std::optional<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>> m_nodeFields;
     std::map<std::string, std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>>
         m_nodeArrayFields;
+
+    bool m_isDescendantOfShape = false;
+    vrml_proc::math::TransformationMatrix m_transformationMatrix;
   };
 
   class NodeView::Builder {
    public:
     Builder() : m_view(std::make_shared<NodeView>()) {}
-
-    Builder& SetId(const std::string& id) {
-      m_view->m_id = id;
-      return *this;
-    }
 
     Builder& SetDefaultValues(const std::map<std::string, FieldType>& fieldTypes,
         const std::map<std::string, std::optional<std::reference_wrapper<const bool>>>& boolFields,
@@ -115,6 +120,11 @@ namespace vrml_proc::traversor::node_descriptor {
       m_view->m_nodeFields = nodeFields;
       m_view->m_nodeArrayFields = nodeArrayFields;
 
+      return *this;
+    }
+
+    Builder& SetId(const std::string& id) {
+      m_view->m_id = id;
       return *this;
     }
 
