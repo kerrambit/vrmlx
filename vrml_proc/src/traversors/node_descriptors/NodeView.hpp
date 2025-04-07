@@ -60,8 +60,6 @@ namespace vrml_proc::traversor::node_descriptor {
     std::unordered_set<std::string> m_additionalIds;
 
     std::map<std::string, FieldType> m_fieldTypes;
-    std::map<std::string, std::unordered_set<std::string>> m_validHeaderNames;
-
     std::map<std::string, std::optional<std::reference_wrapper<const bool>>> m_boolFields;
     std::map<std::string, std::optional<std::reference_wrapper<const std::string>>> m_stringFields;
     std::map<std::string, std::optional<std::reference_wrapper<const vrml_proc::parser::float32_t>>> m_float32Fields;
