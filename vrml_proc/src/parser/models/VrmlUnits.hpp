@@ -1,9 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
-namespace vrml_proc {
-  namespace parser {
-    using float32_t = float;
-  }
-}  // namespace vrml_proc
+namespace vrml_proc::parser {
+  using float32_t = float;
+}  // namespace vrml_proc::parser
