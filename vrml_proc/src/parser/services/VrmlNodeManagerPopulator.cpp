@@ -4,37 +4,35 @@
 #include "VrmlNode.hpp"
 #include "VrmlNodeManager.hpp"
 
-namespace vrml_proc {
-  namespace parser {
-    namespace VrmlNodeManagerPopulator {
+namespace vrml_proc::parser::VrmlNodeManagerPopulator {
+  void Populate(VrmlNodeManager& manager, const VrmlNode& node) {  //
 
-      void Populate(VrmlNodeManager& manager, const VrmlNode& node) {
-        if (node.definitionName.has_value() && node.definitionName.value() != "") {
-          manager.AddDefinitionNode(node.definitionName.value(), node);
-        }
+    using namespace model::utils::VrmlFieldExtractor;
 
-        if (node.fields.size() == 0) {
-          return;
-        }
+    if (node.definitionName.has_value() && node.definitionName.value() != "") {
+      manager.AddDefinitionNode(node.definitionName.value(), node);
+    }
 
-        for (const auto& child : node.fields) {
-          auto nodeResult = model::utils::VrmlFieldExtractor::Extract<VrmlNode>(child.value);
-          if (nodeResult.has_value()) {
-            Populate(manager, nodeResult.value().get());
-            continue;
-          }
+    if (node.fields.size() == 0) {
+      return;
+    }
 
-          auto arrayResult = model::utils::VrmlFieldExtractor::Extract<VrmlNodeArray>(child.value);
-          if (arrayResult.has_value() && arrayResult.value().get().size() != 0) {
-            for (const auto& variant : arrayResult.value().get()) {
-              auto variantResult = model::utils::VrmlFieldExtractor::ExtractFromVariant<VrmlNode>(variant);
-              if (variantResult.has_value()) {
-                Populate(manager, variantResult.value().get());
-              }
-            }
+    for (const auto& child : node.fields) {
+      auto nodeResult = Extract<VrmlNode>(child.value);
+      if (nodeResult.has_value()) {
+        Populate(manager, nodeResult.value().get());
+        continue;
+      }
+
+      auto arrayResult = Extract<VrmlNodeArray>(child.value);
+      if (arrayResult.has_value() && arrayResult.value().get().size() != 0) {
+        for (const auto& variant : arrayResult.value().get()) {
+          auto variantResult = ExtractFromVariant<VrmlNode>(variant);
+          if (variantResult.has_value()) {
+            Populate(manager, variantResult.value().get());
           }
         }
       }
-    }  // namespace VrmlNodeManagerPopulator
-  }    // namespace parser
-}  // namespace vrml_proc
+    }
+  }
+}  // namespace vrml_proc::parser::VrmlNodeManagerPopulator

@@ -12,6 +12,7 @@
 #include "Error.hpp"
 #include "FormatString.hpp"
 #include "GroupHandler.hpp"
+#include "HandlerResult.hpp"
 #include "Hash.hpp"
 #include "ImageTextureHandler.hpp"
 #include "IndexedFaceSetHandler.hpp"
@@ -19,7 +20,9 @@
 #include "Logger.hpp"
 #include "MaterialHandler.hpp"
 #include "NodeDescriptor.hpp"
+#include "NodeDescriptorMap.hpp"
 #include "NodeTraversorError.hpp"
+#include "NodeView.hpp"
 #include "NormalHandler.hpp"
 #include "PixelTextureHandler.hpp"
 #include "ShapeHandler.hpp"
@@ -27,23 +30,19 @@
 #include "TextureCoordinateHandler.hpp"
 #include "TextureTransformHandler.hpp"
 #include "TransformHandler.hpp"
+#include "VrmlCanonicalHeaders.hpp"
 #include "VrmlNode.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
 #include "WorldInfoHandler.hpp"
-#include "NodeDescriptorMap.hpp"
-#include "VrmlCanonicalHeaders.hpp"
-#include "NodeView.hpp"
-
-#include "VrmlProcessingExport.hpp"
 
 // ------------------------------------------------------------------------- //
 
 template <typename ConversionContext>
-static cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> RunHandler(
-    const std::string& header,
+static vrml_proc::traversor::handler::HandlerResult<ConversionContext> RunHandler(const std::string& header,
     const vrml_proc::traversor::VrmlNodeTraversorParameters& context,
     const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
-    std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {
+    std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {  //
+
   using namespace vrml_proc::core::utils;
   using namespace vrml_proc::core::error;
   using namespace vrml_proc::traversor::handler;
@@ -51,6 +50,8 @@ static cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc
   using namespace vrml_proc::traversor::node_descriptor;
 
   cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<Error>> handlerResult;
+
+  // Handler is chosen using precomputed hashes of each canonical node name.
   switch (Hash(ConvertToCanonicalHeader(header))) {
     case CanonicalHeaderHashes::WorldInfo:
       handlerResult = WorldInfoHandler::Handle(context, actionMap, nd);
@@ -113,9 +114,8 @@ static cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc
 namespace vrml_proc::traversor::VrmlNodeTraversor {
 
   template <typename ConversionContext>
-  VRMLPROCESSING_API inline cpp::result<std::shared_ptr<ConversionContext>,
-      std::shared_ptr<vrml_proc::core::error::Error>>
-  Traverse(vrml_proc::traversor::VrmlNodeTraversorParameters context,
+  inline cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> Traverse(
+      vrml_proc::traversor::VrmlNodeTraversorParameters context,
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap) {  //
 
     using namespace vrml_proc::core::logger;
