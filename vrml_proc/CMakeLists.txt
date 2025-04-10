@@ -132,8 +132,8 @@ add_library(vrmlproc SHARED
     "src/traversors/handlers/TextureCoordinateHandler.hpp"
     "src/traversors/handlers/SwitchHandler.hpp"
 
-    "src/traversors/validators/NodeValidationUtils.hpp"
-    "src/traversors/validators/errors/NodeValidationError.hpp"
+    "src/traversors/validation/NodeValidationUtils.hpp"
+    "src/traversors/validation/errors/NodeValidationError.hpp"
 
     # Actions.
     "src/actions/ConversionContextActionMap.hpp"
@@ -180,8 +180,8 @@ target_include_directories(vrmlproc PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/node_descriptors
     ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/utils
     ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/errors
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/validators
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/validators/errors
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/validation
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/validation/errors
     ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/handlers
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/math
