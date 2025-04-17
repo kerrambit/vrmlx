@@ -20,7 +20,7 @@
 
 TEST_CASE("Initialization") { vrml_proc::core::logger::InitLogging(); }
 
-TEST_CASE("NodeDescriptor - Valid", "[valid]") {  //
+TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
 
   vrml_proc::parser::VrmlField f1;
   f1.name = "string";
@@ -97,12 +97,6 @@ TEST_CASE("NodeDescriptor - Valid", "[valid]") {  //
   }
 
   {
-    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("VRML");
-    CHECK(nd.GetId() == "VRML");
-    CHECK(nd.GetAdditionalIds().size() == 0);
-  }
-
-  {
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("vrml", "A");
     CHECK(nd.GetId() == "vrml");
     CHECK(nd.GetAdditionalIds().size() == 1);
@@ -120,11 +114,16 @@ TEST_CASE("NodeDescriptor - Valid", "[valid]") {  //
   }
 
   {
-    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("vrml");
+    vrml_proc::parser::VrmlNodeManager manager;
     vrml_proc::parser::VrmlNode node;
     node.header = "Root";
-    vrml_proc::parser::VrmlNodeManager manager;
+
+    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("vrml");
     CHECK(nd.Validate(node, manager).has_value());
+
+    nd = vrml_proc::traversor::node_descriptor::NodeDescriptor("vrml");
+    CHECK(nd.Validate(node, manager, false).has_value());
+
     nd = vrml_proc::traversor::node_descriptor::NodeDescriptor("vrml");
     CHECK(nd.Validate(node, manager, true).has_error());
   }
