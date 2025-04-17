@@ -7,6 +7,8 @@ if (MSVC)
     add_compile_options(/bigobj)
 endif()
 
+add_definitions(-DBOOST_MP_NOT_USE_GMP)
+
 if(WIN32)
     # On Windows, use static Boost libraries to avoid DLL dependency issues.
     # This ensures that Boost is linked statically into the executable, making distribution easier.
@@ -34,22 +36,46 @@ else()
     message(FATAL_ERROR "Boost was not found. Please set BOOST_ROOT to your Boost installation.")
 endif()
 
+if(WIN32)
+set(GMP_INCLUDE_DIR "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/include")
+set(GMP_LIBRARY "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/lib/gmp.lib")
+set(MPFR_INCLUDE_DIR "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/include")
+set(MPFR_LIBRARY "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/lib/mpfr.lib")
+endif()
+
+set(BOOST_GMP_INCLUDE_DIR "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/include")
+set(BOOST_GMP_LIBRARY "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/lib/gmp.lib")
+set(BOOST_MPFR_INCLUDE_DIR "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/include")
+set(BOOST_MPFR_LIBRARY  "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/lib/mpfr.lib")
+
+# Tell Boost where GMP/MPFR are located (only if using Boost.Multiprecision with GMP support)
+set(BOOST_MP_INCLUDE_DIRS "${BOOST_GMP_INCLUDE_DIR}")
+set(BOOST_MP_LIBRARIES "${BOOST_GMP_LIBRARY}")
+
+set(CGAL_CMAKE_EXACT_NT_BACKEND "GMP")
+
+set(CGAL_GMP_INCLUDE_DIR "${GMP_INCLUDE_DIR}")
+set(CGAL_MPFR_INCLUDE_DIR "${MPFR_INCLUDE_DIR}")
+set(CGAL_GMP_LIBRARIES "${GMP_LIBRARY}")
+set(CGAL_MPFR_LIBRARIES "${MPFR_LIBRARY}")
 set(CGAL_Boost_INCLUDE_DIR ${Boost_INCLUDE_DIRS})
 set(CGAL_Boost_LIBRARY_DIR ${Boost_LIBRARY_DIRS})
-#if(WIN32)
 set(CGAL_Boost_USE_STATIC_LIBS ${Boost_USE_STATIC_LIBS})  # Ensure CGAL links Boost the same way
-#endif()
 set(CGAL_Boost_USE_MULTITHREADED ${Boost_USE_MULTITHREADED})
 
+set(CGAL_DO_NOT_USE_BOOST_MP ON)
+
 # Find CGAL.
-find_package(CGAL CONFIG REQUIRED)
+find_package(CGAL CONFIG COMPONENTS Core REQUIRED)
 if(CGAL_FOUND)
     message(STATUS "CGAL found!")
     message(STATUS "CGAL version: ${CGAL_VERSION}")
     message(STATUS "CGAL include directory: ${CGAL_INCLUDE_DIRS}")
     message(STATUS "CGAL libraries: ${CGAL_LIBRARIES}")
-    include_directories(${CGAL_INCLUDE_DIRS})
-    link_directories(${CGAL_LIBRARIES})
+    message(STATUS "GMP library: ${CGAL_GMP_LIBRARIES}")
+    message(STATUS "MPFR library: ${CGAL_MPFR_LIBRARIES}")
+    include_directories(${CGAL_INCLUDE_DIRS} ${GMP_INCLUDE_DIR} ${MPFR_INCLUDE_DIR})  
+    link_directories(${CGAL_LIBRARIES}  ${CGAL_GMP_LIBRARIES} ${CGAL_MPFR_LIBRARIES})
 else()
     message(FATAL_ERROR "CGAL not found. Please set CGAL_DIR to the correct path.")
 endif()

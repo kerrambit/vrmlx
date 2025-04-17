@@ -94,7 +94,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 # Link the togeom library with vrmlproc shared library.
-target_link_libraries(togeom PRIVATE vrmlproc)
+target_link_libraries(togeom PRIVATE vrmlproc  CGAL::CGAL ${GMP_LIBRARY} ${MPFR_LIBRARY})
 
 # --------------------------------------------------------------------------------------- #
 
@@ -111,8 +111,8 @@ if (MSVC)
 endif()
 
 # Link Catch2 with the test executables.
-target_link_libraries(VrmlFileTraversorUnitTests PRIVATE Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread Catch2::Catch2WithMain vrmlproc togeom)
-target_link_libraries(CalculatorsUnitTests PRIVATE Catch2::Catch2WithMain vrmlproc togeom)
+target_link_libraries(VrmlFileTraversorUnitTests PRIVATE  CGAL::CGAL Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread Catch2::Catch2WithMain vrmlproc togeom  ${GMP_LIBRARY} ${MPFR_LIBRARY})
+target_link_libraries(CalculatorsUnitTests PRIVATE CGAL::CGAL Catch2::Catch2WithMain vrmlproc togeom  ${GMP_LIBRARY} ${MPFR_LIBRARY})
 
 # Enable testing (use CTest to run the unit tests).
 enable_testing()
