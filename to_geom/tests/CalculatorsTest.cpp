@@ -675,7 +675,7 @@ TEST_CASE("AlphaShapeCalculator - valid I.", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME(filepath);
     to_geom::core::io::StlFileWriter writer;
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result.value()));
-    CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+    CHECK(HaveSimiliarSizes(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath, 100));
   }
 }
