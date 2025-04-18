@@ -103,6 +103,7 @@ add_library(vrmlproc SHARED
     "src/traversors/VrmlFileTraversor.hpp"
     "src/traversors/VrmlNodeTraversorParameters.hpp"
     "src/traversors/VrmlFileTraversorParameters.hpp"
+    "src/traversors/TraversorResult.hpp"
 
     "src/traversors/errors/FileTraversorError.hpp"
     "src/traversors/errors/NodeTraversorError.hpp"
@@ -116,7 +117,6 @@ add_library(vrmlproc SHARED
 
     "src/traversors/utils/ConversionContextActionExecutor.hpp"
 
-    "src/traversors/handlers/HandlerResult.hpp"
     "src/traversors/handlers/HandlerToActionBundle.hpp"
     "src/traversors/handlers/HandlerUtils.hpp"
     "src/traversors/handlers/ShapeHandler.hpp"
