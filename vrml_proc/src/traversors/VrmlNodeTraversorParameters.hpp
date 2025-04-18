@@ -6,7 +6,19 @@
 #include "VrmlProcConfig.hpp"
 
 namespace vrml_proc::traversor {
+  /**
+   * @brief Represents parameters passed to the node traversor.
+   */
   struct VrmlNodeTraversorParameters {
+    /**
+     * @brief Constructs an object.
+     *
+     * @param node node to traverse
+     * @param manager manager to use when resolving USE nodes
+     * @param isDescendantOfShape flag if the node is descedent of a shape node
+     * @param transformation current transformation in the form of a matrix
+     * @param config configuration file
+     */
     VrmlNodeTraversorParameters(const vrml_proc::parser::VrmlNode& node,
         const vrml_proc::parser::VrmlNodeManager& manager,
         bool isDescendantOfShape,

@@ -14,14 +14,13 @@
 #include "NodeTraversorError.hpp"
 #include "Vec3f.hpp"
 #include "NodeDescriptor.hpp"
-#include "HandlerResult.hpp"
+#include "TraversorResult.hpp"
 #include "HandlerToActionBundle.hpp"
-
-#include "VrmlProcessingExport.hpp"
+#include "ConversionContextable.hpp"
 
 namespace vrml_proc::traversor::handler::BoxHandler {
-  template <typename ConversionContext>
-  HandlerResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
+  template <ConversionContextable ConversionContext>
+  TraversorResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
       std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {  //
 

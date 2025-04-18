@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <NodeView.hpp>
+#include "ConversionContextable.hpp"
 
 namespace vrml_proc::traversor::handler {
   /**
@@ -11,7 +12,7 @@ namespace vrml_proc::traversor::handler {
    * It groups a representation of VRML node (NodeView) and results of traversal as ccGroup (for a vector of
    * ConversionContexts) or cc_i for individual ConversionContexts.
    */
-  template <typename ConversionContext>
+  template <ConversionContextable ConversionContext>
   struct HandlerToActionBundle {
     /**
      * @brief Constructs a default object.

@@ -9,24 +9,32 @@
 #include "Logger.hpp"
 #include "ManualTimer.hpp"
 #include "NullPointerError.hpp"
+#include "TraversorResult.hpp"
 #include "VrmlFile.hpp"
 #include "VrmlFileTraversorParameters.hpp"
 #include "VrmlNodeManager.hpp"
 #include "VrmlNodeTraversor.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
+#include "ConversionContextable.hpp"
 
 namespace vrml_proc::traversor::VrmlFileTraversor {
-
-  template <typename ConversionContext>
-  inline cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> Traverse(
-      const VrmlFileTraversorParameters& context,
+  /**
+   * @brief Traverses the VRML file (connection of root nodes). Function calls for each root VRML node a
+   * VrmlNodeTraversor. Accumulated result is agggregated from all nodes into ConversionContext.
+   *
+   * @tparam ConversionContext type of conversion context (result type of the traversal)
+   * @param params parameters for the traversal
+   * @param actionMap map with defined actions
+   */
+  template <ConversionContextable ConversionContext>
+  inline TraversorResult<ConversionContext> Traverse(const VrmlFileTraversorParameters& params,
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap) {  //
 
-    using namespace vrml_proc::core::logger;
-    using namespace vrml_proc::core::utils;
     using vrml_proc::core::error::NullPointerError;
     using vrml_proc::math::TransformationMatrix;
     using vrml_proc::traversor::error::FileTraversorError;
+    using namespace vrml_proc::core::logger;
+    using namespace vrml_proc::core::utils;
 
     LogInfo("Traverse VRML file.", LOGGING_INFO);
 
@@ -36,11 +44,11 @@ namespace vrml_proc::traversor::VrmlFileTraversor {
     std::shared_ptr<ConversionContext> traversedFile = std::make_shared<ConversionContext>();
 
     size_t index = 1;
-    for (const auto& root : context.file) {
+    for (const auto& root : params.file) {
       LogInfo(FormatString("Found ", index, ". root node. It is type <", root.header, ">."), LOGGING_INFO);
 
       auto result = vrml_proc::traversor::VrmlNodeTraversor::Traverse<ConversionContext>(
-          VrmlNodeTraversorParameters(root, context.manager, false, TransformationMatrix(), context.config), actionMap);
+          VrmlNodeTraversorParameters(root, params.manager, false, TransformationMatrix(), params.config), actionMap);
 
       if (result.has_error()) {
         auto time = timer.End();

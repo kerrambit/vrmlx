@@ -9,12 +9,13 @@
 #include "FormatString.hpp"
 #include "HandlerToActionBundle.hpp"
 #include "Logger.hpp"
+#include "ConversionContextable.hpp"
 
 namespace vrml_proc::action {
   /**
    * @brief Represents class which is responsible for storing and mapping `Action` functor value to a string key.
    */
-  template <typename ConversionContext>
+  template <ConversionContextable ConversionContext>
   class ConversionContextActionMap {
    public:
     /**
