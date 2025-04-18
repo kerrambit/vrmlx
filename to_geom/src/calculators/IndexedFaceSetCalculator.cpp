@@ -42,14 +42,14 @@ namespace to_geom::calculator {
       std::reference_wrapper<const bool> isConvex,
       const vrml_proc::math::TransformationMatrix& matrix) {  //
 
-    using namespace vrml_proc::core::logger;
     using to_geom::calculator::error::IndexedFaceSetCalculatorError;
     using to_geom::calculator::error::InvalidNumberOfCoordinatesForFaceError;
     using to_geom::calculator::error::PropertiesError;
     using vrml_proc::core::error::UnsupportedOperationError;
     using vrml_proc::core::utils::FormatString;
-    using vrml_proc::math::cgal::CGALPoint;
     using vrml_proc::parser::model::validator::error::EmptyArrayError;
+    using namespace vrml_proc::core::logger;
+    using vrml_proc::math::cgal::CGALPoint;
 
     LogInfo("Generate 3D mesh using IndexedFaceSetCalculator.", LOGGING_INFO);
 
