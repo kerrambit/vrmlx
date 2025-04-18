@@ -209,8 +209,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 # Explicitly link Boost::iostreams (problems with compilation on Linux with GNU 11.4.0).
-target_link_libraries(vrmlproc PRIVATE CGAL::CGAL Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread  ${GMP_LIBRARY}
-    ${MPFR_LIBRARY})
+target_link_libraries(vrmlproc PRIVATE CGAL::CGAL Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread ${GMP_LIBRARY} ${MPFR_LIBRARY})
 
 # --------------------------------------------------------------------------------------- #
 

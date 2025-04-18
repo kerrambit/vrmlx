@@ -7,8 +7,6 @@ if (MSVC)
     add_compile_options(/bigobj)
 endif()
 
-add_definitions(-DBOOST_MP_NOT_USE_GMP)
-
 if(WIN32)
     # On Windows, use static Boost libraries to avoid DLL dependency issues.
     # This ensures that Boost is linked statically into the executable, making distribution easier.
@@ -25,7 +23,6 @@ endif()
 
 # CMake will look for Boost libraries specified by BOOST_ROOT variable.
 find_package(Boost REQUIRED COMPONENTS iostreams log date_time log_setup thread system)
-
 if (Boost_FOUND)
     message(STATUS "Boost found!")
     message(STATUS "Boost include directories: ${Boost_INCLUDE_DIRS}")
@@ -36,24 +33,19 @@ else()
     message(FATAL_ERROR "Boost was not found. Please set BOOST_ROOT to your Boost installation.")
 endif()
 
+# Set up GTM and MPFR libraries on Windows.
 if(WIN32)
-set(GMP_INCLUDE_DIR "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/include")
-set(GMP_LIBRARY "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/lib/gmp.lib")
-set(MPFR_INCLUDE_DIR "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/include")
-set(MPFR_LIBRARY "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/lib/mpfr.lib")
+    message(STATUS "GMP_DIR from env: $ENV{GMP_DIR}")
+    message(STATUS "MPFR_DIR from env: $ENV{MPFR_DIR}")
+    set(GMP_ROOT "$ENV{GMP_DIR}")
+    set(MPFR_ROOT "$ENV{MPFR_DIR}")
+    set(GMP_INCLUDE_DIR "${GMP_ROOT}/include")
+    set(GMP_LIBRARY "${GMP_ROOT}/lib/gmp.lib")
+    set(MPFR_INCLUDE_DIR "${MPFR_ROOT}/include")
+    set(MPFR_LIBRARY "${GMP_ROOT}/lib/mpfr.lib")
 endif()
 
-set(BOOST_GMP_INCLUDE_DIR "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/include")
-set(BOOST_GMP_LIBRARY "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/lib/gmp.lib")
-set(BOOST_MPFR_INCLUDE_DIR "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/include")
-set(BOOST_MPFR_LIBRARY  "C:/Users/marek/Documents/FI_MUNI/sem_05/SBAPR/vrmlxpy/vendor/CGAL-6.0.1/auxiliary/gmp/lib/mpfr.lib")
-
-# Tell Boost where GMP/MPFR are located (only if using Boost.Multiprecision with GMP support)
-set(BOOST_MP_INCLUDE_DIRS "${BOOST_GMP_INCLUDE_DIR}")
-set(BOOST_MP_LIBRARIES "${BOOST_GMP_LIBRARY}")
-
 set(CGAL_CMAKE_EXACT_NT_BACKEND "GMP")
-
 set(CGAL_GMP_INCLUDE_DIR "${GMP_INCLUDE_DIR}")
 set(CGAL_MPFR_INCLUDE_DIR "${MPFR_INCLUDE_DIR}")
 set(CGAL_GMP_LIBRARIES "${GMP_LIBRARY}")
@@ -62,7 +54,6 @@ set(CGAL_Boost_INCLUDE_DIR ${Boost_INCLUDE_DIRS})
 set(CGAL_Boost_LIBRARY_DIR ${Boost_LIBRARY_DIRS})
 set(CGAL_Boost_USE_STATIC_LIBS ${Boost_USE_STATIC_LIBS})  # Ensure CGAL links Boost the same way
 set(CGAL_Boost_USE_MULTITHREADED ${Boost_USE_MULTITHREADED})
-
 set(CGAL_DO_NOT_USE_BOOST_MP ON)
 
 # Find CGAL.
