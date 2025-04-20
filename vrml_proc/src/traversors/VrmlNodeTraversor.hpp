@@ -35,6 +35,12 @@
 #include "VrmlNodeTraversorParameters.hpp"
 #include "WorldInfoHandler.hpp"
 #include "ConversionContextable.hpp"
+#include "ConeHandler.hpp"
+#include "CylinderHandler.hpp"
+#include "ElevationGridHandler.hpp"
+#include "ExtrusionHandler.hpp"
+#include "PointSetHandler.hpp"
+#include "SphereHandler.hpp"
 
 // ------------------------------------------------------------------------- //
 
@@ -113,6 +119,24 @@ static vrml_proc::traversor::TraversorResult<ConversionContext> FindAndRunHandle
       break;
     case CanonicalHeaderHashes::Appearance:
       handlerResult = AppearanceHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::Cone:
+      handlerResult = ConeHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::Cylinder:
+      handlerResult = CylinderHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::ElevationGrid:
+      handlerResult = ElevationGridHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::Extrusion:
+      handlerResult = ExtrusionHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::PointSet:
+      handlerResult = PointSetHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::Sphere:
+      handlerResult = SphereHandler::Handle(params, actionMap, nd);
       break;
     default:
       break;
