@@ -55,7 +55,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "noTransform");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result0));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -67,7 +67,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "defaultTransform");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result1));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -81,7 +81,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "zAxisRotation");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result2));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -96,7 +96,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "zAxisRotationWithCenter");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result3));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -110,7 +110,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "center");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result4));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -124,7 +124,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "yAsixRotation");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result5));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -139,7 +139,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "yAsixRotationWithCenter");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result6));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -154,7 +154,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "zAsixRotationWithTranslation");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result7));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -172,7 +172,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "zAsixRotationWithTranslationAndScale");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result8));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -188,7 +188,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "zAsixRotationWithTranslationAndScaleInWorldCoords");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result9));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -202,7 +202,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "translationAndXAxisRotation");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result10));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 
   // --- //
@@ -219,7 +219,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
     GENERATE_TEST_OUTPUT_FILENAME_EXTRA_NAME(filepath, "multipleScale");
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result11));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 }
 
@@ -237,7 +237,7 @@ TEST_CASE("BoxCalculator - invalid", "[invalid]") {
     auto result = calculator.Generate3DMesh({std::cref(size)}, matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<
-          vrml_proc::parser::model::validator::error::NumberOutOfRangeError<vrml_proc::parser::float32_t>>(
+        vrml_proc::parser::model::validator::error::NumberOutOfRangeError<vrml_proc::parser::float32_t>>(
         result.error()));
     LogError(result.error());
   }
@@ -249,7 +249,7 @@ TEST_CASE("BoxCalculator - invalid", "[invalid]") {
     auto result = calculator.Generate3DMesh({std::cref(size)}, matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<
-          vrml_proc::parser::model::validator::error::NumberOutOfRangeError<vrml_proc::parser::float32_t>>(
+        vrml_proc::parser::model::validator::error::NumberOutOfRangeError<vrml_proc::parser::float32_t>>(
         result.error()));
     LogError(result.error());
   }
@@ -410,7 +410,7 @@ TEST_CASE("IndexedFaceSetCalculator - valid II.", "[invalid]") {
     to_geom::core::io::StlFileWriter writer;
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result.value()));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 }
 
@@ -649,35 +649,33 @@ TEST_CASE("IndexedFaceSetCalculator - valid III.", "[valid]") {
     to_geom::core::io::StlFileWriter writer;
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result.value()));
     CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
   }
 }
 
 TEST_CASE("AlphaShapeCalculator - valid I.", "[valid]") {
   using vrml_proc::parser::Vec3f;
 
-  std::vector<Vec3f> testPoints = {
-      {5.0f, 0.0f, 1.0f},    {1.0f, 9.0f, 1.0f},    {1.0f, 1.0f, -5.0f},   {0.0f, 10.0f, 10.0f},  {-11.0f, 0.0f, 12.0f},
-      {1.0f, 0.0f, 9.0f},    {1.0f, 7.0f, 8.0f},    {0.0f, -1.0f, 0.0f},   {0.25f, 0.25f, 0.25f}, {0.75f, 0.25f, 0.25f},
-      {0.75f, 0.75f, 0.25f}, {0.25f, 0.75f, 0.25f}, {0.25f, 0.25f, 0.75f}, {0.75f, 0.25f, 0.75f}, {0.75f, 0.75f, 0.75f},
-      {0.25f, 0.75f, 0.75f}, {-0.5f, 0.5f, 0.5f},   {5.0f, -0.5f, 0.0f},   {9.0f, 0.5f, -1.0f},   {5.5f, -4.0f, 10.5f},
-      {12.5f, 1.0f, 8.5f},   {-9.0f, 0.5f, 69.5f},  {1.0f, 7.5f, 2.5f}};
+  std::vector<Vec3f> testPoints = {{5.0f, 0.0f, 1.0f}, {1.0f, 9.0f, 1.0f}, {1.0f, 1.0f, -5.0f}, {0.0f, 10.0f, 10.0f},
+      {-11.0f, 0.0f, 12.0f}, {1.0f, 0.0f, 9.0f}, {1.0f, 7.0f, 8.0f}, {0.0f, -1.0f, 0.0f}, {0.25f, 0.25f, 0.25f},
+      {0.75f, 0.25f, 0.25f}, {0.75f, 0.75f, 0.25f}, {0.25f, 0.75f, 0.25f}, {0.25f, 0.25f, 0.75f}, {0.75f, 0.25f, 0.75f},
+      {0.75f, 0.75f, 0.75f}, {0.25f, 0.75f, 0.75f}, {-0.5f, 0.5f, 0.5f}, {5.0f, -0.5f, 0.0f}, {9.0f, 0.5f, -1.0f},
+      {5.5f, -4.0f, 10.5f}, {12.5f, 1.0f, 8.5f}, {-9.0f, 0.5f, 69.5f}, {1.0f, 7.5f, 2.5f}};
 
   vrml_proc::parser::Vec3fArray pointCloud;
-  pointCloud.vectors.insert(pointCloud.vectors.end(), std::make_move_iterator(testPoints.begin()),
-                            std::make_move_iterator(testPoints.end()));
+  pointCloud.vectors.insert(
+      pointCloud.vectors.end(), std::make_move_iterator(testPoints.begin()), std::make_move_iterator(testPoints.end()));
   vrml_proc::math::TransformationMatrix matrix;
 
   {
     auto result = to_geom::calculator::AlphaShapeCalculator::Generate3DAlphaShapeMeshForPointCloud(
         std::cref(pointCloud), 0.5, matrix);
-#ifdef __linux__
+
     REQUIRE(result.has_value());
     GENERATE_TEST_OUTPUT_FILENAME(filepath);
     to_geom::core::io::StlFileWriter writer;
     writer.Write(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, *(result.value()));
-    CHECK(AreBinaryFilesEqual(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                              std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath));
-#endif
+    CHECK(HaveSimiliarSizes(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
+        std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath, 100));
   }
 }

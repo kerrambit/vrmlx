@@ -12,8 +12,15 @@ Before you can build this project, you'll need to have the CGAL libraries instal
    
 2. **CGAL prerequisites**:
    ##### GMP and MPFR
-   - Precompiled version of GMP and MPFR are provided in the asset GMP and MPFR libraries, for Windows 64bits from https://github.com/CGAL/cgal/releases.
-   - If you only install those libraries to use CGAL, then you should extract this archive inside the directory created when extracting the CGAL zip source archive. That way those dependencies will be automatically detected by CMake (you should then get the directory *CGAL-6.0.1\auxiliary\gmp*).
+   - Precompiled version of GMP and MPFR are provided in the assets of CGAL library (*Releases* on [official CGAL GitHug page](https://github.com/CGAL/cgal)).
+   - Extract *CGAL-[some version]-win64-auxiliary-libraries-gmp-mpfr.zip* archive inside the CGAL directory in ```\vendor``` folder. You should get the directory ```vendor\CGAL-[some version]\auxiliary\gmp```.
+   - Then set up two new environment variables poitning to the path ```auxiliary\gml```.
+        - ```GMP_DIR = C:\dev\vrmlxpy\vendor\CGAL-6.0.1\auxiliry\gmp```
+        - ```MPFR_DIR = C:\dev\vrmlxpy\vendor\CGAL-6.0.1\auxiliry\gmp```
+   - If you do not know how to set up environment variables, see the following steps:
+        - Go to **System Properties** → **Advanced** → **Environment Variables**.
+        - Under **System variables**, click **New** and add name and path.
+   - The reason why we set up two individual varibles if that if you install these libraries yourself, you might have different paths for both programs.
    
    ##### Boost
    - Boost is a mandatory dependency of CGAL. The installation process for Boost is already described [here](boost_installation.md).
@@ -21,13 +28,9 @@ Before you can build this project, you'll need to have the CGAL libraries instal
         - ```BOOST_LIBRARYDIR = C:\dev\libboost_1_71_0\lib64-msvc-XX.Y```
         - ```BOOST_INCLUDEDIR = C:\dev\libboost_1_71_0```
 
-   - If you do not know how to set up environment variables, see the following steps:
-        - Go to **System Properties** → **Advanced** → **Environment Variables**.
-        - Under **System variables**, click **New** and add name and path.
-
 3. **Install CGAL**:
     - To install CGAL, CMake needs to know the location of CGAL on your system. You have to set up an environment variable to point to ```CGALConfig.cmake``` file:
-        - ``` CGAL_DIR = C:\dev\CGAL-6.0.1\lib\cmake\CGAL ```.
+        - ``` CGAL_DIR = C:\dev\CGAL-6.0.1\lib\cmake\CGAL ```
 
 ---
 
@@ -40,7 +43,7 @@ Before you can build this project, you'll need to have the CGAL libraries instal
   ```
   sudo apt-get install libcgal-dev
   ```
-
+- It pulls in a bunch of required packages, including: ```libgmp-dev``` for the GMP development and ```libmpfr-dev``` for the MPFR development.
 ---
 
 ## CMake Configuration

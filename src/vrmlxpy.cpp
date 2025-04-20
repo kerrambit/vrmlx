@@ -77,7 +77,8 @@ static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
     if (meshResult.has_value()) {
       mesh.join(*(meshResult.value()));
     } else {
-      std::cout << "Warning: invalid submesh!" << std::endl;
+      std::cout << "Invalid submesh!" << std::endl;
+      std::cout << meshResult.error()->GetMessage() << std::endl;
     }
   };
 

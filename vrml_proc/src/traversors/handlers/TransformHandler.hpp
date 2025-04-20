@@ -14,12 +14,13 @@
 #include "Transformation.hpp"
 #include "TransformationMatrix.hpp"
 #include "Vec3f.hpp"
-#include "HandlerResult.hpp"
+#include "TraversorResult.hpp"
 #include "HandlerToActionBundle.hpp"
+#include "ConversionContextable.hpp"
 
 // Forward declaration.
 namespace vrml_proc::traversor::VrmlNodeTraversor {
-  template <typename ConversionContext>
+  template <ConversionContextable ConversionContext>
   VRMLPROCESSING_API cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>>
   Traverse(vrml_proc::traversor::VrmlNodeTraversorParameters context,
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap);
@@ -27,8 +28,8 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
 
 namespace vrml_proc::traversor::handler::TransformHandler {
 
-  template <typename ConversionContext>
-  HandlerResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
+  template <ConversionContextable ConversionContext>
+  TraversorResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
       std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {  //
 

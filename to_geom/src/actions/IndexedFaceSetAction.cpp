@@ -27,7 +27,8 @@ namespace to_geom {
         IndexedFaceSetAction::Properties properties, GeometryAction::Properties geometryProperties)
         : to_geom::action::GeometryAction(geometryProperties), m_properties(properties) {}
 
-    std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> IndexedFaceSetAction::Execute() {
+    std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> IndexedFaceSetAction::Execute() {  //
+
       using conversion_context::Vec3fArrayConversionContext;
       using to_geom::conversion_context::MeshTaskConversionContext;
       using vrml_proc::core::config::VrmlProcConfig;
@@ -40,6 +41,7 @@ namespace to_geom {
       LogInfo("Execute IndexedFaceSetAction.", LOGGING_INFO);
 
       auto result = std::make_shared<MeshTaskConversionContext>();
+
       if (!m_geometryProperties.containedByShape) {
         LogDebug("Return empty data because IndexedFaceSet node is not a child of a Shape node.", LOGGING_INFO);
         return result;
@@ -58,7 +60,7 @@ namespace to_geom {
           "Coordinate", [this](vrml_proc::traversor::handler::HandlerToActionBundle<Vec3fArrayConversionContext> data) {
             try {
               return std::make_shared<HelperCoordinateAction>(HelperCoordinateAction::Properties{
-                  data.nodeView->GetField<std::reference_wrapper<const vrml_proc::parser::Vec3fArray>>("point")});
+                  data.nodeView->GetField<std::reference_wrapper<const Vec3fArray>>("point")});
             } catch (const std::bad_any_cast& e) {
               LogFatal("Invalid arguments for HelperCoordinateAction!", LOGGING_INFO);
               throw;

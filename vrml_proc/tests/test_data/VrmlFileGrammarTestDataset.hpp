@@ -525,3 +525,22 @@ std::string complicatedNodeWithComplicatedDefNodeNames = R"(
 }    
 
 )";
+
+std::string fimuni = R"(
+
+	#VRML V2.0 utf8
+
+	MUNI {
+
+	   title "Masarykova Univerzita"
+     foundation 1919
+     place "Brno"
+     location 49.1988244 16.6052294
+     faculties FacultyGroup {
+        faculties [
+          Faculty { name "FI" dean "prof. RNDr. Jiří Barnat, Ph.D." inBrno TRUE },
+          Faculty { name "FSS" dean "prof. PhDr. Stanislav Balík, Ph.D." inBrno TRUE }
+        ]
+    }
+	}
+)";

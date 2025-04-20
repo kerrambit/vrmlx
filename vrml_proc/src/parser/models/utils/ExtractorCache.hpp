@@ -5,9 +5,8 @@
 
 #include "VrmlUnits.hpp"
 
-#if defined(BOOST_VERSION) && \
-    BOOST_VERSION >= 108700  // Class concurrent_node_map added in
-                             // https://www.boost.org/users/history/version_1_87_0.html?utm_source=chatgpt.com.
+#if defined(BOOST_VERSION) && BOOST_VERSION >= 108700  // Class concurrent_node_map added in
+                                                       // https://www.boost.org/users/history/version_1_87_0.html.
 #include <boost/unordered/concurrent_node_map.hpp>
 #define USE_BOOST_CONCURRENT_MAP
 #else

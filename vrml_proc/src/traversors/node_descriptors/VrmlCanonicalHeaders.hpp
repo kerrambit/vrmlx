@@ -48,6 +48,18 @@ namespace vrml_proc::traversor::node_descriptor {
         {"VRMLPixelTexture", "PixelTexture"},
         {"TextureTransform", "TextureTransform"},
         {"VRMLTextureTransform", "TextureTransform"},
+        {"Cone", "Cone"},
+        {"VRMLCone", "Cone"},
+        {"Cylinder", "Cylinder"},
+        {"VRMLCylinder", "Cylinder"},
+        {"ElevationGrid", "ElevationGrid"},
+        {"VRMLElevationGrid", "ElevationGrid"},
+        {"Extrusion", "Extrusion"},
+        {"VRMLExtrusion", "Extrusion"},
+        {"PointSet", "PointSet"},
+        {"VRMLPointSet", "PointSet"},
+        {"Sphere", "Sphere"},
+        {"VRMLSphere", "Sphere"},
     };
     return headerToCanonicalName;
   }
@@ -72,6 +84,12 @@ namespace vrml_proc::traversor::node_descriptor {
     constexpr uint32_t PixelTexture = Hash("PixelTexture");
     constexpr uint32_t TextureTransform = Hash("TextureTransform");
     constexpr uint32_t Appearance = Hash("Appearance");
+    constexpr uint32_t Cone = Hash("Cone");
+    constexpr uint32_t Cylinder = Hash("Cylinder");
+    constexpr uint32_t ElevationGrid = Hash("ElevationGrid");
+    constexpr uint32_t Extrusion = Hash("Extrusion");
+    constexpr uint32_t PointSet = Hash("PointSet");
+    constexpr uint32_t Sphere = Hash("Sphere");
   }  // namespace CanonicalHeaderHashes
 
   /**
@@ -99,8 +117,8 @@ namespace vrml_proc::traversor::node_descriptor {
     return result;
   }
 
-  inline std::unordered_set<std::string> GetPossibleNamesForCanonical(const std::string& canonicalName1,
-                                                                      const std::string& canonicalName2) {
+  inline std::unordered_set<std::string> GetPossibleNamesForCanonical(
+      const std::string& canonicalName1, const std::string& canonicalName2) {
     std::unordered_set<std::string> result;
     for (const auto& [possible, canonical] : GetHeaderToCanonicalNameMap()) {
       if (canonical == canonicalName1 || canonical == canonicalName2) {
@@ -110,9 +128,8 @@ namespace vrml_proc::traversor::node_descriptor {
     return result;
   }
 
-  inline std::unordered_set<std::string> GetPossibleNamesForCanonical(const std::string& canonicalName1,
-                                                                      const std::string& canonicalName2,
-                                                                      const std::string& canonicalName3) {
+  inline std::unordered_set<std::string> GetPossibleNamesForCanonical(
+      const std::string& canonicalName1, const std::string& canonicalName2, const std::string& canonicalName3) {
     std::unordered_set<std::string> result;
     for (const auto& [possible, canonical] : GetHeaderToCanonicalNameMap()) {
       if (canonical == canonicalName1 || canonical == canonicalName2 || canonical == canonicalName3) {

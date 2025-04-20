@@ -4,7 +4,6 @@
 #include <string_view>
 
 namespace vrml_proc::core::utils {
-
   /**
    * @brief Returns hash of the given string.
    * @param string string to hash

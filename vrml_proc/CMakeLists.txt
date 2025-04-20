@@ -103,6 +103,7 @@ add_library(vrmlproc SHARED
     "src/traversors/VrmlFileTraversor.hpp"
     "src/traversors/VrmlNodeTraversorParameters.hpp"
     "src/traversors/VrmlFileTraversorParameters.hpp"
+    "src/traversors/TraversorResult.hpp"
 
     "src/traversors/errors/FileTraversorError.hpp"
     "src/traversors/errors/NodeTraversorError.hpp"
@@ -116,7 +117,6 @@ add_library(vrmlproc SHARED
 
     "src/traversors/utils/ConversionContextActionExecutor.hpp"
 
-    "src/traversors/handlers/HandlerResult.hpp"
     "src/traversors/handlers/HandlerToActionBundle.hpp"
     "src/traversors/handlers/HandlerUtils.hpp"
     "src/traversors/handlers/ShapeHandler.hpp"
@@ -132,8 +132,8 @@ add_library(vrmlproc SHARED
     "src/traversors/handlers/TextureCoordinateHandler.hpp"
     "src/traversors/handlers/SwitchHandler.hpp"
 
-    "src/traversors/validators/NodeValidationUtils.hpp"
-    "src/traversors/validators/errors/NodeValidationError.hpp"
+    "src/traversors/validation/NodeValidationUtils.hpp"
+    "src/traversors/validation/errors/NodeValidationError.hpp"
 
     # Actions.
     "src/actions/ConversionContextActionMap.hpp"
@@ -180,8 +180,8 @@ target_include_directories(vrmlproc PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/node_descriptors
     ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/utils
     ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/errors
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/validators
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/validators/errors
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/validation
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/validation/errors
     ${CMAKE_CURRENT_SOURCE_DIR}/src/traversors/handlers
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/math
@@ -209,7 +209,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 # Explicitly link Boost::iostreams (problems with compilation on Linux with GNU 11.4.0).
-target_link_libraries(vrmlproc PRIVATE CGAL::CGAL Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread)
+target_link_libraries(vrmlproc PRIVATE CGAL::CGAL Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread ${GMP_LIBRARY} ${MPFR_LIBRARY})
 
 # --------------------------------------------------------------------------------------- #
 

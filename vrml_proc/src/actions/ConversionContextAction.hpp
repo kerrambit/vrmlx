@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "ConversionContextable.hpp"
+
 namespace vrml_proc {
   namespace action {
 
@@ -10,7 +12,7 @@ namespace vrml_proc {
      * with method called Execute() which returns a shared pointer owning a BaseConversionContext object.
      * The Action object is encapsulation of a "program" or a "function" which returns a BaseConversionContext object.
      */
-    template <typename ConversionContext>
+    template <ConversionContextable ConversionContext>
     class ConversionContextAction {
      public:
       /**

@@ -12,7 +12,7 @@ Before you can build this project, you'll need to have the Boost libraries insta
 
 2. **(Manual building)**:
    - **Before continuing, note that build pipeline was tested only with prebuilt binaries!**
-   - If you wish not to download prebuilt binaries and you want to build Boost yourself, then you should visit the [Boost Downloads Page](https://www.boost.org/users/download/) and download the latest Boost release (e.g., `boost_1_87_0.zip`).
+   - Visit the [Boost Downloads Page](https://www.boost.org/users/download/) and download the latest Boost release (e.g., `boost_1_87_0.zip`).
    - Extract the Boost archive to a directory of your choice. For example, extract it to:
      ```
      C:\path\to\your\boost
@@ -43,7 +43,7 @@ Before you can build this project, you'll need to have the Boost libraries insta
         ```
 
 4. **Set the `BOOST_ROOT` environment variable**:
-   - Set the `BOOST_ROOT` environment variable to the Boost installation directory. This can be done permanently or temporarily:
+   - Set the `BOOST_ROOT` environment variable to the Boost installation directory.
    - This step is important, because CMake uses `BOOST_ROOT` environment variable to set up the project.
    - If you do not know how to set up environment variables, see the following steps:
         - Go to **System Properties** → **Advanced** → **Environment Variables**.
@@ -96,13 +96,8 @@ Before you can build this project, you'll need to have the Boost libraries insta
 
 3. **Set the `BOOST_ROOT` environment variable**:
 - You might need to set `BOOST_ROOT` environment variable when building Boost from source files.
-- In the case you need it, proceed with setting the `BOOST_ROOT` environment variable to the Boost installation directory:
-
-- **Temporarily** (only for the current terminal session):
-     ```
-        export BOOST_ROOT=/path/to/your/boost
-     ```
-- **Permanently**:
+- In the case you need it, proceed with setting the `BOOST_ROOT` environment variable to the Boost installation directory.
+- 
     - Add the following line to your `.bashrc`, `.zshrc`, or other shell configuration file:
     ```
     export BOOST_ROOT=/path/to/your/boost

@@ -19,7 +19,9 @@
 #include "Logger.hpp"
 #include "MaterialHandler.hpp"
 #include "NodeDescriptor.hpp"
+#include "NodeDescriptorMap.hpp"
 #include "NodeTraversorError.hpp"
+#include "NodeView.hpp"
 #include "NormalHandler.hpp"
 #include "PixelTextureHandler.hpp"
 #include "ShapeHandler.hpp"
@@ -27,81 +29,114 @@
 #include "TextureCoordinateHandler.hpp"
 #include "TextureTransformHandler.hpp"
 #include "TransformHandler.hpp"
+#include "TraversorResult.hpp"
+#include "VrmlCanonicalHeaders.hpp"
 #include "VrmlNode.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
 #include "WorldInfoHandler.hpp"
-#include "NodeDescriptorMap.hpp"
-#include "VrmlCanonicalHeaders.hpp"
-#include "NodeView.hpp"
-
-#include "VrmlProcessingExport.hpp"
+#include "ConversionContextable.hpp"
+#include "ConeHandler.hpp"
+#include "CylinderHandler.hpp"
+#include "ElevationGridHandler.hpp"
+#include "ExtrusionHandler.hpp"
+#include "PointSetHandler.hpp"
+#include "SphereHandler.hpp"
 
 // ------------------------------------------------------------------------- //
 
-template <typename ConversionContext>
-static cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> RunHandler(
-    const std::string& header,
-    const vrml_proc::traversor::VrmlNodeTraversorParameters& context,
+/**
+ * @brief Helper function which tried to find and execute action.
+ *
+ * @param header node name
+ * @param params parameters from traversor
+ * @param actionMap action map from traversor
+ * @param nd node view of the node
+ *
+ * @returns pointer to conversion context, otherwise an error object if any problem occurs
+ */
+template <ConversionContextable ConversionContext>
+static vrml_proc::traversor::TraversorResult<ConversionContext> FindAndRunHandler(const std::string& header,
+    const vrml_proc::traversor::VrmlNodeTraversorParameters& params,
     const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
-    std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {
+    std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {  //
+
   using namespace vrml_proc::core::utils;
   using namespace vrml_proc::core::error;
   using namespace vrml_proc::traversor::handler;
   using namespace vrml_proc::traversor::error;
   using namespace vrml_proc::traversor::node_descriptor;
 
-  cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<Error>> handlerResult;
+  // Handler is found using precomputed hashes of each canonical node name.
+  vrml_proc::traversor::TraversorResult<ConversionContext> handlerResult;
   switch (Hash(ConvertToCanonicalHeader(header))) {
     case CanonicalHeaderHashes::WorldInfo:
-      handlerResult = WorldInfoHandler::Handle(context, actionMap, nd);
+      handlerResult = WorldInfoHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Group:
-      handlerResult = GroupHandler::Handle(context, actionMap, nd);
+      handlerResult = GroupHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Transform:
-      handlerResult = TransformHandler::Handle(context, actionMap, nd);
+      handlerResult = TransformHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Shape:
-      handlerResult = ShapeHandler::Handle(context, actionMap, nd);
+      handlerResult = ShapeHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::IndexedFaceSet:
-      handlerResult = IndexedFaceSetHandler::Handle(context, actionMap, nd);
+      handlerResult = IndexedFaceSetHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::IndexedLineSet:
-      handlerResult = IndexedLineSetHandler::Handle(context, actionMap, nd);
+      handlerResult = IndexedLineSetHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Coordinate:
-      handlerResult = CoordinateHandler::Handle(context, actionMap, nd);
+      handlerResult = CoordinateHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Normal:
-      handlerResult = NormalHandler::Handle(context, actionMap, nd);
+      handlerResult = NormalHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::TextureCoordinate:
-      handlerResult = TextureCoordinateHandler::Handle(context, actionMap, nd);
+      handlerResult = TextureCoordinateHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Color:
-      handlerResult = ColorHandler::Handle(context, actionMap, nd);
+      handlerResult = ColorHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Box:
-      handlerResult = BoxHandler::Handle(context, actionMap, nd);
+      handlerResult = BoxHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Switch:
-      handlerResult = SwitchHandler::Handle(context, actionMap, nd);
+      handlerResult = SwitchHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Material:
-      handlerResult = MaterialHandler::Handle(context, actionMap, nd);
+      handlerResult = MaterialHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::ImageTexture:
-      handlerResult = ImageTextureHandler::Handle(context, actionMap, nd);
+      handlerResult = ImageTextureHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::PixelTexture:
-      handlerResult = PixelTextureHandler::Handle(context, actionMap, nd);
+      handlerResult = PixelTextureHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::TextureTransform:
-      handlerResult = TextureTransformHandler::Handle(context, actionMap, nd);
+      handlerResult = TextureTransformHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Appearance:
-      handlerResult = AppearanceHandler::Handle(context, actionMap, nd);
+      handlerResult = AppearanceHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::Cone:
+      handlerResult = ConeHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::Cylinder:
+      handlerResult = CylinderHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::ElevationGrid:
+      handlerResult = ElevationGridHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::Extrusion:
+      handlerResult = ExtrusionHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::PointSet:
+      handlerResult = PointSetHandler::Handle(params, actionMap, nd);
+      break;
+    case CanonicalHeaderHashes::Sphere:
+      handlerResult = SphereHandler::Handle(params, actionMap, nd);
       break;
     default:
       break;
@@ -111,11 +146,16 @@ static cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc
 }
 
 namespace vrml_proc::traversor::VrmlNodeTraversor {
-
-  template <typename ConversionContext>
-  VRMLPROCESSING_API inline cpp::result<std::shared_ptr<ConversionContext>,
-      std::shared_ptr<vrml_proc::core::error::Error>>
-  Traverse(vrml_proc::traversor::VrmlNodeTraversorParameters context,
+  /**
+   * @brief Traverses the VRML node. When given node is visited, an appropriate action is found and executed.
+   * Accumulates the ConversionContext result
+   *
+   * @tparam ConversionContext type of conversion context (result type of the traversal)
+   * @param params parameters for the traversal
+   * @param actionMap map with defined actions
+   */
+  template <ConversionContextable ConversionContext>
+  inline TraversorResult<ConversionContext> Traverse(VrmlNodeTraversorParameters params,
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap) {  //
 
     using namespace vrml_proc::core::logger;
@@ -124,42 +164,44 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
     using namespace vrml_proc::traversor::error;
     using namespace vrml_proc::traversor::node_descriptor;
 
-    bool ignoreUnknownNodeFlag = context.config.ignoreUnknownNode;
+    bool ignoreUnknownNodeFlag = params.config.ignoreUnknownNode;
 
-    LogInfo(FormatString("Find handler for VRML node with name <", context.node.header, ">."), LOGGING_INFO);
+    LogInfo(FormatString("Find handler for VRML node with name <", params.node.header, ">."), LOGGING_INFO);
 
-    if (context.node.header.empty()) {
+    if (params.node.header.empty()) {
       LogInfo("Handle empty VRML node.", LOGGING_INFO);
       return std::make_shared<ConversionContext>();
     }
 
-    auto ndResult = CreateNodeDescriptor(context.node.header);
+    // Find appropriate node descriptor. If it is not found, the current node is not a valid node.
+    auto ndResult = CreateNodeDescriptor(params.node.header);
     if (!ndResult.has_value()) {
       if (ignoreUnknownNodeFlag) {
-        LogInfo(FormatString("No handler for VRML node with name <", context.node.header,
-                    "> was found! The unknown node will be ignored."),
+        LogInfo(FormatString("No handler for VRML node with name <", params.node.header,
+                    "> was found. The unknown node will be ignored."),
             LOGGING_INFO);
         return std::make_shared<ConversionContext>();
       }
-
-      LogError(FormatString("No handler for VRML node with name <", context.node.header,
-                   "> was found! It is unknown VRML node!"),
+      LogError(FormatString(
+                   "No handler for VRML node with name <", params.node.header, "> was found! It is unknown VRML node!"),
           LOGGING_INFO);
-      std::shared_ptr<UnknownVrmlNode> innerError = std::make_shared<UnknownVrmlNode>(context.node.header);
-      return cpp::fail(std::make_shared<NodeTraversorError>(innerError, context.node));
+      std::shared_ptr<UnknownVrmlNode> innerError = std::make_shared<UnknownVrmlNode>(params.node.header);
+      return cpp::fail(std::make_shared<NodeTraversorError>(innerError, params.node));
     }
 
+    // Validate node using node descriptor.
     auto& nd = ndResult.value();
-    auto validationResult = nd.Validate(context.node, context.manager);
+    auto validationResult = nd.Validate(params.node, params.manager);
     if (validationResult.has_error()) {
-      LogError(FormatString("Validation for node <", context.node.header, "> failed!"), LOGGING_INFO);
-      return cpp::fail(std::make_shared<NodeTraversorError>(validationResult.error(), context.node));
+      LogError(FormatString("Validation for node <", params.node.header, "> failed!"), LOGGING_INFO);
+      return cpp::fail(std::make_shared<NodeTraversorError>(validationResult.error(), params.node));
     }
 
+    // Find and run handler for node.
     auto handlerResult =
-        RunHandler<ConversionContext>(context.node.header, context, actionMap, validationResult.value());
+        FindAndRunHandler<ConversionContext>(params.node.header, params, actionMap, validationResult.value());
     if (handlerResult.has_error()) {
-      return cpp::fail(std::make_shared<NodeTraversorError>(handlerResult.error(), context.node));
+      return cpp::fail(std::make_shared<NodeTraversorError>(handlerResult.error(), params.node));
     }
 
     return handlerResult;

@@ -9,7 +9,7 @@
 
 namespace vrml_proc::math::cgal {
 
-  using CGALKernel = CGAL::Simple_cartesian<vrml_proc::parser::float32_t>;
+  using CGALKernel = CGAL::Simple_cartesian<double>;
 
   using CGALVector3 = CGALKernel::Vector_3;
 

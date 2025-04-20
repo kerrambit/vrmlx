@@ -42,27 +42,10 @@ namespace vrml_proc::traversor::node_descriptor {
       static vrml_proc::parser::VrmlNode defaultGeometry;
       nd.BindVrmlNode("appearance", GetPossibleNamesForCanonical("Appearance"), defaultAppearance);
       nd.BindVrmlNode("geometry",
-                      {"Box",
-                       "VRMLBox",
-                       "Cone",
-                       "VRMLCone",
-                       "Cylinder",
-                       "VRMLCylinder",
-                       "ElevationGrid",
-                       "VRMLElevationGrid",
-                       "Extrusion",
-                       "VRMLExtrusion",
-                       "IndexedFaceSet",
-                       "VRMLIndexedFaceSet",
-                       "IndexedLineSet",
-                       "VRMLIndexedLineSet",
-                       "PointSet",
-                       "VRMLPointSet",
-                       "Sphere",
-                       "VRMLSphere",
-                       "Text",
-                       "VRMLText"},
-                      defaultGeometry);  // TODO: fucntion will take set of names
+          {"Box", "VRMLBox", "Cone", "VRMLCone", "Cylinder", "VRMLCylinder", "ElevationGrid", "VRMLElevationGrid",
+              "Extrusion", "VRMLExtrusion", "IndexedFaceSet", "VRMLIndexedFaceSet", "IndexedLineSet",
+              "VRMLIndexedLineSet", "PointSet", "VRMLPointSet", "Sphere", "VRMLSphere", "Text", "VRMLText"},
+          defaultGeometry);  // TODO: fucntion will take set of names
 
       return nd;
     };
@@ -269,9 +252,129 @@ namespace vrml_proc::traversor::node_descriptor {
       static vrml_proc::parser::VrmlNode defaultTextureTransform;
 
       nd.BindVrmlNode("material", GetPossibleNamesForCanonical("Material"), defaultMaterial);
-      nd.BindVrmlNode("texture", GetPossibleNamesForCanonical("ImageTexture", "MovieTexture", "PixelTexture"),
-                      defaultTexture);
+      nd.BindVrmlNode(
+          "texture", GetPossibleNamesForCanonical("ImageTexture", "MovieTexture", "PixelTexture"), defaultTexture);
       nd.BindVrmlNode("textureTransform", GetPossibleNamesForCanonical("TextureTransform"), defaultTextureTransform);
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Cone"] = []() {
+      auto nd = NodeDescriptor("Cone", GetPossibleNamesForCanonical("Cone"));
+
+      static vrml_proc::parser::float32_t defaultBottomRadius = 1.0f;
+      static vrml_proc::parser::float32_t defaultHeight = 2.0f;
+      static bool defaultSide = true;
+      static bool defaultBottom = true;
+      nd.BindField("bottomRadius", defaultBottomRadius);
+      nd.BindField("height", defaultHeight);
+      nd.BindField("side", defaultSide);
+      nd.BindField("bottom", defaultBottom);
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Cylinder"] = []() {
+      auto nd = NodeDescriptor("Cylinder", GetPossibleNamesForCanonical("Cylinder"));
+
+      static bool defaultBottom = true;
+      static vrml_proc::parser::float32_t defaultHeight = 2.0f;
+      static vrml_proc::parser::float32_t defaultRadius = 1.0f;
+      static bool defaultSide = true;
+      static bool defaultTop = true;
+      nd.BindField("bottom", defaultBottom);
+      nd.BindField("height", defaultHeight);
+      nd.BindField("radius", defaultRadius);
+      nd.BindField("side", defaultSide);
+      nd.BindField("top", defaultTop);
+
+      return nd;
+    };
+
+    nodeDescriptionMap["ElevationGrid"] = []() {
+      auto nd = NodeDescriptor("ElevationGrid", GetPossibleNamesForCanonical("ElevationGrid"));
+
+      static vrml_proc::parser::VrmlNode defaultColor;
+      static vrml_proc::parser::VrmlNode defaultNormal;
+      static vrml_proc::parser::VrmlNode defaultTexCoord;
+
+      // static vrml_proc::parser::Float32Array defaultHeight; // TODO: first Float32Array have to be implemented in
+      // parser
+      static bool defaultCcw = true;
+      static bool defaultColorPerVertex = true;
+      static vrml_proc::parser::float32_t defaultCreaseAngle = 0.0f;
+      static bool defaultNormalPerVertex = true;
+      static bool defaultSolid = true;
+      static int32_t defaultXDimension = 0;
+      static float_t defaultXSpacing = 0.0f;
+      static int32_t defaultZDimension = 0;
+      static float_t defaultZSpacing = 0.0f;
+
+      // nd.BindField("height", defaultheight);
+      nd.BindField("ccw", defaultCcw);
+      nd.BindField("colorPerVertex", defaultColorPerVertex);
+      nd.BindField("creaseAngle", defaultCreaseAngle);
+      nd.BindField("normalPerVertex", defaultNormalPerVertex);
+      nd.BindField("solid", defaultSolid);
+      nd.BindField("xDimension", defaultXDimension);
+      nd.BindField("xSpacing", defaultXSpacing);
+      nd.BindField("zDimension", defaultZDimension);
+      nd.BindField("zSpacing", defaultZSpacing);
+
+      nd.BindVrmlNode("color", GetPossibleNamesForCanonical("Color"), defaultColor);
+      nd.BindVrmlNode("normal", GetPossibleNamesForCanonical("Normal"), defaultNormal);
+      nd.BindVrmlNode("texCoord", GetPossibleNamesForCanonical("TextureCoordinate"), defaultTexCoord);
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Extrusion"] = []() {
+      auto nd = NodeDescriptor("Extrusion", GetPossibleNamesForCanonical("Extrusion"));
+
+      static bool defaultBeginCap = true;
+      static bool defaultCcw = true;
+      static bool defaultConvex = true;
+      static vrml_proc::parser::float32_t defaultCreaseAngle = 0.0f;
+      static vrml_proc::parser::Vec2fArray defaultCrossSection;
+      defaultCrossSection.vectors = {{1.0f, 1.0f}, {1.0f, -1.0f}, {-1.0f, -1.0f}, {-1.0f, 1.0f}, {1.0f, 1.0f}};
+      static bool defaultEndCap = true;
+      static vrml_proc::parser::Vec4f defaultOrientation = {0.0f, 0.0f, 1.0f, 0.0f};
+      static vrml_proc::parser::Vec2f defaultScale = {1.0f, 1.0f};
+      static bool defaultSolid = true;
+      static vrml_proc::parser::Vec3fArray defaultSpine;
+      defaultSpine.vectors = {{0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
+
+      nd.BindField("beginCap", defaultBeginCap);
+      nd.BindField("ccw", defaultCcw);
+      nd.BindField("convex", defaultConvex);
+      nd.BindField("creaseAngle", defaultCreaseAngle);
+      nd.BindField("crossSection", defaultCrossSection);
+      nd.BindField("endCap", defaultEndCap);
+      nd.BindField("orientation", defaultOrientation);
+      nd.BindField("scale", defaultScale);
+      nd.BindField("solid", defaultSolid);
+      nd.BindField("spine", defaultSpine);
+
+      return nd;
+    };
+
+    nodeDescriptionMap["PointSet"] = []() {
+      auto nd = NodeDescriptor("PointSet", GetPossibleNamesForCanonical("PointSet"));
+
+      static vrml_proc::parser::VrmlNode defaultColor;
+      static vrml_proc::parser::VrmlNode defaultCoord;
+
+      nd.BindVrmlNode("color", GetPossibleNamesForCanonical("Color"), defaultColor);
+      nd.BindVrmlNode("coord", GetPossibleNamesForCanonical("Coordinate"), defaultCoord);
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Sphere"] = []() {
+      auto nd = NodeDescriptor("Sphere", GetPossibleNamesForCanonical("Sphere"));
+
+      static vrml_proc::parser::float32_t defaultRadius = 1.0f;
+      nd.BindField("radius", defaultRadius);
 
       return nd;
     };

@@ -5,20 +5,19 @@
 
 #include <result.hpp>
 
+#include "ConversionContextable.hpp"
 #include "ConversionContextActionExecutor.hpp"
 #include "ConversionContextActionMap.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
-#include "VrmlNodeTraversorParameters.hpp"
-#include "Logger.hpp"
-#include "NodeTraversorError.hpp"
-#include "Vec3f.hpp"
-#include "NodeDescriptor.hpp"
-#include "TraversorResult.hpp"
 #include "HandlerToActionBundle.hpp"
-#include "ConversionContextable.hpp"
+#include "Logger.hpp"
+#include "NodeDescriptor.hpp"
+#include "NodeTraversorError.hpp"
+#include "TraversorResult.hpp"
+#include "VrmlNodeTraversorParameters.hpp"
 
-namespace vrml_proc::traversor::handler::BoxHandler {
+namespace vrml_proc::traversor::handler::SphereHandler {
   template <ConversionContextable ConversionContext>
   TraversorResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
@@ -34,4 +33,4 @@ namespace vrml_proc::traversor::handler::BoxHandler {
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
         actionMap, nd->GetId(), data);
   }
-}  // namespace vrml_proc::traversor::handler::BoxHandler
+}  // namespace vrml_proc::traversor::handler::SphereHandler

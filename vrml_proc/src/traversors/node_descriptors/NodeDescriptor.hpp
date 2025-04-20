@@ -59,17 +59,18 @@ namespace vrml_proc::traversor::node_descriptor {
 
     const std::unordered_set<std::string>& GetAdditionalIds() const { return m_additionalIds; }
 
-    cpp::result<std::shared_ptr<NodeView>, std::shared_ptr<vrml_proc::traversor::validator::error::NodeValidationError>>
+    cpp::result<std::shared_ptr<NodeView>,
+        std::shared_ptr<vrml_proc::traversor::validation::error::NodeValidationError>>
     Validate(const vrml_proc::parser::VrmlNode& node,
         const vrml_proc::parser::VrmlNodeManager& manager,
         bool checkName = false) {  //
 
-      using namespace vrml_proc::traversor::validator::NodeValidationUtils;
+      using namespace vrml_proc::traversor::validation::NodeValidationUtils;
 
       if (checkName && !((node.header == m_id) || (m_additionalIds.find(node.header) != m_additionalIds.end()))) {
         auto expectedHeaders = m_additionalIds;
         expectedHeaders.insert(m_id);
-        return cpp::fail(std::make_shared<vrml_proc::traversor::validator::error::InvalidVrmlNodeHeader>(
+        return cpp::fail(std::make_shared<vrml_proc::traversor::validation::error::InvalidVrmlNodeHeader>(
             node.header, expectedHeaders));
       }
 

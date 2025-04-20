@@ -11,12 +11,13 @@
 #include "Logger.hpp"
 #include "NodeTraversorError.hpp"
 #include "Vec2fArray.hpp"
-#include "HandlerResult.hpp"
+#include "TraversorResult.hpp"
 #include "HandlerToActionBundle.hpp"
+#include "ConversionContextable.hpp"
 
 namespace vrml_proc::traversor::handler::TextureCoordinateHandler {
-  template <typename ConversionContext>
-  HandlerResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
+  template <ConversionContextable ConversionContext>
+  TraversorResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
       std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {  //
 
