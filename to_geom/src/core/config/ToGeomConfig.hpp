@@ -49,14 +49,25 @@ namespace to_geom::core::config {
    *
    * @implements `Config` class with Load() method.
    */
-  struct ToGeomConfig : public vrml_proc::core::config::Config {
+  struct ToGeomConfig : public vrml_proc::core::config::VrmlProcConfig {
+    /**
+     * @brief Represents settings object for IndexedFaceSet calculator.
+     */
+    struct IfsSettigs {
+      bool checkRange = true;
+      bool onlyTriangularFaces = false;
+    };
+
     /**
      * @brief Defaul constructor.
      */
-    ToGeomConfig() = default;
+    ToGeomConfig()
+        : vrml_proc::core::config::VrmlProcConfig(),
+          exportFormat(to_geom::core::io::ExportFormat::Stl),
+          ifsSettings({true, false}) {}
 
-    vrml_proc::core::config::VrmlProcConfig vrmlProcConfig;
     to_geom::core::io::ExportFormat exportFormat = to_geom::core::io::ExportFormat::Stl;
+    IfsSettigs ifsSettings;
 
     /**
      * @brief Loads configuration file from JSON file.
@@ -70,12 +81,17 @@ namespace to_geom::core::config {
       auto json = reader.Read(filepath);
 
       if (json.has_value()) {
+        auto loadBaseJson = LoadJson(json.value());
+        if (loadBaseJson.has_error()) {
+          return loadBaseJson;
+        }
         try {
-          vrmlProcConfig.ignoreUnknownNode = json.value().value("ignoreUnknownNode", false);
           exportFormat = ConvertStringToExportFormat(json.value().value("exportFormat", "stl"));
-          vrmlProcConfig.logFileDirectory =
-              json.value().value("logFileDirectory", std::filesystem::current_path().string());
-          vrmlProcConfig.logFileName = json.value().value("logFileName", "vrmlproc");
+          if (json.value().contains("IFSSettings") && (json.value())["IFSSettings"].is_object()) {
+            const auto& ifs = (json.value())["IFSSettings"];
+            ifsSettings.checkRange = ifs.value("checkRange", true);
+            ifsSettings.onlyTriangularFaces = ifs.value("onlyTriangularFaces", false);
+          }
         } catch (const nlohmann::json::exception& e) {
           return cpp::fail(std::make_shared<vrml_proc::core::error::JsonError>(e.what()));
         }

@@ -27,7 +27,13 @@ namespace vrml_proc::core::config {
     /**
      * @brief Defaul constructor.
      */
-    VrmlProcConfig() = default;
+    VrmlProcConfig()
+        : ignoreUnknownNode(false),
+          logFileDirectory(std::filesystem::current_path().string()),
+          logFileName("vrmlproc") {}
+
+    VrmlProcConfig(bool ignoreUnknownNode, const std::string& logFileDirectory, const std::string& logFileName)
+        : ignoreUnknownNode(ignoreUnknownNode), logFileDirectory(logFileDirectory), logFileName(logFileName){};
 
     bool ignoreUnknownNode = false;
     std::string logFileDirectory = std::filesystem::current_path().string();
@@ -40,23 +46,28 @@ namespace vrml_proc::core::config {
      * @return result containing error on failure, else empty
      */
     cpp::result<void, std::shared_ptr<vrml_proc::core::error::Error>> Load(
-        const std::filesystem::path& filepath) override {
+        const std::filesystem::path& filepath) override {  //
+
       vrml_proc::core::io::JsonFileReader reader;
       auto json = reader.Read(filepath);
 
       if (json.has_value()) {
-        try {
-          ignoreUnknownNode = json.value().value("ignoreUnknownNode", false);
-          logFileDirectory = json.value().value("logFileDirectory", std::filesystem::current_path().string());
-          logFileName = json.value().value("logFileName", "vrmlproc");
-        } catch (const nlohmann::json::exception& e) {
-          return cpp::fail(std::make_shared<vrml_proc::core::error::JsonError>(e.what()));
-        }
-
-        return {};
+        return LoadJson(json.value());
       }
 
       return cpp::fail(json.error());
+    }
+
+   protected:
+    cpp::result<void, std::shared_ptr<vrml_proc::core::error::Error>> LoadJson(const nlohmann::json& json) {
+      try {
+        ignoreUnknownNode = json.value("ignoreUnknownNode", false);
+        logFileDirectory = json.value("logFileDirectory", std::filesystem::current_path().string());
+        logFileName = json.value("logFileName", "vrmlproc");
+      } catch (const nlohmann::json::exception& e) {
+        return cpp::fail(std::make_shared<vrml_proc::core::error::JsonError>(e.what()));
+      }
+      return {};
     }
   };
 }  // namespace vrml_proc::core::config
