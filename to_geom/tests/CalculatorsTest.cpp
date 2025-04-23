@@ -265,7 +265,7 @@ TEST_CASE("IndexedFaceSetCalculator - valid I.", "[valid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_value());
     REQUIRE(result.value()->is_empty());
   }
@@ -285,7 +285,7 @@ TEST_CASE("IndexedFaceSetCalculator - invalid I.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::EmptyArrayError>(result.error()));
     LogError(result.error());
@@ -312,7 +312,7 @@ TEST_CASE("IndexedFaceSetCalculator - invalid II.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<to_geom::calculator::error::InvalidNumberOfCoordinatesForFaceError>(result.error()));
     LogError(result.error());
@@ -340,7 +340,7 @@ TEST_CASE("IndexedFaceSetCalculator - invalid III.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<to_geom::calculator::error::InvalidNumberOfCoordinatesForFaceError>(result.error()));
     LogError(result.error());
@@ -369,7 +369,7 @@ TEST_CASE("IndexedFaceSetCalculator - invalid IV.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<to_geom::calculator::error::InvalidNumberOfCoordinatesForFaceError>(result.error()));
     LogError(result.error());
@@ -403,7 +403,7 @@ TEST_CASE("IndexedFaceSetCalculator - valid II.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_value());
 
     GENERATE_TEST_OUTPUT_FILENAME(filepath);
@@ -437,7 +437,7 @@ TEST_CASE("IndexedFaceSetCalculator - invalid V.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -468,7 +468,7 @@ TEST_CASE("IndexedFaceSetCalculator - invalid VI.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -499,7 +499,7 @@ TEST_CASE("IndexedFaceSetCalculator - invalid VII.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -530,7 +530,7 @@ TEST_CASE("IndexedFaceSetCalculator - invalid VIII.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -561,7 +561,7 @@ TEST_CASE("IndexedFaceSetCalculator - invalid IX.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -592,7 +592,7 @@ TEST_CASE("IndexedFaceSetCalculator - invalid X.", "[invalid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -643,7 +643,7 @@ TEST_CASE("IndexedFaceSetCalculator - valid III.", "[valid]") {
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), std::cref(isConvex), matrix);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix);
     REQUIRE(result.has_value());
     GENERATE_TEST_OUTPUT_FILENAME(filepath);
     to_geom::core::io::StlFileWriter writer;
