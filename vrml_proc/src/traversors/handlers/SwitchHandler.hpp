@@ -69,6 +69,7 @@ namespace vrml_proc::traversor::handler::SwitchHandler {
     nd->SetTransformationMatrix(context.transformation);
     auto data = HandlerToActionBundle<ConversionContext>(nd);
     data.cc1 = resolvedChild;
+    data.config = context.config;
 
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
         actionMap, nd->GetId(), data);

@@ -68,6 +68,7 @@ namespace vrml_proc::traversor::handler::AppearanceHandler {
     data.cc1 = resolvedMaterial.value();
     data.cc2 = resolvedTexture.value();
     data.cc3 = resolvedTextureTransform.value();
+    data.config = context.config;
 
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
         actionMap, nd->GetId(), data);

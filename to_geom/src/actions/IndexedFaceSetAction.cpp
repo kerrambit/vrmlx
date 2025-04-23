@@ -6,19 +6,16 @@
 
 #include <result.hpp>
 
-#include "ConversionContextAction.hpp"
 #include "ConversionContextActionMap.hpp"
 #include "GeometryAction.hpp"
+#include "HandlerToActionBundle.hpp"
 #include "HelperCoordinateAction.hpp"
 #include "IndexedFaceSetCalculator.hpp"
 #include "Logger.hpp"
 #include "MeshTaskConversionContext.hpp"
-#include "TransformationMatrix.hpp"
-#include "Vec3fArray.hpp"
-#include "Vec3fArrayConversionContext.hpp"
+#include "ToGeomConfig.hpp"
 #include "VrmlNodeManager.hpp"
 #include "VrmlNodeTraversor.hpp"
-#include "HandlerToActionBundle.hpp"
 
 namespace to_geom {
   namespace action {

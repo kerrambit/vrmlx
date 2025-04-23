@@ -4,6 +4,7 @@
 
 #include <NodeView.hpp>
 #include "ConversionContextable.hpp"
+#include "VrmlProcConfig.hpp"
 
 namespace vrml_proc::traversor::handler {
   /**
@@ -17,7 +18,8 @@ namespace vrml_proc::traversor::handler {
     /**
      * @brief Constructs a default object.
      */
-    HandlerToActionBundle() : nodeView(nullptr), ccGroup({}), cc1(nullptr), cc2(nullptr), cc3(nullptr) {}
+    HandlerToActionBundle()
+        : nodeView(nullptr), ccGroup({}), cc1(nullptr), cc2(nullptr), cc3(nullptr), config(nullptr) {}
 
     /**
      * @brief Constructs an object.
@@ -25,7 +27,17 @@ namespace vrml_proc::traversor::handler {
      * @param nodeView node view
      */
     HandlerToActionBundle(std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nodeView)
-        : nodeView(nodeView), ccGroup({}), cc1(nullptr), cc2(nullptr), cc3(nullptr) {}
+        : nodeView(nodeView), ccGroup({}), cc1(nullptr), cc2(nullptr), cc3(nullptr), config(nullptr) {}
+
+    /**
+     * @brief Constructs an object.
+     *
+     * @param nodeView node view
+     * @param config configuration file
+     */
+    HandlerToActionBundle(std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nodeView,
+        std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config)
+        : nodeView(nodeView), ccGroup({}), cc1(nullptr), cc2(nullptr), cc3(nullptr), config(nullptr), config(config) {}
 
     /**
      * @brief Constructs an object.
@@ -35,12 +47,13 @@ namespace vrml_proc::traversor::handler {
      */
     HandlerToActionBundle(std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nodeView,
         const std::vector<std::shared_ptr<ConversionContext>>& ccGroup)
-        : nodeView(nodeView, ccGroup), ccGroup(ccGroup), cc1(nullptr), cc2(nullptr), cc3(nullptr) {}
+        : nodeView(nodeView, ccGroup), ccGroup(ccGroup), cc1(nullptr), cc2(nullptr), cc3(nullptr), config(nullptr) {}
 
     std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nodeView;
     std::vector<std::shared_ptr<ConversionContext>> ccGroup;
     std::shared_ptr<ConversionContext> cc1;
     std::shared_ptr<ConversionContext> cc2;
     std::shared_ptr<ConversionContext> cc3;
+    std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config;
   };
 }  // namespace vrml_proc::traversor::handler

@@ -4,18 +4,18 @@
 
 #include <result.hpp>
 
+#include "ConversionContextable.hpp"
 #include "ConversionContextActionExecutor.hpp"
 #include "ConversionContextActionMap.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
-#include "TraversorResult.hpp"
 #include "HandlerToActionBundle.hpp"
 #include "Logger.hpp"
 #include "NodeDescriptor.hpp"
 #include "NodeTraversorError.hpp"
+#include "TraversorResult.hpp"
 #include "Vec3f.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
-#include "ConversionContextable.hpp"
 
 // Forward declaration.
 namespace vrml_proc::traversor::VrmlNodeTraversor {
@@ -56,6 +56,7 @@ namespace vrml_proc::traversor::handler::GroupHandler {
 
     auto data = HandlerToActionBundle<ConversionContext>(nd);
     data.ccGroup = resolvedChildren;
+    data.config = context.config;
 
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
         actionMap, nd->GetId(), data);
