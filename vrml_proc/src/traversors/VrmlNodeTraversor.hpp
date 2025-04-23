@@ -164,7 +164,7 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
     using namespace vrml_proc::traversor::error;
     using namespace vrml_proc::traversor::node_descriptor;
 
-    bool ignoreUnknownNodeFlag = params.config.ignoreUnknownNode;
+    bool ignoreUnknownNodeFlag = params.config->ignoreUnknownNode;
 
     LogInfo(FormatString("Find handler for VRML node with name <", params.node.header, ">."), LOGGING_INFO);
 

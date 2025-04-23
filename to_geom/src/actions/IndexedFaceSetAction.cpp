@@ -31,7 +31,7 @@ namespace to_geom {
 
       using conversion_context::Vec3fArrayConversionContext;
       using to_geom::conversion_context::MeshTaskConversionContext;
-      using vrml_proc::core::config::VrmlProcConfig;
+      using to_geom::core::config::ToGeomConfig;
       using vrml_proc::math::TransformationMatrix;
       using vrml_proc::parser::Int32Array;
       using vrml_proc::parser::Vec3fArray;
@@ -68,7 +68,7 @@ namespace to_geom {
           });
 
       auto coordResult = Traverse<Vec3fArrayConversionContext>(
-          {m_properties.coord.get(), manager, false, TransformationMatrix(), VrmlProcConfig()}, map);
+          {m_properties.coord.get(), manager, false, TransformationMatrix(), std::make_shared<ToGeomConfig>()}, map);
 
       /**
        * Geometry primitive node has been traversed, so we can check if it has any data.
@@ -88,12 +88,13 @@ namespace to_geom {
 
       std::reference_wrapper<const Vec3fArray> points = std::cref((coordResult.value())->GetData().at(0));
       std::reference_wrapper<const Int32Array> indices = m_properties.coordIndex;
-      std::reference_wrapper<const bool> isConvex = m_properties.convex;
       TransformationMatrix matrix = m_geometryProperties.matrix;
+      bool checkRange = m_properties.config->ifsSettings.checkRange;
+      bool onlyTriangularFaces = m_properties.config->ifsSettings.onlyTriangularFaces;
 
       result->Add([=]() {
         to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
-        return calculator.Generate3DMesh(indices, points, isConvex, matrix);
+        return calculator.Generate3DMesh(indices, points, matrix, checkRange, onlyTriangularFaces);
       });
 
       return result;

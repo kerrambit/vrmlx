@@ -18,7 +18,7 @@
 #include "Vec3fArrayConversionContext.hpp"
 #include "VrmlNodeManager.hpp"
 #include "VrmlNodeTraversor.hpp"
-#include "VrmlProcConfig.hpp"
+#include "ToGeomConfig.hpp"
 #include "NodeView.hpp"
 #include "HandlerToActionBundle.hpp"
 
@@ -31,7 +31,7 @@ namespace to_geom::action {
   std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> IndexedLineSetAction::Execute() {
     using conversion_context::Vec3fArrayConversionContext;
     using to_geom::conversion_context::MeshTaskConversionContext;
-    using vrml_proc::core::config::VrmlProcConfig;
+    using to_geom::core::config::ToGeomConfig;
     using vrml_proc::math::TransformationMatrix;
     using vrml_proc::parser::Int32Array;
     using vrml_proc::parser::Vec3fArray;
@@ -68,7 +68,7 @@ namespace to_geom::action {
         });
 
     auto coordResult = Traverse<Vec3fArrayConversionContext>(
-        {m_properties.coord.get(), manager, false, TransformationMatrix(), VrmlProcConfig()}, map);
+        {m_properties.coord.get(), manager, false, TransformationMatrix(), std::make_shared<ToGeomConfig>()}, map);
 
     /**
      * Geometry primitive node has been traversed, so we can check if it has any data.

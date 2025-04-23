@@ -23,7 +23,7 @@ namespace vrml_proc::traversor {
         const vrml_proc::parser::VrmlNodeManager& manager,
         bool isDescendantOfShape,
         vrml_proc::math::TransformationMatrix transformation,
-        const vrml_proc::core::config::VrmlProcConfig& config)
+        std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config)
         : node(node),
           manager(manager),
           IsDescendantOfShape(isDescendantOfShape),
@@ -34,6 +34,6 @@ namespace vrml_proc::traversor {
     const vrml_proc::parser::VrmlNodeManager& manager;
     bool IsDescendantOfShape;
     vrml_proc::math::TransformationMatrix transformation;
-    const vrml_proc::core::config::VrmlProcConfig& config;
+    std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config;
   };
 }  // namespace vrml_proc::traversor

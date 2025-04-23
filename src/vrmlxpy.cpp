@@ -27,7 +27,7 @@
 
 static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
     const std::string& outputFilename,
-    const to_geom::core::config::ToGeomConfig& config) {  //
+    std::shared_ptr<to_geom::core::config::ToGeomConfig> config) {  //
 
   using namespace std::filesystem;
   using namespace vrml_proc::parser;
@@ -54,9 +54,8 @@ static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
   }
 
   std::cout << "3/6: file <" << path(inputFilename).string() << "> was succesfully parsed." << std::endl;
-
-  auto convertResult =
-      Traverse<MeshTaskConversionContext>({parseResult.value(), manager, config.vrmlProcConfig}, GetActionMap());
+  ;
+  auto convertResult = Traverse<MeshTaskConversionContext>({parseResult.value(), manager, config}, GetActionMap());
   if (convertResult.has_error()) {
     std::cout << "Caught an application error:\n" << convertResult.error()->GetMessage() << std::endl;
     return false;
@@ -85,7 +84,7 @@ static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
   std::cout << "5/6: mesh was succesfully generated." << std::endl;
 
   std::unique_ptr<FileWriter<to_geom::core::Mesh>> writer;
-  switch (config.exportFormat) {
+  switch (config->exportFormat) {
     case ExportFormat::Stl:
       writer = std::make_unique<StlFileWriter>();
       break;
@@ -150,8 +149,8 @@ namespace vrmlxpy {
 
     std::cout << "Converting VRML to geometry format..." << std::endl;
 
-    ToGeomConfig config;
-    auto configResult = config.Load(configFilename);
+    std::shared_ptr<ToGeomConfig> config;
+    auto configResult = config->Load(configFilename);
     if (configResult.has_error()) {
       std::cout << "Caught an application error:\n" << configResult.error()->GetMessage() << std::endl;
       InitLogging(current_path().string(), "vrmlxpy");
@@ -162,7 +161,7 @@ namespace vrmlxpy {
       return false;
     }
 
-    InitLogging(config.vrmlProcConfig.logFileDirectory, config.vrmlProcConfig.logFileName);
+    InitLogging(config->logFileDirectory, config->logFileName);
 
     std::cout << "1/6: configuration file <" << path(configFilename).string() << "> was succesfully parsed."
               << std::endl;
@@ -172,20 +171,20 @@ namespace vrmlxpy {
   }
 
   bool ConvertVrmlToStl(const std::string& inputFilename, const std::string& outputFilename) {
-    to_geom::core::config::ToGeomConfig config;
-    config.exportFormat = to_geom::core::io::ExportFormat::Stl;
+    std::shared_ptr<to_geom::core::config::ToGeomConfig> config;
+    config->exportFormat = to_geom::core::io::ExportFormat::Stl;
     return HelperConvertVrmlToGeom(inputFilename, outputFilename, config);
   }
 
   bool ConvertVrmlToPly(const std::string& inputFilename, const std::string& outputFilename) {
-    to_geom::core::config::ToGeomConfig config;
-    config.exportFormat = to_geom::core::io::ExportFormat::Ply;
+    std::shared_ptr<to_geom::core::config::ToGeomConfig> config;
+    config->exportFormat = to_geom::core::io::ExportFormat::Ply;
     return HelperConvertVrmlToGeom(inputFilename, outputFilename, config);
   }
 
   bool ConvertVrmlToObj(const std::string& inputFilename, const std::string& outputFilename) {
-    to_geom::core::config::ToGeomConfig config;
-    config.exportFormat = to_geom::core::io::ExportFormat::Obj;
+    std::shared_ptr<to_geom::core::config::ToGeomConfig> config;
+    config->exportFormat = to_geom::core::io::ExportFormat::Obj;
     return HelperConvertVrmlToGeom(inputFilename, outputFilename, config);
   }
 }  // namespace vrmlxpy
