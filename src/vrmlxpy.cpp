@@ -149,7 +149,7 @@ namespace vrmlxpy {
 
     std::cout << "Converting VRML to geometry format..." << std::endl;
 
-    std::shared_ptr<ToGeomConfig> config;
+    std::shared_ptr<ToGeomConfig> config = std::make_shared<ToGeomConfig>();
     auto configResult = config->Load(configFilename);
     if (configResult.has_error()) {
       std::cout << "Caught an application error:\n" << configResult.error()->GetMessage() << std::endl;
