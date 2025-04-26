@@ -1,4 +1,5 @@
 #include "vrmlxpy.hpp"
+#include "vrmlxpy_logo.hpp"
 
 #include <memory>
 #include <filesystem>
@@ -26,105 +27,41 @@
 #include <FileWriter.hpp>
 #include <ManualTimer.hpp>
 
-static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
-    const std::string& outputFilename,
-    std::shared_ptr<to_geom::core::config::ToGeomConfig> config) {  //
+static void PrintApplicationError(std::shared_ptr<vrml_proc::core::error::Error> error) {
+  std::cout << "Caught an application error:\n" << error->GetMessage() << std::endl;
+}
 
+static void PrintProgressInformation(const std::string& information) {
+  static unsigned int task = 1;
+  std::cout << "[" << task << "/6]: " << information << std::endl;
+  task++;
+  if (task > 6) {
+    task = 1;
+  }
+}
+
+static void PrintDefaultLoggingMessage() {
   using namespace std::filesystem;
-  using namespace vrml_proc::parser;
-  using namespace vrml_proc::traversor::VrmlFileTraversor;
-  using namespace to_geom::conversion_context;
-  using namespace vrml_proc::core::io;
-  using namespace to_geom::core::io;
-  using namespace vrml_proc::core::utils;
-  using namespace vrml_proc::core::logger;
+  std::cout << "[Warning]: log file was created on the current path (" << current_path()
+            << "). If there was a log directory specified inside "
+               "the configuration file, do not look for it on this path as loading of configuration file failed!\n"
+            << std::endl;
+}
 
-  MemoryMappedFileReader reader;
-  auto readResult = reader.Read(path(inputFilename));
-  if (readResult.has_error()) {
-    std::cout << "Caught an application error:\n" << readResult.error()->GetMessage() << std::endl;
-    return false;
-  }
-
-  std::cout << "2/6: file <" << path(inputFilename).string() << "> was succesfully read." << std::endl;
-
-  VrmlNodeManager manager;
-  VrmlParser parser(manager);
-  auto parseResult = parser.Parse(BufferView(readResult.value().GetBegin(), readResult.value().GetEnd()));
-  if (parseResult.has_error()) {
-    std::cout << "Caught an application error:\n" << parseResult.error()->GetMessage() << std::endl;
-    return false;
-  }
-
-  std::cout << "3/6: file <" << path(inputFilename).string() << "> was succesfully parsed." << std::endl;
-  ;
-  auto convertResult = Traverse<MeshTaskConversionContext>({parseResult.value(), manager, config}, GetActionMap());
-  if (convertResult.has_error()) {
-    std::cout << "Caught an application error:\n" << convertResult.error()->GetMessage() << std::endl;
-    return false;
-  }
-
-  std::cout << "4/6: file <" << path(inputFilename).string() << "> was succesfully traversed." << std::endl;
-  LogInfo(
-      FormatString("Generation of total ", convertResult.value()->GetData().size(), " meshes begins."), LOGGING_INFO);
-
-  vrml_proc::core::utils::ManualTimer timer;
-  timer.Start();
-
-  std::vector<std::future<to_geom::calculator::CalculatorResult>> results;
-  for (const auto& task : convertResult.value()->GetData()) {
-    if (task) {
-      results.emplace_back(std::async(std::launch::async, task));
-    }
-  }
-
-  to_geom::core::Mesh mesh;
-  for (auto& future : results) {
-    auto meshResult = future.get();
-    if (meshResult.has_value()) {
-      mesh.join(*(meshResult.value()));
-    } else {
-      std::cout << "Invalid submesh!" << std::endl;
-      std::cout << meshResult.error()->GetMessage() << std::endl;
-    }
-  };
-
-  double time = timer.End();
-  LogInfo(FormatString("Generation of meshes ended. The generation took ", time, " seconds."), LOGGING_INFO);
-
-  std::cout << "5/6: mesh was succesfully generated." << std::endl;
-
-  std::unique_ptr<FileWriter<to_geom::core::Mesh>> writer;
-  switch (config->exportFormat) {
-    case ExportFormat::Stl:
-      writer = std::make_unique<StlFileWriter>();
-      break;
-    case ExportFormat::Ply:
-      writer = std::make_unique<PlyFileWriter>();
-      break;
-    case ExportFormat::Obj:
-      writer = std::make_unique<ObjFileWriter>();
-      break;
-    default:
-      writer = std::make_unique<StlFileWriter>();
-      break;
-  }
-
-  auto writeResult = writer->Write(path(outputFilename), mesh);
-  if (writeResult.has_error()) {
-    std::cout << "Caught an aplication error:\n" << writeResult.error()->GetMessage() << std::endl;
-    return false;
-  }
-
-  std::cout << "6/6: file <" << path(outputFilename).string() << "> was succesfully written." << std::endl;
-
-  std::cout << "Converting VRML to geometry format finished succesfully." << std::endl;
-  return true;
+static void PrintInvalidSubmeshMessage(to_geom::calculator::CalculatorResult meshResult) {
+  std::cout << "Encountered an invalid submesh!" << std::endl;
+  PrintApplicationError(meshResult.error());
 }
 
 namespace vrmlxpy {
 
-  void PrintVersion() { std::cout << "(TMP): vrmlxpy 0.1 (togeom 0.1; vrmlproc 1.0)" << std::endl; }
+  void PrintVersion() {
+    std::cout << Logo << R"(
+            vrmlxpy (version 0.1)
+            vrmlproc (version 0.1)
+            togeom (vesion 0.1))"
+              << std::endl;
+  }
 
   std::string GetExpectedOutputFileExtension(const std::string& configFilename) {  //
 
@@ -157,45 +94,127 @@ namespace vrmlxpy {
     using namespace std::filesystem;
     using namespace to_geom::core::config;
     using namespace vrml_proc::core::logger;
+    using namespace vrml_proc::parser;
+    using namespace vrml_proc::traversor::VrmlFileTraversor;
+    using namespace to_geom::conversion_context;
+    using namespace vrml_proc::core::io;
+    using namespace to_geom::core::io;
+    using namespace vrml_proc::core::utils;
 
-    std::cout << "Converting VRML to geometry format..." << std::endl;
+    // -------------------------------------------------------------------------------------------------------------
+
+    std::cout << "\n>>> Converting VRML file to geometry format..." << std::endl;
+
+    // -------------------------------------------------------------------------------------------------------------
 
     std::shared_ptr<ToGeomConfig> config = std::make_shared<ToGeomConfig>();
     auto configResult = config->Load(configFilename);
     if (configResult.has_error()) {
-      std::cout << "Caught an application error:\n" << configResult.error()->GetMessage() << std::endl;
+      PrintApplicationError(configResult.error());
+      // Initialize logging on the current directory and push all saved messages into it, since configuratation file
+      // could not be loaded.
       InitLogging(current_path().string(), "vrmlxpy");
-      std::cout << "[Warning]: log file was created on the current path (" << current_path()
-                << "). If there was a log directory specified inside "
-                   "the configuration file, do not look for it on this path as loading of configuration file failed!"
-                << std::endl;
+      PrintDefaultLoggingMessage();
       return false;
     }
 
     InitLogging(config->logFileDirectory, config->logFileName);
+    PrintProgressInformation(
+        FormatString("configuration file <", path(configFilename).string(), "> was succesfully read."));
 
-    std::cout << "1/6: configuration file <" << path(configFilename).string() << "> was succesfully parsed."
-              << std::endl;
+    // -------------------------------------------------------------------------------------------------------------
 
-    bool result = HelperConvertVrmlToGeom(inputFilename, outputFilename, config);
-    return result;
-  }
+    MemoryMappedFileReader reader;
+    auto readResult = reader.Read(path(inputFilename));
+    if (readResult.has_error()) {
+      PrintApplicationError(readResult.error());
+      return false;
+    }
 
-  bool ConvertVrmlToStl(const std::string& inputFilename, const std::string& outputFilename) {
-    std::shared_ptr<to_geom::core::config::ToGeomConfig> config;
-    config->exportFormat = to_geom::core::io::ExportFormat::Stl;
-    return HelperConvertVrmlToGeom(inputFilename, outputFilename, config);
-  }
+    PrintProgressInformation(FormatString("file <", path(inputFilename).string(), "> was succesfully read."));
 
-  bool ConvertVrmlToPly(const std::string& inputFilename, const std::string& outputFilename) {
-    std::shared_ptr<to_geom::core::config::ToGeomConfig> config;
-    config->exportFormat = to_geom::core::io::ExportFormat::Ply;
-    return HelperConvertVrmlToGeom(inputFilename, outputFilename, config);
-  }
+    // -------------------------------------------------------------------------------------------------------------
 
-  bool ConvertVrmlToObj(const std::string& inputFilename, const std::string& outputFilename) {
-    std::shared_ptr<to_geom::core::config::ToGeomConfig> config;
-    config->exportFormat = to_geom::core::io::ExportFormat::Obj;
-    return HelperConvertVrmlToGeom(inputFilename, outputFilename, config);
+    VrmlNodeManager manager;
+    VrmlParser parser(manager);
+    auto parseResult = parser.Parse(BufferView(readResult.value().GetBegin(), readResult.value().GetEnd()));
+    if (parseResult.has_error()) {
+      PrintApplicationError(parseResult.error());
+      return false;
+    }
+
+    PrintProgressInformation(FormatString("file <", path(inputFilename).string(), "> was succesfully parsed."));
+
+    // -------------------------------------------------------------------------------------------------------------
+
+    auto convertResult = Traverse<MeshTaskConversionContext>({parseResult.value(), manager, config}, GetActionMap());
+    if (convertResult.has_error()) {
+      PrintApplicationError(convertResult.error());
+      return false;
+    }
+
+    PrintProgressInformation(FormatString("file <", path(inputFilename).string(), "> was succesfully traversed."));
+
+    // -------------------------------------------------------------------------------------------------------------
+
+    LogInfo(
+        FormatString("Generation of total ", convertResult.value()->GetData().size(), " meshes begins."), LOGGING_INFO);
+
+    vrml_proc::core::utils::ManualTimer timer;
+    timer.Start();
+
+    std::vector<std::future<to_geom::calculator::CalculatorResult>> results;
+    for (const auto& task : convertResult.value()->GetData()) {
+      if (task) {
+        results.emplace_back(std::async(std::launch::async, task));
+      }
+    }
+
+    to_geom::core::Mesh mesh;
+    for (auto& future : results) {
+      auto meshResult = future.get();
+      if (meshResult.has_value()) {
+        mesh.join(*(meshResult.value()));
+      } else {
+        PrintInvalidSubmeshMessage(meshResult);
+      }
+    };
+
+    double time = timer.End();
+    LogInfo(
+        FormatString("Generation and merging of meshes ended. The generation took ", time, " seconds."), LOGGING_INFO);
+
+    PrintProgressInformation("mesh was succesfully generated.");
+
+    // -------------------------------------------------------------------------------------------------------------
+
+    std::unique_ptr<FileWriter<to_geom::core::Mesh>> writer;
+    switch (config->exportFormat) {
+      case ExportFormat::Stl:
+        writer = std::make_unique<StlFileWriter>();
+        break;
+      case ExportFormat::Ply:
+        writer = std::make_unique<PlyFileWriter>();
+        break;
+      case ExportFormat::Obj:
+        writer = std::make_unique<ObjFileWriter>();
+        break;
+      default:
+        writer = std::make_unique<StlFileWriter>();
+        break;
+    }
+
+    auto writeResult = writer->Write(path(outputFilename), mesh);
+    if (writeResult.has_error()) {
+      PrintApplicationError(writeResult.error());
+      return false;
+    }
+
+    PrintProgressInformation(FormatString("file <", path(outputFilename).string(), "> was succesfully written."));
+
+    // -------------------------------------------------------------------------------------------------------------
+
+    std::cout << ">>> Conversion of VRML file to geometry format finished succesfully.\n" << std::endl;
+    return true;
   }
 }  // namespace vrmlxpy
