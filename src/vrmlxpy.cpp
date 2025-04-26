@@ -24,6 +24,7 @@
 #include <ToGeomConfig.hpp>
 #include <ExportFormats.hpp>
 #include <FileWriter.hpp>
+#include <ManualTimer.hpp>
 
 static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
     const std::string& outputFilename,
@@ -35,6 +36,8 @@ static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
   using namespace to_geom::conversion_context;
   using namespace vrml_proc::core::io;
   using namespace to_geom::core::io;
+  using namespace vrml_proc::core::utils;
+  using namespace vrml_proc::core::logger;
 
   MemoryMappedFileReader reader;
   auto readResult = reader.Read(path(inputFilename));
@@ -62,6 +65,11 @@ static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
   }
 
   std::cout << "4/6: file <" << path(inputFilename).string() << "> was succesfully traversed." << std::endl;
+  LogInfo(
+      FormatString("Generation of total ", convertResult.value()->GetData().size(), " meshes begins."), LOGGING_INFO);
+
+  vrml_proc::core::utils::ManualTimer timer;
+  timer.Start();
 
   std::vector<std::future<to_geom::calculator::CalculatorResult>> results;
   for (const auto& task : convertResult.value()->GetData()) {
@@ -80,6 +88,9 @@ static bool HelperConvertVrmlToGeom(const std::string& inputFilename,
       std::cout << meshResult.error()->GetMessage() << std::endl;
     }
   };
+
+  double time = timer.End();
+  LogInfo(FormatString("Generation of meshes ended. The generation took ", time, " seconds."), LOGGING_INFO);
 
   std::cout << "5/6: mesh was succesfully generated." << std::endl;
 
