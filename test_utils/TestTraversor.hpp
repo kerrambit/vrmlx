@@ -38,7 +38,7 @@
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
     const vrml_proc::parser::VrmlNodeManager& manager,
     size_t expectedConversionContextSize) {
-  vrml_proc::core::config::VrmlProcConfig config;
+  auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
   auto traversorResult =
       vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
           {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
@@ -72,7 +72,7 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
     size_t expectedConversionContextSize,
     const std::filesystem::path& outputFilepath,
     size_t expectedSubmeshesCount) {
-  vrml_proc::core::config::VrmlProcConfig config;
+  auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
   auto traversorResult =
       vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
           {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
@@ -140,7 +140,8 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
     size_t expectedConversionContextSize,
     const std::filesystem::path& outputFilepath,
     size_t expectedSubmeshesCount,
-    const vrml_proc::core::config::VrmlProcConfig& config) {
+    std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config) {  //
+
   auto traversorResult =
       vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
           {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
@@ -198,7 +199,7 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
  */
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
     const vrml_proc::parser::VrmlNodeManager& manager) {
-  vrml_proc::core::config::VrmlProcConfig config;
+  auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
   auto traversorResult =
       vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
           {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());

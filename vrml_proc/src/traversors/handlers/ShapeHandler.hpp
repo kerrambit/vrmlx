@@ -59,6 +59,7 @@ namespace vrml_proc::traversor::handler::ShapeHandler {
     auto data = HandlerToActionBundle<ConversionContext>(nd);
     data.cc1 = resolvedAppearance.value();
     data.cc2 = resolvedGeometry.value();
+    data.config = context.config;
 
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
         actionMap, nd->GetId(), data);

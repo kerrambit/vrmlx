@@ -365,45 +365,45 @@ TEST_CASE("Parse VRMLFile From File - Valid Input - Actin", "[parsing][valid][fr
       manager);
   REQUIRE(parseResult);
 
-  vrml_proc::core::config::VrmlProcConfig config;
+  auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
 
   GENERATE_TEST_OUTPUT_FILENAME(filepath);
-  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 5,
-                                   std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, 5, config));
+  CHECK(TraverseVrmlFileToMeshTask(
+      parseResult, manager, 5, std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, 5, config));
   CHECK(HaveSimiliarSizes(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                          std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath, 0));
+      std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath, 0));
 }
 
 TEST_CASE("Parse VRMLFile From File - Valid Input - Nucleus", "[parsing][valid][fromfile]") {
   vrml_proc::parser::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(std::filesystem::path(ReadTestInfo().baseInputPath) /
                                        std::filesystem::path(ReadTestInfo().testFiles.at("NUCLEUS")),
-                                   manager);
+      manager);
   REQUIRE(parseResult);
 
-  vrml_proc::core::config::VrmlProcConfig config;
+  auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
 
   GENERATE_TEST_OUTPUT_FILENAME(filepath);
-  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 2,
-                                   std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, 2, config));
+  CHECK(TraverseVrmlFileToMeshTask(
+      parseResult, manager, 2, std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, 2, config));
   CHECK(HaveSimiliarSizes(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                          std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath, 0));
+      std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath, 0));
 }
 
 TEST_CASE("Parse VRMLFile From File - Valid Input - Tubulin", "[parsing][valid][fromfile]") {
   vrml_proc::parser::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(std::filesystem::path(ReadTestInfo().baseInputPath) /
                                        std::filesystem::path(ReadTestInfo().testFiles.at("TUBULIN")),
-                                   manager);
+      manager);
   REQUIRE(parseResult);
 
-  vrml_proc::core::config::VrmlProcConfig config;
+  auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
 
   GENERATE_TEST_OUTPUT_FILENAME(filepath);
-  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 399,
-                                   std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, 399, config));
+  CHECK(TraverseVrmlFileToMeshTask(
+      parseResult, manager, 399, std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath, 399, config));
   CHECK(HaveSimiliarSizes(std::filesystem::path(ReadTestInfo().baseOutputPath) / filepath,
-                          std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath, 0));
+      std::filesystem::path(ReadTestInfo().baseExpectedOutputPath) / filepath, 0));
 }
 
 // TEST_CASE("Parse VRMLFile From File - Valid Input - Tile 3x5 - 5 Stitch", "[parsing][valid][fromfile]") {

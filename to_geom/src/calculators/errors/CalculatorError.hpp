@@ -83,6 +83,21 @@ namespace to_geom::calculator::error {
     }
   };
 
+  class IndexedTriangularFaceSetCalculatorError : public CalculatorError {
+   public:
+    IndexedTriangularFaceSetCalculatorError(std::shared_ptr<vrml_proc::core::error::Error> innerError) {
+      SetInnerError(innerError);
+    }
+    IndexedTriangularFaceSetCalculatorError() = default;
+
+   protected:
+    std::string GetMessageInternal() const override {
+      std::ostringstream stream;
+      stream << CalculatorError::GetMessageInternal() << "[IndexedTriangularFaceSetCalculatorError]: error occured!\n";
+      return stream.str();
+    }
+  };
+
   class IndexedLineSetCalculatorError : public CalculatorError {
    public:
     IndexedLineSetCalculatorError(std::shared_ptr<vrml_proc::core::error::Error> innerError) {

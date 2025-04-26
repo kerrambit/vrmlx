@@ -11,9 +11,10 @@
 
 namespace to_geom::calculator {
   /**
-   * @brief Represents a calculator for generating 3D meshes from IndexedFaceSet VRML node.
+   * @brief Represents a calculator for generating 3D meshes from IndexedFaceSet VRML node, where all faces are
+   * tringular.
    */
-  class VRMLTOGEOM_API IndexedFaceSetCalculator {
+  class VRMLTOGEOM_API IndexedTriangularFaceSetCalculator {
    public:
     /**
      * @brief Generates 3D mesh from coordinates and coordinates indices lists.
@@ -23,16 +24,11 @@ namespace to_geom::calculator {
      * @param matrix transformation matrix applied to points
      * @param checkRange flag indicating if coordinate index should be checked for range when accessing `coordinates`
      * list
-     * @param onlyTriangularFaces flag indicating the `coordinatesIndices` contain only tringular faces
-     *
-     * @important It is crucial to set `checkRange` to false and mainly `onlyTriangularFaces` to true (if the data are
-     * in this representation), as the calculations are hugely optimilized for this case.
      */
     to_geom::calculator::CalculatorResult Generate3DMesh(
         std::reference_wrapper<const vrml_proc::parser::Int32Array> coordinateIndices,
         std::reference_wrapper<const vrml_proc::parser::Vec3fArray> coordinates,
         const vrml_proc::math::TransformationMatrix& matrix,
-        bool checkRange = true,
-        bool onlyTriangularFaces = false);
+        bool checkRange = true);
   };
 }  // namespace to_geom::calculator

@@ -14,6 +14,7 @@
 #include "SwitchAction.hpp"
 #include "TransformAction.hpp"
 #include "Vec3f.hpp"
+#include "ToGeomConfig.hpp"
 #include "VrmlNode.hpp"
 
 namespace to_geom::conversion_context {
@@ -78,8 +79,9 @@ namespace to_geom::conversion_context {
           auto coord = data.nodeView->GetField<std::reference_wrapper<const VrmlNode>>("coord");
           auto coordIndex = data.nodeView->GetField<std::reference_wrapper<const Int32Array>>("coordIndex");
           auto convex = data.nodeView->GetField<std::reference_wrapper<const bool>>("convex");
+          auto geomConfig = std::static_pointer_cast<to_geom::core::config::ToGeomConfig>(data.config);
 
-          IndexedFaceSetAction::Properties properties{coord, convex, coordIndex};
+          IndexedFaceSetAction::Properties properties{coord, convex, coordIndex, geomConfig};
 
           return std::make_shared<IndexedFaceSetAction>(
               properties, GeometryAction::Properties{

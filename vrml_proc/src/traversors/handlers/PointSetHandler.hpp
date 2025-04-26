@@ -51,6 +51,7 @@ namespace vrml_proc::traversor::handler::PointSetHandler {
     nd->SetShapeDescendant(context.IsDescendantOfShape);
     nd->SetTransformationMatrix(context.transformation);
     auto data = HandlerToActionBundle<ConversionContext>(nd);
+    data.config = context.config;
 
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
         actionMap, nd->GetId(), data);

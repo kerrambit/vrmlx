@@ -2,5 +2,9 @@
     "ignoreUnknownNode": false,
     "exportFormat": "stl",
     "logFileDirectory: "some/path/"
-    "logFileName": "vrmlproc"
+    "logFileName": "vrmlproc",
+    "IFSSettings": {
+        "checkRange": true,
+        "onlyTriangularFaces": true
+    }
 }

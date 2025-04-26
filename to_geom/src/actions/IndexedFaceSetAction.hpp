@@ -8,6 +8,7 @@
 #include "MeshTaskConversionContext.hpp"
 #include "VrmlNode.hpp"
 #include "VrmlUnits.hpp"
+#include "ToGeomConfig.hpp"
 
 #include "VrmlProcessingExport.hpp"
 
@@ -28,6 +29,7 @@ namespace to_geom {
         std::reference_wrapper<const vrml_proc::parser::VrmlNode> coord;
         std::reference_wrapper<const bool> convex;
         std::reference_wrapper<const vrml_proc::parser::Int32Array> coordIndex;
+        std::shared_ptr<to_geom::core::config::ToGeomConfig> config;
       };
 
       /**

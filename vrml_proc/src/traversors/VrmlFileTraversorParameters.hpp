@@ -18,11 +18,11 @@ namespace vrml_proc::traversor {
      */
     VrmlFileTraversorParameters(const vrml_proc::parser::VrmlFile& file,
         const vrml_proc::parser::VrmlNodeManager& manager,
-        const vrml_proc::core::config::VrmlProcConfig& config)
+        std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config)
         : file(file), manager(manager), config(config) {}
 
     const vrml_proc::parser::VrmlFile& file;
     const vrml_proc::parser::VrmlNodeManager& manager;
-    const vrml_proc::core::config::VrmlProcConfig& config;
+    std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config;
   };
 }  // namespace vrml_proc::traversor
