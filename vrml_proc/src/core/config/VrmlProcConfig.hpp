@@ -24,6 +24,8 @@ namespace vrml_proc::core::config {
    * @implements `Config` class with Load() method.
    */
   struct VrmlProcConfig : public Config {
+    virtual ~VrmlProcConfig() = default;
+
     /**
      * @brief Defaul constructor.
      */

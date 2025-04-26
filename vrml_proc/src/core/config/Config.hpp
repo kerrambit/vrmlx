@@ -5,6 +5,7 @@ namespace vrml_proc::core::config {
    * @brief Config represents an interface for representing a generic configuration file.
    */
   struct Config {
+    virtual ~Config() = default;
     /**
      * @brief Loads a configuration file from the given file path.
      *
