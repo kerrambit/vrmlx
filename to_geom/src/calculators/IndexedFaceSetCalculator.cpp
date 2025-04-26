@@ -23,16 +23,18 @@
 #include "Range.hpp"
 #include "UnsupportedOperationError.hpp"
 #include "CalculatorResult.hpp"
+#include "IndexedTriangularFaceSetCalculator.hpp"
 
 static to_geom::calculator::CalculatorResult ReturnVertexIndexOutOfRangeError(
     const vrml_proc::core::utils::Range<int32_t>& range, int32_t actualValue) {  //
 
-  return cpp::fail(
-      std::make_shared<to_geom::calculator::error::IndexedFaceSetCalculatorError>()
-      << (std::make_shared<to_geom::calculator::error::PropertiesError>()
-             << (std::make_shared<to_geom::calculator::error::VertexIndexOutOfRangeError>()
-                    << std::make_shared<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
-                           range, actualValue))));
+  using namespace to_geom::calculator::error;
+  using vrml_proc::parser::model::validator::error::NumberOutOfRangeError;
+
+  return cpp::fail(std::make_shared<IndexedFaceSetCalculatorError>()
+                   << (std::make_shared<PropertiesError>()
+                          << (std::make_shared<VertexIndexOutOfRangeError>()
+                                 << std::make_shared<NumberOutOfRangeError<int32_t>>(range, actualValue))));
 }
 
 namespace to_geom::calculator {
@@ -42,6 +44,13 @@ namespace to_geom::calculator {
       const vrml_proc::math::TransformationMatrix& matrix,
       bool checkRange,
       bool onlyTriangularFaces) {  //
+
+    // When it is guaranteed that coordinate indices form only triangular faces, we can call specializedand optimazed
+    // calculator.
+    if (onlyTriangularFaces) {
+      to_geom::calculator::IndexedTriangularFaceSetCalculator calculator;
+      return calculator.Generate3DMesh(coordinateIndices, coordinates, matrix, checkRange);
+    }
 
     using to_geom::calculator::error::IndexedFaceSetCalculatorError;
     using to_geom::calculator::error::InvalidNumberOfCoordinatesForFaceError;
@@ -67,7 +76,7 @@ namespace to_geom::calculator {
     }
     if (points.empty()) {
       return cpp::fail(
-          error << (std::make_shared<PropertiesError>() << std::make_shared<EmptyArrayError>("coordinateIndices")));
+          error << (std::make_shared<PropertiesError>() << std::make_shared<EmptyArrayError>("coordinates")));
     }
 
     auto timer = vrml_proc::core::utils::ManualTimer();
@@ -86,14 +95,16 @@ namespace to_geom::calculator {
         }
 
         if (coordinatesPerFace == 3) {
-          if (!range.CheckValueInRangeInclusive(indicides[start])) {
-            return ReturnVertexIndexOutOfRangeError(range, indicides[start]);
-          }
-          if (!range.CheckValueInRangeInclusive(indicides[start + 1])) {
-            return ReturnVertexIndexOutOfRangeError(range, indicides[start + 1]);
-          }
-          if (!range.CheckValueInRangeInclusive(indicides[start + 2])) {
-            return ReturnVertexIndexOutOfRangeError(range, indicides[start + 2]);
+          if (checkRange) {
+            if (!range.CheckValueInRangeInclusive(indicides[start])) {
+              return ReturnVertexIndexOutOfRangeError(range, indicides[start]);
+            }
+            if (!range.CheckValueInRangeInclusive(indicides[start + 1])) {
+              return ReturnVertexIndexOutOfRangeError(range, indicides[start + 1]);
+            }
+            if (!range.CheckValueInRangeInclusive(indicides[start + 2])) {
+              return ReturnVertexIndexOutOfRangeError(range, indicides[start + 2]);
+            }
           }
 
           mesh->add_face(mesh->add_vertex(matrix.transform(CGALPoint(
