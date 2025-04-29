@@ -39,6 +39,7 @@ add_library(vrmlproc SHARED
     "src/core/utils/Range.hpp"
     "src/core/utils/FormatString.hpp"
     "src/core/utils/Hash.hpp"
+    "src/core/utils/UnitInterval.hpp"
 
     "src/core/logger/Logger.hpp"
     "src/core/logger/Logger.cpp"

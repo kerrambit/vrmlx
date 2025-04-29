@@ -29,6 +29,7 @@
 #include <ManualTimer.hpp>
 #include <ThreadTaskRunner.hpp>
 #include <MeshTask.hpp>
+#include <MeshSimplificator.hpp>
 
 static void PrintApplicationError(std::shared_ptr<vrml_proc::core::error::Error> error) {
   std::cout << "Caught an application error:\n" << error->GetMessage() << std::endl;
@@ -203,7 +204,15 @@ namespace vrmlxpy {
     LogInfo(
         FormatString("Generation and merging of meshes ended. The generation took ", time, " seconds."), LOGGING_INFO);
 
-    PrintProgressInformation("mesh was succesfully generated.");
+    // -------------------------------------------------------------------------------------------------------------
+
+    if (config->meshSimplificationSettings.active) {
+      to_geom::calculator::MeshSimplificator::SimplifyMesh(
+          mesh, config->meshSimplificationSettings.percentageOfAllEdgesToSimplify.GetComplement());
+    }
+
+    PrintProgressInformation(FormatString(
+        "mesh was succesfully generated", ((config->meshSimplificationSettings.active) ? " and simplified." : ".")));
 
     // -------------------------------------------------------------------------------------------------------------
 

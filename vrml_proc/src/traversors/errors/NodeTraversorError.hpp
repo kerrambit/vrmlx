@@ -8,7 +8,6 @@
 #include "VrmlNode.hpp"
 
 namespace vrml_proc::traversor::error {
-
   /**
    * @brief Error for NodeTraversor. Represents a node, which contained a validation error, or whose child contains
    * error.

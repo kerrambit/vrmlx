@@ -7,6 +7,10 @@
         "active": true,
         "threadsNumberLimit": 4
     },
+     "meshSimplification": {
+        "active": true,
+        "percentageOfAllEdgesToSimplify": 85.5
+    },
     "IFSSettings": {
         "checkRange": false,
         "onlyTriangularFaces": true
