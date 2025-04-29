@@ -26,7 +26,7 @@ namespace vrml_proc::parser::error {
   class GrammarError : public vrml_proc::core::error::Error {
    protected:
     virtual std::string GetMessageInternal() const {
-      return "[GrammarError]: while parsing input, grammar <NAME> identified an error.";
+      return "[GrammarError]: while parsing input, grammar <NAME> identified an error.\n";
     }
   };
 }  // namespace vrml_proc::parser::error
