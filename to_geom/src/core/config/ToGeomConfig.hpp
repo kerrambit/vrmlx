@@ -17,6 +17,7 @@
 #include "JsonFileReader.hpp"
 #include "Logger.hpp"
 #include "VrmlProcConfig.hpp"
+#include "UnitInterval.hpp"
 
 namespace to_geom::core::config {
 
@@ -68,6 +69,15 @@ namespace to_geom::core::config {
     };
 
     /**
+     * @brief Represents settings for mesh simplification process.
+     */
+    struct MeshSimplificationSettings {
+      bool active = false;
+      vrml_proc::core::utils::UnitInterval percentageOfAllEdgesToSimplify =
+          vrml_proc::core::utils::UnitInterval::Create(0.5).value();
+    };
+
+    /**
      * @brief Defaul constructor.
      */
     ToGeomConfig()
@@ -79,6 +89,7 @@ namespace to_geom::core::config {
     to_geom::core::io::ExportFormat exportFormat = to_geom::core::io::ExportFormat::Stl;
     IfsSettigs ifsSettings;
     ParallelismSettings parallelismSettings;
+    MeshSimplificationSettings meshSimplificationSettings;
 
     /**
      * @brief Loads configuration file from JSON file.
@@ -110,6 +121,18 @@ namespace to_geom::core::config {
                 parallelism.value("threadsNumberLimit", std::thread::hardware_concurrency());
             if (parallelismSettings.threadsNumberLimit <= 0) {
               parallelismSettings.threadsNumberLimit = 1;
+            }
+          }
+          if (json.value().contains("meshSimplification") && (json.value())["meshSimplification"].is_object()) {
+            const auto& simplification = (json.value())["meshSimplification"];
+            meshSimplificationSettings.active = simplification.value("active", true);
+            double percentOfAllEdgesToSimplify = simplification.value("percentageOfAllEdgesToSimplify", 50.0);
+            if (vrml_proc::core::utils::UnitInterval::Create(percentOfAllEdgesToSimplify / 100).has_value()) {
+              meshSimplificationSettings.percentageOfAllEdgesToSimplify =
+                  vrml_proc::core::utils::UnitInterval::Create(percentOfAllEdgesToSimplify / 100).value();
+            } else {
+              meshSimplificationSettings.percentageOfAllEdgesToSimplify =
+                  vrml_proc::core::utils::UnitInterval::Create(0.5).value();
             }
           }
         } catch (const nlohmann::json::exception& e) {
