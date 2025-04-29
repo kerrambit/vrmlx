@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <memory>
 #include <string>
+#include <thread>
 
 #include <result.hpp>
 
@@ -59,15 +60,25 @@ namespace to_geom::core::config {
     };
 
     /**
+     * @brief Represents settings for parallel computation of meshes.
+     */
+    struct ParallelismSettings {
+      bool active = true;
+      unsigned int threadsNumberLimit = std::thread::hardware_concurrency();
+    };
+
+    /**
      * @brief Defaul constructor.
      */
     ToGeomConfig()
         : vrml_proc::core::config::VrmlProcConfig(),
           exportFormat(to_geom::core::io::ExportFormat::Stl),
-          ifsSettings({true, false}) {}
+          ifsSettings({true, false}),
+          parallelismSettings({true, std::thread::hardware_concurrency()}) {}
 
     to_geom::core::io::ExportFormat exportFormat = to_geom::core::io::ExportFormat::Stl;
     IfsSettigs ifsSettings;
+    ParallelismSettings parallelismSettings;
 
     /**
      * @brief Loads configuration file from JSON file.
@@ -91,6 +102,15 @@ namespace to_geom::core::config {
             const auto& ifs = (json.value())["IFSSettings"];
             ifsSettings.checkRange = ifs.value("checkRange", true);
             ifsSettings.onlyTriangularFaces = ifs.value("onlyTriangularFaces", false);
+          }
+          if (json.value().contains("parallelismSettings") && (json.value())["parallelismSettings"].is_object()) {
+            const auto& parallelism = (json.value())["parallelismSettings"];
+            parallelismSettings.active = parallelism.value("active", true);
+            parallelismSettings.threadsNumberLimit =
+                parallelism.value("threadsNumberLimit", std::thread::hardware_concurrency());
+            if (parallelismSettings.threadsNumberLimit <= 0) {
+              parallelismSettings.threadsNumberLimit = 1;
+            }
           }
         } catch (const nlohmann::json::exception& e) {
           return cpp::fail(std::make_shared<vrml_proc::core::error::JsonError>(e.what()));

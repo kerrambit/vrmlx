@@ -71,6 +71,15 @@ else()
     message(FATAL_ERROR "CGAL not found. Please set CGAL_DIR to the correct path.")
 endif()
 
+# Find TaskFlow.
+include(FetchContent)
+FetchContent_Declare(
+  taskflow
+  GIT_REPOSITORY https://github.com/taskflow/taskflow.git
+  GIT_TAG        master
+)
+FetchContent_MakeAvailable(taskflow)
+
 # If tests will be compiled, find Catch2 framework.
 if (INCLUDE_TESTS STREQUAL "ON")
 message(STATUS "Catch2 will be fetched")

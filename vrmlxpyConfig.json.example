@@ -1,10 +1,14 @@
 {
     "ignoreUnknownNode": false,
     "exportFormat": "stl",
-    "logFileDirectory: "some/path/"
+    "logFileDirectory: "/home/joe/vrml/vrmlxpy"
     "logFileName": "vrmlproc",
+    "parallelismSettings": {
+        "active": true,
+        "threadsNumberLimit": 4
+    },
     "IFSSettings": {
-        "checkRange": true,
+        "checkRange": false,
         "onlyTriangularFaces": true
     }
 }
