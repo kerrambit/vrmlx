@@ -161,6 +161,7 @@ target_include_directories(vrmlproc PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/utils
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/logger
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/config
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core/parallelism
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/models
