@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <thread>
 
 #include <BufferView.hpp>
 #include <CalculatorResult.hpp>
@@ -26,6 +27,8 @@
 #include <ExportFormats.hpp>
 #include <FileWriter.hpp>
 #include <ManualTimer.hpp>
+#include <ThreadTaskRunner.hpp>
+#include <MeshTask.hpp>
 
 static void PrintApplicationError(std::shared_ptr<vrml_proc::core::error::Error> error) {
   std::cout << "Caught an application error:\n" << error->GetMessage() << std::endl;
@@ -100,6 +103,8 @@ namespace vrmlxpy {
     using namespace vrml_proc::core::io;
     using namespace to_geom::core::io;
     using namespace vrml_proc::core::utils;
+    using namespace to_geom::core;
+    using namespace to_geom::calculator;
 
     // -------------------------------------------------------------------------------------------------------------
 
@@ -163,22 +168,36 @@ namespace vrmlxpy {
     vrml_proc::core::utils::ManualTimer timer;
     timer.Start();
 
-    std::vector<std::future<to_geom::calculator::CalculatorResult>> results;
-    for (const auto& task : convertResult.value()->GetData()) {
-      if (task) {
-        results.emplace_back(std::async(std::launch::async, task));
+    std::vector<CalculatorResult> submeshesResults;
+    submeshesResults.reserve(convertResult.value()->GetData().size());
+
+    if (!config->parallelismSettings.active) {
+      for (const auto& task : convertResult.value()->GetData()) {
+        submeshesResults.emplace_back(task());
       }
+    } else {
+      unsigned int availableThreadsNumber = std::thread::hardware_concurrency();
+      if (availableThreadsNumber > config->parallelismSettings.threadsNumberLimit) {
+        availableThreadsNumber = config->parallelismSettings.threadsNumberLimit;
+      }
+
+      LogInfo(
+          FormatString("Generation will be parallely computed on ", availableThreadsNumber, " threads."), LOGGING_INFO);
+
+      auto runner = vrml_proc::core::parallelism::ThreadTaskRunner<MeshTask, CalculatorResult>(availableThreadsNumber);
+      runner.Run(convertResult.value()->GetData(), submeshesResults);
     }
 
     to_geom::core::Mesh mesh;
-    for (auto& future : results) {
-      auto meshResult = future.get();
-      if (meshResult.has_value()) {
-        mesh.join(*(meshResult.value()));
+    for (auto& submeshResult : submeshesResults) {
+      if (submeshResult.has_value()) {
+        auto submesh = submeshResult.value();
+        mesh.join(*submesh);
+        submesh.reset();
       } else {
-        PrintInvalidSubmeshMessage(meshResult);
+        PrintInvalidSubmeshMessage(submeshResult);
       }
-    };
+    }
 
     double time = timer.End();
     LogInfo(
