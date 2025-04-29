@@ -190,6 +190,7 @@ target_include_directories(vrmlproc PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/../vendor/result
     ${CMAKE_CURRENT_SOURCE_DIR}/../vendor/json
     ${CGAL_INCLUDE_DIRS}
+    ${taskflow_SOURCE_DIR}
 )
 
 # Two build types - Debug and Release.
