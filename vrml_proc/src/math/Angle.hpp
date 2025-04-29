@@ -1,9 +1,8 @@
 #pragma once
 
-#define M_PI 3.14159265358979323846
+#include <numbers>
 
 namespace vrml_proc::math {
-
   class Angle {
    public:
     enum class AngleUnit { Degree, Radians };
@@ -15,9 +14,9 @@ namespace vrml_proc::math {
         return m_value;
       }
       if (unit == AngleUnit::Degree) {
-        return m_value * (180.0 / M_PI);
+        return m_value * (180.0 / std::numbers::pi_v<double>);
       } else {
-        return m_value * (M_PI / 180.0);
+        return m_value * (std::numbers::pi_v<double> / 180.0);
       }
     }
 
