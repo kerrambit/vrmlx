@@ -31,16 +31,18 @@
 #include <MeshTask.hpp>
 #include <MeshSimplificator.hpp>
 
+static unsigned int g_task = 1;
+
 static void PrintApplicationError(std::shared_ptr<vrml_proc::core::error::Error> error) {
   std::cout << "Caught an application error:\n" << error->GetMessage() << std::endl;
+  g_task = 1;
 }
 
 static void PrintProgressInformation(const std::string& information) {
-  static unsigned int task = 1;
-  std::cout << "[" << task << "/6]: " << information << std::endl;
-  task++;
-  if (task > 6) {
-    task = 1;
+  std::cout << "[" << g_task << "/6]: " << information << std::endl;
+  g_task++;
+  if (g_task > 6) {
+    g_task = 1;
   }
 }
 
@@ -53,8 +55,7 @@ static void PrintDefaultLoggingMessage() {
 }
 
 static void PrintInvalidSubmeshMessage(to_geom::calculator::CalculatorResult meshResult) {
-  std::cout << "Encountered an invalid submesh!" << std::endl;
-  PrintApplicationError(meshResult.error());
+  std::cout << "Encountered an invalid submesh:\n" << meshResult.error()->GetMessage() << std::endl;
 }
 
 namespace vrmlxpy {
