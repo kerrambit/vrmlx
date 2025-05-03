@@ -143,19 +143,12 @@ if (INCLUDE_RUNNER STREQUAL "ON")
 message(STATUS "C++ CLI runners will be included")
 
 add_executable(vrmlxpyConversionApp "src/vrmlxpy.cpp" "src/ConvertVrmlToGeom.cpp")
-add_executable(vrmlxpyBulkConversionApp "src/vrmlxpy.cpp" "src/ConvertVrmlToGeomBulk.cpp")
 
 # Link against C++ libraries.
 target_link_libraries(vrmlxpyConversionApp PRIVATE vrmlproc togeom Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread)
-target_link_libraries(vrmlxpyBulkConversionApp PRIVATE vrmlproc togeom Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread)
 
 # Ensure vrmlxpy.cpp and runner.cpp can access headers from vrml_proc and to_geom projects.
 target_include_directories(vrmlxpyConversionApp PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/vrml_proc
-    ${CMAKE_CURRENT_SOURCE_DIR}/to_geom
-)
-target_include_directories(vrmlxpyBulkConversionApp PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/vrml_proc
     ${CMAKE_CURRENT_SOURCE_DIR}/to_geom
@@ -169,15 +162,6 @@ add_custom_command(TARGET vrmlxpyConversionApp POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "$<TARGET_FILE:togeom>"
         "$<TARGET_FILE_DIR:vrmlxpyConversionApp>"
-)
-
-add_custom_command(TARGET vrmlxpyBulkConversionApp POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "$<TARGET_FILE:vrmlproc>"
-        "$<TARGET_FILE_DIR:vrmlxpyBulkConversionApp>"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "$<TARGET_FILE:togeom>"
-        "$<TARGET_FILE_DIR:vrmlxpyBulkConversionApp>"
 )
 
 endif()
