@@ -29,7 +29,7 @@ namespace to_geom {
       using namespace vrml_proc::parser::model::validator;
       using vrml_proc::math::cgal::CGALPoint;
 
-      LogInfo("Generate 3D mesh using BoxCalculator.", LOGGING_INFO);
+      LogDebug("Generate 3D mesh using BoxCalculator.", LOGGING_INFO);
 
       auto checkResult = CheckVec3fIsGreaterThanZero(size.get());
       if (checkResult.has_error()) {
@@ -94,7 +94,7 @@ namespace to_geom {
       mesh->add_face(v[0], v[7], v[3]);
 
       double time = timer.End();
-      LogInfo(FormatString("Mesh was generated successfully. The generation took ", time, " seconds."), LOGGING_INFO);
+      LogDebug(FormatString("Mesh was generated successfully. The generation took ", time, " seconds."), LOGGING_INFO);
 
       return mesh;
     }

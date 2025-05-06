@@ -35,7 +35,7 @@ namespace vrml_proc::traversor::handler::ShapeHandler {
     using namespace vrml_proc::traversor::VrmlNodeTraversor;
     using vrml_proc::parser::VrmlNode;
 
-    vrml_proc::core::logger::LogInfo(
+    vrml_proc::core::logger::LogDebug(
         vrml_proc::core::utils::FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
 
     auto resolvedAppearance =

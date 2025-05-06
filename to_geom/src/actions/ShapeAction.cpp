@@ -11,7 +11,7 @@ namespace to_geom {
     ShapeAction::ShapeAction(Properties properties) : m_properties(properties) {}
 
     std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> ShapeAction::Execute() {
-      vrml_proc::core::logger::LogInfo("Execute ShapeAction.", LOGGING_INFO);
+      vrml_proc::core::logger::LogDebug("Execute ShapeAction.", LOGGING_INFO);
       return m_properties.geometry;
     }
   }  // namespace action

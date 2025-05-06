@@ -33,7 +33,7 @@ namespace vrml_proc::traversor::handler::IndexedLineSetHandler {
     using namespace vrml_proc::traversor::error;
     using namespace vrml_proc::traversor::handler::HandlerUtils;
 
-    LogInfo(FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
+    LogDebug(FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
 
     // There are geometry primitive nodes 'coord' and 'color'. They are sent as VrmlNodes into the given action where
     // they can be traversed if needed. The main point is they are not traversed inside this handler. But they have to

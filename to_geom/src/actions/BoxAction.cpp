@@ -17,12 +17,12 @@ namespace to_geom {
         : to_geom::action::GeometryAction(geometryProperties), m_properties(properties) {}
 
     std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> BoxAction::Execute() {
-      vrml_proc::core::logger::LogInfo("Execute BoxAction.", LOGGING_INFO);
+      vrml_proc::core::logger::LogDebug("Execute BoxAction.", LOGGING_INFO);
 
       auto result = std::make_shared<to_geom::conversion_context::MeshTaskConversionContext>();
       if (!m_geometryProperties.containedByShape) {
-        vrml_proc::core::logger::LogDebug("Return empty data because Box node is not a child of a Shape node.",
-                                          LOGGING_INFO);
+        vrml_proc::core::logger::LogDebug(
+            "Return empty data because Box node is not a child of a Shape node.", LOGGING_INFO);
         return result;
       }
 

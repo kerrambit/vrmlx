@@ -22,7 +22,7 @@ namespace vrml_proc::traversor::handler::WorldInfoHandler {
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
       std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {  //
 
-    vrml_proc::core::logger::LogInfo(
+    vrml_proc::core::logger::LogDebug(
         vrml_proc::core::utils::FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
 
     nd->SetShapeDescendant(context.IsDescendantOfShape);

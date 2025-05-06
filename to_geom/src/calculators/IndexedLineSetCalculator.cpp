@@ -34,7 +34,7 @@ namespace to_geom::calculator {
     using vrml_proc::parser::Vec3f;
     using vrml_proc::parser::model::validator::error::EmptyArrayError;
 
-    LogInfo("Generate 3D mesh using IndexedLineSetCalculator.", LOGGING_INFO);
+    LogDebug("Generate 3D mesh using IndexedLineSetCalculator.", LOGGING_INFO);
 
     auto mesh = std::make_shared<core::Mesh>();
     auto error = std::make_shared<error::IndexedLineSetCalculatorError>();

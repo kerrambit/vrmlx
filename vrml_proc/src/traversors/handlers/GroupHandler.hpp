@@ -37,7 +37,7 @@ namespace vrml_proc::traversor::handler::GroupHandler {
     using namespace vrml_proc::traversor::VrmlNodeTraversor;
     using vrml_proc::parser::VrmlNode;
 
-    LogInfo(FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
+    LogDebug(FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
 
     std::vector<std::shared_ptr<ConversionContext>> resolvedChildren;
     for (const auto& child : nd->GetField<std::vector<std::reference_wrapper<const VrmlNode>>>("children")) {

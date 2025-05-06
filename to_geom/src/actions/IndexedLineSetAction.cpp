@@ -38,7 +38,7 @@ namespace to_geom::action {
     using vrml_proc::traversor::VrmlNodeTraversor::Traverse;
     using namespace vrml_proc::core::logger;
 
-    LogInfo("Execute IndexedLineSetAction.", LOGGING_INFO);
+    LogDebug("Execute IndexedLineSetAction.", LOGGING_INFO);
 
     auto result = std::make_shared<MeshTaskConversionContext>();
 
