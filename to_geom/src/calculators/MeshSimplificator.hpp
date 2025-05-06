@@ -46,7 +46,8 @@ namespace to_geom::calculator::MeshSimplificator {
 
     double time = timer.End();
 
-    LogInfo(FormatString("Simplification took ", time, " seconds. In total, ", collapsedEdgesCount, " were collapsed."),
+    LogInfo(FormatString(
+                "Simplification took ", time, " seconds. In total, ", collapsedEdgesCount, " edges were collapsed."),
         LOGGING_INFO);
   }
 }  // namespace to_geom::calculator::MeshSimplificator
