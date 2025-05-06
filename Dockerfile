@@ -11,13 +11,12 @@ RUN apt-get update && apt-get install -y \
     ninja-build \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory.
-WORKDIR /app
+# Set build configuration argument.
+ARG BUILD_CONFIGURATION=Production
 
-# Clone the latest branch from GitHub.
-ARG CACHEBUST=1 # If need to update branch.
-ARG BRANCH=main
-RUN git clone --depth 1 --branch ${BRANCH} https://github.com/kerrambit/vrmlxpy.git .
+# Copy the entire project into the container.
+COPY . /app
+WORKDIR /app
 
 # Build the project.
 ARG BUILD_CONFIGURATION=Production
@@ -43,8 +42,7 @@ ARG BUILD_CONFIGURATION=Production
 COPY --from=builder /app/out/build/${BUILD_CONFIGURATION}/libtogeom.so /app/
 COPY --from=builder /app/out/build/${BUILD_CONFIGURATION}/libvrmlproc.so /app/
 COPY --from=builder /app/out/build/${BUILD_CONFIGURATION}/vrmlxpyConversionApp /app/
-COPY --from=builder /app/out/build/${BUILD_CONFIGURATION}/vrmlxpyBulkConversionApp /app/
 
 ENV LD_LIBRARY_PATH=/app:$LD_LIBRARY_PATH
 
-CMD ["/app/vrmlxpyBulkConversionApp", "arg1", "arg2"]
+CMD ["/app/vrmlxpyConversionApp", "arg1", "arg2", "arg3"]
