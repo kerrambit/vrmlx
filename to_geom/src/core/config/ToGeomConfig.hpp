@@ -22,7 +22,7 @@
 namespace to_geom::core::config {
 
   /**
-   * @brief Helper fucntion which converts string to ExportFormat and logs the process.
+   * @brief Helper function which converts string to ExportFormat and logs the process.
    *
    * @param string string to convert
    * @returns ExportFormat after conversion
@@ -78,6 +78,13 @@ namespace to_geom::core::config {
     };
 
     /**
+     * @brief Represents settings for an option object in export format.
+     */
+    struct ExportFormatOptions {
+      bool binary = true;
+    };
+
+    /**
      * @brief Defaul constructor.
      */
     ToGeomConfig()
@@ -87,6 +94,7 @@ namespace to_geom::core::config {
           parallelismSettings({true, std::thread::hardware_concurrency()}) {}
 
     to_geom::core::io::ExportFormat exportFormat = to_geom::core::io::ExportFormat::Stl;
+    ExportFormatOptions exportFormatOptions;
     IfsSettigs ifsSettings;
     ParallelismSettings parallelismSettings;
     MeshSimplificationSettings meshSimplificationSettings;
@@ -108,7 +116,15 @@ namespace to_geom::core::config {
           return loadBaseJson;
         }
         try {
-          exportFormat = ConvertStringToExportFormat(json.value().value("exportFormat", "stl"));
+          if (json.value().contains("exportFormat") && (json.value())["exportFormat"].is_object()) {
+            const auto& exportFormat = (json.value())["exportFormat"];
+            this->exportFormat = ConvertStringToExportFormat(exportFormat.value("format", "stl"));
+            if (exportFormat.contains("options") && exportFormat["options"].is_object()) {
+              const auto& options = exportFormat["options"];
+              exportFormatOptions.binary = options.value("binary", true);
+            }
+          }
+
           if (json.value().contains("IFSSettings") && (json.value())["IFSSettings"].is_object()) {
             const auto& ifs = (json.value())["IFSSettings"];
             ifsSettings.checkRange = ifs.value("checkRange", true);

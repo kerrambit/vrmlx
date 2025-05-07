@@ -16,12 +16,13 @@
 #include "Mesh.hpp"
 #include "ScopedTimer.hpp"
 
-#include "VrmlToGeomExport.hpp"
-
 namespace to_geom::core::io {
 
-  class VRMLTOGEOM_API StlFileWriter : public vrml_proc::core::io::FileWriter<to_geom::core::Mesh> {
+  class StlFileWriter : public vrml_proc::core::io::FileWriter<to_geom::core::Mesh> {
    public:
+    StlFileWriter() : m_binaryMode(true) {}
+    StlFileWriter(bool binaryMode) : m_binaryMode(binaryMode) {}
+
     FileWriteResult Write(const std::filesystem::path& filepath, const to_geom::core::Mesh& data) override {
       using namespace vrml_proc::core::error;
       using namespace vrml_proc::core::io::error;
@@ -43,29 +44,32 @@ namespace to_geom::core::io {
       std::string ext = filepath.extension().string();
       if (ext != ".stl") {
         LogWarning(FormatString("You are about to write STL mesh into file with extension <", ext,
-                                ">, which is different than expected <stl>!"),
-                   LOGGING_INFO);
+                       ">, which is different than expected <stl>!"),
+            LOGGING_INFO);
       }
 
       double time;
       bool result;
       {
         vrml_proc::core::utils::ScopedTimer timer(time);
-        result = CGAL::IO::write_STL(filepath.string(), data);
+        result = CGAL::IO::write_STL(filepath.string(), data, CGAL::parameters::use_binary_mode(m_binaryMode));
       }
 
       if (!result) {
         LogError(FormatString("Wrting of STL into file <", filepath.string(), "> was unsuccessful! Process took ", time,
-                              " seconds."),
-                 LOGGING_INFO);
+                     " seconds."),
+            LOGGING_INFO);
         return cpp::fail(error << (std::make_shared<GeneralWriteError>(filepath.string())));
       }
 
-      LogInfo(FormatString("STL was successfully written into file <", filepath.string(), ">. Write took ", time,
-                           " seconds."),
-              LOGGING_INFO);
+      LogInfo(FormatString(
+                  "STL was successfully written into file <", filepath.string(), ">. Write took ", time, " seconds."),
+          LOGGING_INFO);
 
       return {};
     }
+
+   private:
+    bool m_binaryMode;
   };
 }  // namespace to_geom::core::io
