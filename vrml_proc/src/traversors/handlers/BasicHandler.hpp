@@ -1,23 +1,17 @@
 #pragma once
 
-#include <any>
 #include <memory>
-
-#include <result.hpp>
 
 #include "ConversionContextable.hpp"
 #include "ConversionContextActionExecutor.hpp"
 #include "ConversionContextActionMap.hpp"
-#include "Error.hpp"
 #include "FormatString.hpp"
 #include "HandlerToActionBundle.hpp"
 #include "Logger.hpp"
-#include "NodeDescriptor.hpp"
-#include "NodeTraversorError.hpp"
 #include "TraversorResult.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
 
-namespace vrml_proc::traversor::handler::SphereHandler {
+namespace vrml_proc::traversor::handler::BasicHandler {
   template <ConversionContextable ConversionContext>
   TraversorResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters context,
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
@@ -34,4 +28,4 @@ namespace vrml_proc::traversor::handler::SphereHandler {
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
         actionMap, nd->GetId(), data);
   }
-}  // namespace vrml_proc::traversor::handler::SphereHandler
+}  // namespace vrml_proc::traversor::handler::BasicHandler

@@ -5,42 +5,28 @@
 #include <result.hpp>
 
 #include "AppearanceHandler.hpp"
-#include "BoxHandler.hpp"
-#include "ColorHandler.hpp"
+#include "BasicHandler.hpp"
+#include "ConversionContextable.hpp"
 #include "ConversionContextActionMap.hpp"
-#include "CoordinateHandler.hpp"
+#include "ElevationGridHandler.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
 #include "GroupHandler.hpp"
 #include "Hash.hpp"
-#include "ImageTextureHandler.hpp"
 #include "IndexedFaceSetHandler.hpp"
 #include "IndexedLineSetHandler.hpp"
 #include "Logger.hpp"
-#include "MaterialHandler.hpp"
 #include "NodeDescriptor.hpp"
 #include "NodeDescriptorMap.hpp"
 #include "NodeTraversorError.hpp"
 #include "NodeView.hpp"
-#include "NormalHandler.hpp"
-#include "PixelTextureHandler.hpp"
 #include "ShapeHandler.hpp"
 #include "SwitchHandler.hpp"
-#include "TextureCoordinateHandler.hpp"
-#include "TextureTransformHandler.hpp"
 #include "TransformHandler.hpp"
 #include "TraversorResult.hpp"
 #include "VrmlCanonicalHeaders.hpp"
 #include "VrmlNode.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
-#include "WorldInfoHandler.hpp"
-#include "ConversionContextable.hpp"
-#include "ConeHandler.hpp"
-#include "CylinderHandler.hpp"
-#include "ElevationGridHandler.hpp"
-#include "ExtrusionHandler.hpp"
-#include "PointSetHandler.hpp"
-#include "SphereHandler.hpp"
 
 // ------------------------------------------------------------------------- //
 
@@ -70,7 +56,7 @@ static vrml_proc::traversor::TraversorResult<ConversionContext> FindAndRunHandle
   vrml_proc::traversor::TraversorResult<ConversionContext> handlerResult;
   switch (Hash(ConvertToCanonicalHeader(header))) {
     case CanonicalHeaderHashes::WorldInfo:
-      handlerResult = WorldInfoHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Group:
       handlerResult = GroupHandler::Handle(params, actionMap, nd);
@@ -88,55 +74,55 @@ static vrml_proc::traversor::TraversorResult<ConversionContext> FindAndRunHandle
       handlerResult = IndexedLineSetHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Coordinate:
-      handlerResult = CoordinateHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Normal:
-      handlerResult = NormalHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::TextureCoordinate:
-      handlerResult = TextureCoordinateHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Color:
-      handlerResult = ColorHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Box:
-      handlerResult = BoxHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Switch:
       handlerResult = SwitchHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Material:
-      handlerResult = MaterialHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::ImageTexture:
-      handlerResult = ImageTextureHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::PixelTexture:
-      handlerResult = PixelTextureHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::TextureTransform:
-      handlerResult = TextureTransformHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Appearance:
       handlerResult = AppearanceHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Cone:
-      handlerResult = ConeHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Cylinder:
-      handlerResult = CylinderHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::ElevationGrid:
       handlerResult = ElevationGridHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Extrusion:
-      handlerResult = ExtrusionHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::PointSet:
-      handlerResult = PointSetHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     case CanonicalHeaderHashes::Sphere:
-      handlerResult = SphereHandler::Handle(params, actionMap, nd);
+      handlerResult = BasicHandler::Handle(params, actionMap, nd);
       break;
     default:
       break;
