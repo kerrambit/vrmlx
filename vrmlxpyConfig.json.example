@@ -1,8 +1,14 @@
 {
     "ignoreUnknownNode": false,
-    "exportFormat": "stl",
     "logFileDirectory: "/home/joe/vrml/vrmlxpy"
     "logFileName": "vrmlproc",
+
+    "exportFormat": {
+        "format": "stl",
+        "options": {
+            "binary": true
+        }
+    },
     "parallelismSettings": {
         "active": true,
         "threadsNumberLimit": 4
