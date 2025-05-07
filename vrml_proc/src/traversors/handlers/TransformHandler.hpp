@@ -39,7 +39,7 @@ namespace vrml_proc::traversor::handler::TransformHandler {
     using namespace vrml_proc::parser;
     using namespace vrml_proc::traversor::utils;
 
-    LogInfo(FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
+    LogDebug(FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
 
     /** Update transformation data via copying. */
     Transformation transformationData;

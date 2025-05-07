@@ -63,7 +63,7 @@ namespace vrml_proc::core::io::error {
    protected:
     std::string GetMessageInternal() const override {
       std::ostringstream oss;
-      oss << "[GeneralWriteError]: when reading data from <" << m_filepath << ">, an unknown error occurred!";
+      oss << "[GeneralWriteError]: when writing data into <" << m_filepath << ">, an unknown error occurred!";
 
       if (!m_details.empty()) {
         oss << " Details: <" << m_details << ">.";

@@ -52,7 +52,7 @@ namespace to_geom::calculator {
     using namespace vrml_proc::core::logger;
     using vrml_proc::math::cgal::CGALPoint;
 
-    LogInfo("Generate 3D mesh using IndexedTriangularFaceSetCalculator.", LOGGING_INFO);
+    LogDebug("Generate 3D mesh using IndexedTriangularFaceSetCalculator.", LOGGING_INFO);
 
     auto mesh = std::make_shared<to_geom::core::Mesh>();
     auto error = (std::make_shared<IndexedFaceSetCalculatorError>()
@@ -215,7 +215,7 @@ namespace to_geom::calculator {
 #endif
 
     double time = timer.End();
-    LogInfo(FormatString("Mesh was generated successfully. The generation took ", time, " seconds."), LOGGING_INFO);
+    LogDebug(FormatString("Mesh was generated successfully. The generation took ", time, " seconds."), LOGGING_INFO);
 
     return mesh;
   }

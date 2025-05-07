@@ -166,10 +166,10 @@ namespace vrml_proc::traversor::VrmlNodeTraversor {
 
     bool ignoreUnknownNodeFlag = params.config->ignoreUnknownNode;
 
-    LogInfo(FormatString("Find handler for VRML node with name <", params.node.header, ">."), LOGGING_INFO);
+    LogDebug(FormatString("Find handler for VRML node with name <", params.node.header, ">."), LOGGING_INFO);
 
     if (params.node.header.empty()) {
-      LogInfo("Handle empty VRML node.", LOGGING_INFO);
+      LogDebug("Handle empty VRML node.", LOGGING_INFO);
       return std::make_shared<ConversionContext>();
     }
 

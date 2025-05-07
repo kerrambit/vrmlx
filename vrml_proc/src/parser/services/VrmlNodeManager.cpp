@@ -10,15 +10,15 @@
 #include "VrmlNode.hpp"
 
 vrml_proc::parser::VrmlNodeManager::VrmlNodeManager() {
-  vrml_proc::core::logger::LogInfo("Construct new VrmlNodeManager.", LOGGING_INFO);
+  vrml_proc::core::logger::LogDebug("Construct new VrmlNodeManager.", LOGGING_INFO);
 }
 
-void vrml_proc::parser::VrmlNodeManager::AddDefinitionNode(const std::string& id,
-                                                           const vrml_proc::parser::VrmlNode& node) {
-  vrml_proc::core::logger::LogDebug(vrml_proc::core::utils::FormatString("Add DEF node with id <", id, "> into map."),
-                                    LOGGING_INFO);
-  vrml_proc::core::logger::LogDebug(vrml_proc::core::utils::FormatString("Address of VRML node: <", &node, ">."),
-                                    LOGGING_INFO);
+void vrml_proc::parser::VrmlNodeManager::AddDefinitionNode(
+    const std::string& id, const vrml_proc::parser::VrmlNode& node) {
+  vrml_proc::core::logger::LogDebug(
+      vrml_proc::core::utils::FormatString("Add DEF node with id <", id, "> into map."), LOGGING_INFO);
+  vrml_proc::core::logger::LogDebug(
+      vrml_proc::core::utils::FormatString("Address of VRML node: <", &node, ">."), LOGGING_INFO);
 
   auto result = m_definitionNodes.insert_or_assign(
       id, std::reference_wrapper<const vrml_proc::parser::VrmlNode>(std::cref(node)));

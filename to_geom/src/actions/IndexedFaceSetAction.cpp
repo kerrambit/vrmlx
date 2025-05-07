@@ -35,7 +35,7 @@ namespace to_geom {
       using vrml_proc::traversor::VrmlNodeTraversor::Traverse;
       using namespace vrml_proc::core::logger;
 
-      LogInfo("Execute IndexedFaceSetAction.", LOGGING_INFO);
+      LogDebug("Execute IndexedFaceSetAction.", LOGGING_INFO);
 
       auto result = std::make_shared<MeshTaskConversionContext>();
 

@@ -29,7 +29,7 @@ namespace vrml_proc::traversor::handler::IndexedFaceSetHandler {
 
     using namespace vrml_proc::traversor::handler::HandlerUtils;
 
-    vrml_proc::core::logger::LogInfo(
+    vrml_proc::core::logger::LogDebug(
         vrml_proc::core::utils::FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
 
     // There are geometry primitive nodes 'coord', 'color', 'normal' and 'texCoord'. They are sent as VrmlNodes into the

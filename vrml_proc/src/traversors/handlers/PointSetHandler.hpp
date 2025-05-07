@@ -29,7 +29,7 @@ namespace vrml_proc::traversor::handler::PointSetHandler {
 
     using namespace vrml_proc::traversor::handler::HandlerUtils;
 
-    vrml_proc::core::logger::LogInfo(
+    vrml_proc::core::logger::LogDebug(
         vrml_proc::core::utils::FormatString("Handle VRML node <", context.node.header, ">."), LOGGING_INFO);
 
     // There are geometry primitive nodes 'coord' and 'color'. They are sent as VrmlNodes into the

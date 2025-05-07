@@ -51,7 +51,7 @@ namespace to_geom::calculator::AlphaShapeCalculator {
     using namespace vrml_proc::core::logger;
     using namespace vrml_proc::math::cgal;
 
-    LogInfo("Generate 3D alpha shape mesh from point cloud using AlphaShapeCalculator.", LOGGING_INFO);
+    LogDebug("Generate 3D alpha shape mesh from point cloud using AlphaShapeCalculator.", LOGGING_INFO);
 
     auto mesh = std::make_shared<core::Mesh>();
     auto error = std::make_shared<error::AlphaShapeCalculatorError>();
@@ -80,7 +80,7 @@ namespace to_geom::calculator::AlphaShapeCalculator {
     }
 
     double time = timer.End();
-    LogInfo(FormatString("Mesh was generated successfully. The generation took ", time, " seconds."), LOGGING_INFO);
+    LogDebug(FormatString("Mesh was generated successfully. The generation took ", time, " seconds."), LOGGING_INFO);
 
     return mesh;
   };
