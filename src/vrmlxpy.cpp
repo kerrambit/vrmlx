@@ -220,16 +220,16 @@ namespace vrmlxpy {
     std::unique_ptr<FileWriter<to_geom::core::Mesh>> writer;
     switch (config->exportFormat) {
       case ExportFormat::Stl:
-        writer = std::make_unique<StlFileWriter>();
+        writer = std::make_unique<StlFileWriter>(config->exportFormatOptions.binary);
         break;
       case ExportFormat::Ply:
-        writer = std::make_unique<PlyFileWriter>();
+        writer = std::make_unique<PlyFileWriter>(config->exportFormatOptions.binary);
         break;
       case ExportFormat::Obj:
         writer = std::make_unique<ObjFileWriter>();
         break;
       default:
-        writer = std::make_unique<StlFileWriter>();
+        writer = std::make_unique<StlFileWriter>(config->exportFormatOptions.binary);
         break;
     }
 
