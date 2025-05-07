@@ -20,8 +20,8 @@
 // Forward declaration.
 namespace vrml_proc::traversor::VrmlNodeTraversor {
   template <ConversionContextable ConversionContext>
-  VRMLPROCESSING_API cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>>
-  Traverse(vrml_proc::traversor::VrmlNodeTraversorParameters context,
+  cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> Traverse(
+      vrml_proc::traversor::VrmlNodeTraversorParameters context,
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap);
 }
 

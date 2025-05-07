@@ -5,30 +5,24 @@
 
 #include <result.hpp>
 
+#include "ConversionContextable.hpp"
 #include "ConversionContextActionExecutor.hpp"
 #include "ConversionContextActionMap.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
-#include "VrmlNodeTraversorParameters.hpp"
-#include "Logger.hpp"
-#include "NodeTraversorError.hpp"
-#include "NodeDescriptor.hpp"
-#include "TraversorResult.hpp"
 #include "HandlerToActionBundle.hpp"
-#include "ConversionContextable.hpp"
+#include "Logger.hpp"
+#include "NodeDescriptor.hpp"
+#include "NodeTraversorError.hpp"
+#include "TraversorResult.hpp"
+#include "VrmlNodeTraversorParameters.hpp"
 
-namespace vrml_proc {
-  namespace traversor {
-    namespace VrmlNodeTraversor {
-      template <ConversionContextable ConversionContext>
-      VRMLPROCESSING_API cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>>
-      Traverse(vrml_proc::traversor::VrmlNodeTraversorParameters context,
-          const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap);
-    }
-  }  // namespace traversor
-}  // namespace vrml_proc
-
-#include "VrmlProcessingExport.hpp"
+namespace vrml_proc::traversor::VrmlNodeTraversor {
+  template <ConversionContextable ConversionContext>
+  cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> Traverse(
+      vrml_proc::traversor::VrmlNodeTraversorParameters context,
+      const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap);
+}
 
 namespace vrml_proc::traversor::handler::SwitchHandler {
 
