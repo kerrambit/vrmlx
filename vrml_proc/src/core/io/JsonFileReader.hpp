@@ -10,12 +10,19 @@
 #include "IoError.hpp"
 #include "Logger.hpp"
 #include "ManualTimer.hpp"
-#include "VrmlProcessingExport.hpp"
 
 namespace vrml_proc::core::io {
-
-  class VRMLPROCESSING_API JsonFileReader : public FileReader<nlohmann::json> {
+  /**
+   * @brief Represents a reader for JSON files.
+   */
+  class JsonFileReader : public FileReader<nlohmann::json> {
    public:
+    /**
+     * @brief Reads a JSON file on `filepath`.
+     *
+     * @param filepath path to the JSON file
+     * @returns read result type
+     */
     LoadFileResult Read(const std::filesystem::path& filepath) override {
       using namespace vrml_proc::core::error;
       using namespace vrml_proc::core::io::error;
@@ -25,8 +32,8 @@ namespace vrml_proc::core::io {
       LogInfo(FormatString("Read JSON file <", filepath.string(), ">."), LOGGING_INFO);
 
       if (!std::filesystem::exists(filepath)) {
-        LogError(FormatString("JSON file <", filepath.string(), "> does not exits and thus cannot be read!"),
-                 LOGGING_INFO);
+        LogError(
+            FormatString("JSON file <", filepath.string(), "> does not exits and thus cannot be read!"), LOGGING_INFO);
         std::shared_ptr<Error> error = std::make_shared<IoError>();
         return cpp::fail(error << (std::make_shared<FileNotFoundError>(filepath.string())));
       }
@@ -41,8 +48,8 @@ namespace vrml_proc::core::io {
       double time = timer.End();
 
       LogInfo(FormatString("Time to read and load JSON file <", filepath.string(), "> into json object took ", time,
-                           " seconds."),
-              LOGGING_INFO);
+                  " seconds."),
+          LOGGING_INFO);
       return config;
     }
   };

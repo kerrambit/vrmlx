@@ -12,7 +12,7 @@ add_library(togeom SHARED
     "${CMAKE_CURRENT_SOURCE_DIR}/../vendor/result/result.hpp"
 
     # DLL export macro.
-    "src/VrmlToGeomExport.hpp"
+    "src/ToGeomExport.hpp"
 
     # Core.
     "src/core/Mesh.hpp"

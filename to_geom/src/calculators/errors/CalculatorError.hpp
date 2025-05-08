@@ -8,11 +8,17 @@
 
 namespace to_geom::calculator::error {
 
+  /**
+   * @brief Represents an error created by calculators.
+   */
   class CalculatorError : public vrml_proc::core::error::Error {
    protected:
     virtual std::string GetMessageInternal() const { return "[CalculatorError]"; }
   };
 
+  /**
+   * @brief Represents a properties error meaning that calculator received invalid data.
+   */
   class PropertiesError : public vrml_proc::core::error::Error {
    public:
     PropertiesError(std::shared_ptr<vrml_proc::core::error::Error> innerError) { SetInnerError(innerError); }
@@ -24,6 +30,9 @@ namespace to_geom::calculator::error {
     }
   };
 
+  /**
+   * @brief Concrete error in the calculator stating that calculator cannot form a mesh face from less then 3 vertices.
+   */
   class InvalidNumberOfCoordinatesForFaceError : public vrml_proc::core::error::Error {
    public:
     InvalidNumberOfCoordinatesForFaceError(size_t numberOfCoordinates) : m_numberOfCoordinates(numberOfCoordinates) {}
@@ -42,6 +51,9 @@ namespace to_geom::calculator::error {
     size_t m_numberOfCoordinates;
   };
 
+  /**
+   * @brief Represents an concrete error stating that vertex index is our or range within a coordinates array.
+   */
   class VertexIndexOutOfRangeError : public vrml_proc::core::error::Error {
    public:
     VertexIndexOutOfRangeError(std::shared_ptr<vrml_proc::core::error::Error> innerError) { SetInnerError(innerError); }
@@ -55,6 +67,9 @@ namespace to_geom::calculator::error {
     }
   };
 
+  /**
+   * @brief Represents an error for BoxCalculator.
+   */
   class BoxCalculatorError : public CalculatorError {
    public:
     BoxCalculatorError(std::shared_ptr<vrml_proc::core::error::Error> innerError) { SetInnerError(innerError); }
@@ -68,6 +83,9 @@ namespace to_geom::calculator::error {
     }
   };
 
+  /**
+   * @brief Represents an error for IndexedFaceSetCalculator.
+   */
   class IndexedFaceSetCalculatorError : public CalculatorError {
    public:
     IndexedFaceSetCalculatorError(std::shared_ptr<vrml_proc::core::error::Error> innerError) {
@@ -83,6 +101,9 @@ namespace to_geom::calculator::error {
     }
   };
 
+  /**
+   * @brief Represents an error for IndexedTriangularFaceSetCalculator.
+   */
   class IndexedTriangularFaceSetCalculatorError : public CalculatorError {
    public:
     IndexedTriangularFaceSetCalculatorError(std::shared_ptr<vrml_proc::core::error::Error> innerError) {
@@ -98,6 +119,9 @@ namespace to_geom::calculator::error {
     }
   };
 
+  /**
+   * @brief Represents an error for IndexedLineSetCalculator.
+   */
   class IndexedLineSetCalculatorError : public CalculatorError {
    public:
     IndexedLineSetCalculatorError(std::shared_ptr<vrml_proc::core::error::Error> innerError) {
@@ -113,6 +137,9 @@ namespace to_geom::calculator::error {
     }
   };
 
+  /**
+   * @brief Represents an error for AlphaShapeCalculator.
+   */
   class AlphaShapeCalculatorError : public CalculatorError {
    public:
     AlphaShapeCalculatorError(std::shared_ptr<vrml_proc::core::error::Error> innerError) { SetInnerError(innerError); }

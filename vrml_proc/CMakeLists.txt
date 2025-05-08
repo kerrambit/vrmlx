@@ -13,7 +13,7 @@ add_library(vrmlproc SHARED
     "${CMAKE_CURRENT_SOURCE_DIR}/../vendor/json/nlohmann"
 
     # DLL export macro.
-    "src/VrmlProcessingExport.hpp"
+    "src/VrmlProcExport.hpp"
 
     # Core.
     "src/core/Object.hpp"
@@ -24,6 +24,7 @@ add_library(vrmlproc SHARED
     "src/core/io/MemoryMappedFileReader.hpp"
     "src/core/io/MemoryMappedFileReader.cpp"
     "src/core/io/JsonFileReader.hpp"
+    "src/core/io/errors/JsonError.hpp"
     "src/core/io/errors/IoError.hpp"
     "src/core/config/VrmlProcConfig.hpp"
     "src/core/config/Config.hpp"
@@ -31,7 +32,6 @@ add_library(vrmlproc SHARED
     "src/core/errors/Error.hpp"
     "src/core/errors/NullPointerError.hpp"
     "src/core/errors/UnsupportedOperationError.hpp"
-    "src/core/errors/JsonError.hpp"
 
     "src/core/utils/ScopedTimer.hpp"
     "src/core/utils/ManualTimer.hpp"

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Error.hpp"
+
 namespace vrml_proc::core::config {
   /**
    * @brief Config is an interface for representing a generic configuration file.

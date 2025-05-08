@@ -6,7 +6,7 @@ namespace vrml_proc::parser {
   /**
    * @brief Represents a base grammar.
    * Each derived grammar has to implement ` GetStartRule()` method. Base grammar should also store
-   * information about an error encountered in any grammara while parsing.
+   * information about an error encountered in any grammara while parsing (not implemented yet).
    *
    * @tparam Iterator type of iteraror used, e.g. const char* iterator
    * @tparam ReturnType type of result grammar will return

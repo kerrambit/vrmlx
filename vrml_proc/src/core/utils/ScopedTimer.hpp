@@ -19,6 +19,9 @@ namespace vrml_proc::core::utils {
       m_startTime = std::chrono::high_resolution_clock::now();
     }
 
+    /**
+     * @brief Destructor, which writes total elapsed time into the m_elapsedTime variable referenced from outside.
+     */
     ~ScopedTimer() {
       auto timeSpan = std::chrono::duration_cast<std::chrono::duration<double>>(
           std::chrono::high_resolution_clock::now() - m_startTime);

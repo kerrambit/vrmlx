@@ -27,7 +27,7 @@ namespace vrml_proc::parser::VrmlNodeManagerPopulator {
       auto arrayResult = Extract<VrmlNodeArray>(child.value);
       if (arrayResult.has_value() && arrayResult.value().get().size() != 0) {
         for (const auto& variant : arrayResult.value().get()) {
-          auto variantResult = ExtractFromVariant<VrmlNode>(variant);
+          auto variantResult = ExtractVrmlNodeFromVariantWithoutResolving<VrmlNode>(variant);
           if (variantResult.has_value()) {
             Populate(manager, variantResult.value().get());
           }

@@ -36,6 +36,9 @@ namespace expr = boost::log::expressions;
 namespace attrs = boost::log::attributes;
 namespace sinks = boost::log::sinks;
 
+/**
+ * @brief Represents a buffered message.
+ */
 struct BufferedMessage {
   std::string text;
   vrml_proc::core::logger::Level level;
@@ -43,25 +46,50 @@ struct BufferedMessage {
   int line;
   std::string function;
 
-  BufferedMessage(std::string text, vrml_proc::core::logger::Level level, std::string file, int line,
-                  std::string function)
+  BufferedMessage(const std::string& text,
+      vrml_proc::core::logger::Level level,
+      const std::string& file,
+      int line,
+      const std::string& function)
       : text(text), level(level), file(file), line(line), function(function) {}
 };
 
+/**
+ * @brief Global bugger of buffered messages foer this cpp translation unit.
+ *
+ * It stores log messages, before the InitLogging() function is called.
+ */
 static std::vector<BufferedMessage> g_logBuffer;
+
+/**
+ * @brief Global variable indicating if the logging was initialized for this cpp translation unit.
+ */
 static bool g_loggingInitialized = false;
 
+/**
+ * @brief Initializes the global logger instance.
+ *
+ * This macro initializes the global logger `Logger` using Boost.Log's
+ * `severity_logger_mt` type with the `boost::log::trivial::severity_level`.
+ * The initialization is done once at the start of the program, ensuring that
+ * the logger is available throughout the application for logging messages.
+ *
+ * This setup is thread-safe and allows for logging messages at various
+ * severity levels (e.g., trace, debug, info, warning, error, fatal).
+ *
+ * @return The initialized `severity_logger_mt` instance.
+ */
 BOOST_LOG_GLOBAL_LOGGER_INIT(Logger, boost::log::sources::severity_logger_mt<boost::log::trivial::severity_level>) {
   return boost::log::sources::severity_logger_mt<boost::log::trivial::severity_level>();
 }
 
+// Forward declaration.
 void LogBufferedMessages();
 
 void vrml_proc::core::logger::InitLogging() {
   g_loggingInitialized = true;
 
-  logging::add_file_log(
-      keywords::file_name = "vrmlproc_%Y-%m-%d.log", keywords::open_mode = std::ios_base::app,
+  logging::add_file_log(keywords::file_name = "vrmlproc_%Y-%m-%d.log", keywords::open_mode = std::ios_base::app,
       keywords::time_based_rotation = sinks::file::rotation_at_time_point(0, 0, 0), keywords::auto_flush = true,
       keywords::format = expr::stream << "["
                                       << expr::format_date_time<boost::posix_time::ptime>(
@@ -90,8 +118,7 @@ void vrml_proc::core::logger::InitLogging(const std::string& loggingDirectory, c
     boost::filesystem::create_directories(loggingDirectory);
   }
 
-  logging::add_file_log(
-      keywords::file_name = loggingDirectory + "/" + projectName + "_%Y-%m-%d.log",
+  logging::add_file_log(keywords::file_name = loggingDirectory + "/" + projectName + "_%Y-%m-%d.log",
       keywords::open_mode = std::ios_base::app,
       keywords::time_based_rotation = sinks::file::rotation_at_time_point(0, 0, 0), keywords::auto_flush = true,
       keywords::format = expr::stream << "["
@@ -114,9 +141,13 @@ void vrml_proc::core::logger::InitLogging(const std::string& loggingDirectory, c
   LogBufferedMessages();
 }
 
-void vrml_proc::core::logger::LogUnformattedText(const std::string& title, const std::string& text,
-                                                 vrml_proc::core::logger::Level level, const std::string& file,
-                                                 int line, const std::string& function) {
+void vrml_proc::core::logger::LogUnformattedText(const std::string& title,
+    const std::string& text,
+    vrml_proc::core::logger::Level level,
+    const std::string& file,
+    int line,
+    const std::string& function) {  //
+
   if (!g_loggingInitialized) {
     g_logBuffer.push_back(
         BufferedMessage(vrml_proc::core::utils::FormatString(title, ":\n", text), level, file, line, function));
@@ -151,8 +182,9 @@ void vrml_proc::core::logger::LogUnformattedText(const std::string& title, const
   }
 }
 
-void vrml_proc::core::logger::Log(const std::string& text, Level level, const std::string& file, int line,
-                                  const std::string& function) {
+void vrml_proc::core::logger::Log(
+    const std::string& text, Level level, const std::string& file, int line, const std::string& function) {  //
+
   if (!g_loggingInitialized) {
     g_logBuffer.push_back(BufferedMessage(text, level, file, line, function));
     return;
@@ -188,33 +220,33 @@ void vrml_proc::core::logger::Log(const std::string& text, Level level, const st
   }
 }
 
-void vrml_proc::core::logger::LogTrace(const std::string& text, const std::string& file, int line,
-                                       const std::string& function) {
+void vrml_proc::core::logger::LogTrace(
+    const std::string& text, const std::string& file, int line, const std::string& function) {
   vrml_proc::core::logger::Log(text, vrml_proc::core::logger::Level::Trace, file, line, function);
 }
 
-void vrml_proc::core::logger::LogDebug(const std::string& text, const std::string& file, int line,
-                                       const std::string& function) {
+void vrml_proc::core::logger::LogDebug(
+    const std::string& text, const std::string& file, int line, const std::string& function) {
   vrml_proc::core::logger::Log(text, vrml_proc::core::logger::Level::Debug, file, line, function);
 }
 
-void vrml_proc::core::logger::LogInfo(const std::string& text, const std::string& file, int line,
-                                      const std::string& function) {
+void vrml_proc::core::logger::LogInfo(
+    const std::string& text, const std::string& file, int line, const std::string& function) {
   vrml_proc::core::logger::Log(text, vrml_proc::core::logger::Level::Info, file, line, function);
 }
 
-void vrml_proc::core::logger::LogWarning(const std::string& text, const std::string& file, int line,
-                                         const std::string& function) {
+void vrml_proc::core::logger::LogWarning(
+    const std::string& text, const std::string& file, int line, const std::string& function) {
   vrml_proc::core::logger::Log(text, vrml_proc::core::logger::Level::Warning, file, line, function);
 }
 
-void vrml_proc::core::logger::LogError(const std::string& text, const std::string& file, int line,
-                                       const std::string& function) {
+void vrml_proc::core::logger::LogError(
+    const std::string& text, const std::string& file, int line, const std::string& function) {
   vrml_proc::core::logger::Log(text, vrml_proc::core::logger::Level::Error, file, line, function);
 }
 
-void vrml_proc::core::logger::LogFatal(const std::string& text, const std::string& file, int line,
-                                       const std::string& function) {
+void vrml_proc::core::logger::LogFatal(
+    const std::string& text, const std::string& file, int line, const std::string& function) {
   vrml_proc::core::logger::Log(text, vrml_proc::core::logger::Level::Fatal, file, line, function);
 }
 

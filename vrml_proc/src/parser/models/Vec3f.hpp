@@ -8,6 +8,9 @@
 #include "VrmlUnits.hpp"
 
 namespace vrml_proc::parser {
+  /**
+   * @brief Represents a SF value contaning 3 floats.
+   */
   struct Vec3f : public vrml_proc::core::Object {
     Vec3f() : x(0.0f), y(0.0f), z(0.0f) {}
 

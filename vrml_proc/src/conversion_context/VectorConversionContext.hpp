@@ -1,13 +1,13 @@
 #pragma once
 
-#include <vector>
 #include <stdexcept>
+#include <vector>
 
 #include "BaseConversionContext.hpp"
 
 namespace vrml_proc::conversion_context {
   /**
-   * @brief Templated child of `BaseConversionContext`. It is more specialized ConversionContext.
+   * @brief Templated child of `BaseConversionContext`. It is a specialized ConversionContext.
    * Its internal data format is std::vector<T>.
    */
   template <typename T>

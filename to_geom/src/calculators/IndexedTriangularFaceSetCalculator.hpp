@@ -3,18 +3,18 @@
 #include <functional>
 
 #include "CalculatorResult.hpp"
-#include "TransformationMatrix.hpp"
 #include "Int32Array.hpp"
+#include "TransformationMatrix.hpp"
 #include "Vec3fArray.hpp"
 
-#include "VrmlToGeomExport.hpp"
+#include "ToGeomExport.hpp"
 
 namespace to_geom::calculator {
   /**
    * @brief Represents a calculator for generating 3D meshes from IndexedFaceSet VRML node, where all faces are
    * tringular.
    */
-  class VRMLTOGEOM_API IndexedTriangularFaceSetCalculator {
+  class TOGEOM_API IndexedTriangularFaceSetCalculator {
    public:
     /**
      * @brief Generates 3D mesh from coordinates and coordinates indices lists.
@@ -24,6 +24,7 @@ namespace to_geom::calculator {
      * @param matrix transformation matrix applied to points
      * @param checkRange flag indicating if coordinate index should be checked for range when accessing `coordinates`
      * list
+     * @returns calculator result (mesh object or error if generation failed)
      */
     to_geom::calculator::CalculatorResult Generate3DMesh(
         std::reference_wrapper<const vrml_proc::parser::Int32Array> coordinateIndices,

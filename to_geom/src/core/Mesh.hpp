@@ -6,11 +6,9 @@
 
 #include "CGALBaseTypesForVrml.hpp"
 
-namespace to_geom {
-  namespace core {
-    /**
-     * @brief Represents a polygonal surface mesh.
-     */
-    using Mesh = CGAL::Surface_mesh<vrml_proc::math::cgal::CGALPoint>;
-  }  // namespace core
-}  // namespace to_geom
+namespace to_geom::core {
+  /**
+   * @brief Represents a polygonal surface mesh.
+   */
+  using Mesh = CGAL::Surface_mesh<vrml_proc::math::cgal::CGALPoint>;
+}  // namespace to_geom::core

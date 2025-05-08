@@ -11,8 +11,10 @@
 #include <result.hpp>
 
 #include "Int32Array.hpp"
+#include "NodeDescriptorFieldType.hpp"
 #include "NodeValidationError.hpp"
 #include "NodeValidationUtils.hpp"
+#include "NodeView.hpp"
 #include "Vec2f.hpp"
 #include "Vec2fArray.hpp"
 #include "Vec3f.hpp"
@@ -22,26 +24,67 @@
 #include "VrmlNode.hpp"
 #include "VrmlNodeManager.hpp"
 #include "VrmlUnits.hpp"
-#include "NodeDescriptorFieldType.hpp"
-#include "NodeView.hpp"
 
 namespace vrml_proc::traversor::node_descriptor {
-
+  /**
+   * @brief Represents a definition mechanism for VRML 2.0 nodes. Using `NodeDescriptor`, all node types are defined and
+   * their default values are stored.
+   */
   class NodeDescriptor {
    public:
-    NodeDescriptor() : m_id("") {}
+    /**
+     * @brief Creates new object.
+     */
+    NodeDescriptor() : m_name("") {}
 
-    NodeDescriptor(const std::string& id) : m_id(id) {}
+    /**
+     * @brief Creates new object.
+     *
+     * @param id name of the VRML node
+     */
+    NodeDescriptor(const std::string& id) : m_name(id) {}
 
-    NodeDescriptor(const std::string& id, const std::string& additionalId)
-        : m_id(id), m_additionalIds({additionalId}) {}
+    /**
+     * @brief Creates new object.
+     *
+     * @param id name of the VRML node
+     * @param synonym synonym to the canonical name in `id` variable
+     */
+    NodeDescriptor(const std::string& id, const std::string& synonym) : m_name(id), m_synonyms({synonym}) {}
 
-    NodeDescriptor(const std::string& id, const std::unordered_set<std::string>& additionalIds)
-        : m_id(id), m_additionalIds(additionalIds) {}
+    /**
+     * @brief Creates new object.
+     *
+     * @param id name of the VRML node
+     * @param synonyms synonyms to the canonical name in `id` variable
+     */
+    NodeDescriptor(const std::string& id, const std::unordered_set<std::string>& synonyms)
+        : m_name(id), m_synonyms(synonyms) {}
 
+    /**
+     * @brief Binds a field to the node descriptor.
+     *
+     * @tparam Type type of the field
+     * @param fieldName name of the new field
+     * @param defaultValue default value of the field - the value is currently takes as reference
+     * @note `defaultValue` has to exist as long as possible NodeView object using it
+     *
+     * @todo `defaultValue` value will not have to exist as long as now. Currently, it does, and it saves space, becuase
+     * for every e.g. Group node, all default values for every such node are in the scene graph the same. That is
+     * possible, because the tree is read-only.
+     */
     template <typename Type>
     void BindField(const std::string& fieldName, const Type& defaultValue);
 
+    /**
+     * @brief Binds a VRML node as a field.
+     *
+     * @param fieldName name of the new field
+     * @param validNodeHeaders valid names (node types) for the new node field
+     * @param defaultNode default node
+     *
+     * @todo `defaultNode` does not make sense here, as default value should be just NULL - or just an empty node
+     */
     void BindVrmlNode(const std::string& fieldName,
         const std::unordered_set<std::string>& validNodeHeaders,
         const vrml_proc::parser::VrmlNode& defaultNode) {
@@ -50,15 +93,38 @@ namespace vrml_proc::traversor::node_descriptor {
       m_defaultNodeFields[fieldName] = std::cref(defaultNode);
     }
 
+    /**
+     * @brief Binds a VRML node array
+     *
+     * @param fieldName name of the new field
+     */
     void BindVrmlNodeArray(const std::string& fieldName) {
       m_fieldTypes[fieldName] = FieldType::NodeArray;
       m_defaultNodeArrayFields[fieldName] = std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>{};
     }
 
-    std::string GetId() const { return m_id; }
+    /**
+     * @brief Gets name (node type) of the node descriptor.
+     *
+     * @returns name
+     */
+    std::string GetName() const { return m_name; }
 
-    const std::unordered_set<std::string>& GetAdditionalIds() const { return m_additionalIds; }
+    /**
+     * @brief Gets all synonyms.
+     *
+     * @returns all synonyms as set
+     */
+    const std::unordered_set<std::string>& GetSynonyms() const { return m_synonyms; }
 
+    /**
+     * @brief Validates given node `node` agains `this` node descriptor.
+     *
+     * @param node node to validate
+     * @param manager manager
+     * @param checkName flag indicating if the name of the `node` should be checked or not
+     * @returns NodeView if the validation runs succesfully, otherwise NodeValidationError
+     */
     cpp::result<std::shared_ptr<NodeView>,
         std::shared_ptr<vrml_proc::traversor::validation::error::NodeValidationError>>
     Validate(const vrml_proc::parser::VrmlNode& node,
@@ -67,16 +133,16 @@ namespace vrml_proc::traversor::node_descriptor {
 
       using namespace vrml_proc::traversor::validation::NodeValidationUtils;
 
-      if (checkName && !((node.header == m_id) || (m_additionalIds.find(node.header) != m_additionalIds.end()))) {
-        auto expectedHeaders = m_additionalIds;
-        expectedHeaders.insert(m_id);
+      if (checkName && !((node.header == m_name) || (m_synonyms.find(node.header) != m_synonyms.end()))) {
+        auto expectedHeaders = m_synonyms;
+        expectedHeaders.insert(m_name);
         return cpp::fail(std::make_shared<vrml_proc::traversor::validation::error::InvalidVrmlNodeHeader>(
             node.header, expectedHeaders));
       }
 
       NodeView::Builder builder;
-      builder.SetId(m_id);
-      builder.AddAdditionalId(m_additionalIds);
+      builder.SetName(m_name);
+      builder.AddSynonyms(m_synonyms);
       builder.SetDefaultValues(m_fieldTypes, m_defaultBoolFields, m_defaultStringFields, m_defaultFloat32Fields,
           m_defaultInt32Fields, m_defaultVec2fFields, m_defaultVec3fFields, m_defaultVec4fFields,
           m_defaultVec2fArrayFields, m_defaultVec3fArrayFields, m_defaultInt32ArrayFields, m_defaultNodeFields,
@@ -95,26 +161,67 @@ namespace vrml_proc::traversor::node_descriptor {
       for (const auto& field : node.fields) {
         FieldType type = m_fieldTypes[field.name];
         switch (type) {
-          case FieldType::Bool:
+          case FieldType::Node:
 
           {
-            auto boolean = ExtractFieldByNameWithValidation<bool>(field.name, node.fields);
-            if (boolean.has_error()) {
-              return cpp::fail(boolean.error());
+            auto vrmlNode = ExtractVrmlNodeWithValidation(field.name, node.fields, manager);
+            if (vrmlNode.has_error()) {
+              return cpp::fail(vrmlNode.error());
             }
-            builder.AddField(field.name, boolean.value());
-            m_defaultBoolFields[field.name] = boolean.value();
+
+            if (vrmlNode.value().has_value()) {
+              auto headerResult = CheckForOnlyAllowedVrmlNodeHeaders(
+                  m_validHeaderNames[field.name], vrmlNode.value().value().get(), field.name);
+              if (headerResult.has_error()) {
+                return cpp::fail(headerResult.error());
+              }
+            }
+            builder.AddField(field.name, vrmlNode.value());
+            m_defaultNodeFields[field.name] = vrmlNode.value();
           } break;
 
-          case FieldType::String:
+          case FieldType::NodeArray:
 
           {
-            auto string = ExtractFieldByNameWithValidation<std::string>(field.name, node.fields);
-            if (string.has_error()) {
-              return cpp::fail(string.error());
+            auto vrmlNodeArray = ExtractVrmlNodeArrayWithValidation(field.name, node.fields, manager, true);
+            if (vrmlNodeArray.has_error()) {
+              return cpp::fail(vrmlNodeArray.error());
             }
-            builder.AddField(field.name, string.value());
-            m_defaultStringFields[field.name] = string.value();
+            builder.AddField(field.name, vrmlNodeArray.value());
+            m_defaultNodeArrayFields[field.name] = vrmlNodeArray.value();
+          } break;
+
+          case FieldType::Vec3f:
+
+          {
+            auto vec3f = ExtractFieldByNameWithValidation<vrml_proc::parser::Vec3f>(field.name, node.fields);
+            if (vec3f.has_error()) {
+              return cpp::fail(vec3f.error());
+            }
+            builder.AddField(field.name, vec3f.value());
+            m_defaultVec3fFields[field.name] = vec3f.value();
+          } break;
+
+          case FieldType::Vec3fArray:
+
+          {
+            auto value = ExtractFieldByNameWithValidation<vrml_proc::parser::Vec3fArray>(field.name, node.fields);
+            if (value.has_error()) {
+              return cpp::fail(value.error());
+            }
+            builder.AddField(field.name, value.value());
+            m_defaultVec3fArrayFields[field.name] = value.value();
+          } break;
+
+          case FieldType::Int32Array:
+
+          {
+            auto value = ExtractFieldByNameWithValidation<vrml_proc::parser::Int32Array>(field.name, node.fields);
+            if (value.has_error()) {
+              return cpp::fail(value.error());
+            }
+            builder.AddField(field.name, value.value());
+            m_defaultInt32ArrayFields[field.name] = value.value();
           } break;
 
           case FieldType::Float32:
@@ -150,17 +257,6 @@ namespace vrml_proc::traversor::node_descriptor {
             m_defaultVec2fFields[field.name] = vec2f.value();
           } break;
 
-          case FieldType::Vec3f:
-
-          {
-            auto vec3f = ExtractFieldByNameWithValidation<vrml_proc::parser::Vec3f>(field.name, node.fields);
-            if (vec3f.has_error()) {
-              return cpp::fail(vec3f.error());
-            }
-            builder.AddField(field.name, vec3f.value());
-            m_defaultVec3fFields[field.name] = vec3f.value();
-          } break;
-
           case FieldType::Vec4f:
 
           {
@@ -183,56 +279,26 @@ namespace vrml_proc::traversor::node_descriptor {
             m_defaultVec2fArrayFields[field.name] = value.value();
           } break;
 
-          case FieldType::Vec3fArray:
+          case FieldType::Bool:
 
           {
-            auto value = ExtractFieldByNameWithValidation<vrml_proc::parser::Vec3fArray>(field.name, node.fields);
-            if (value.has_error()) {
-              return cpp::fail(value.error());
+            auto boolean = ExtractFieldByNameWithValidation<bool>(field.name, node.fields);
+            if (boolean.has_error()) {
+              return cpp::fail(boolean.error());
             }
-            builder.AddField(field.name, value.value());
-            m_defaultVec3fArrayFields[field.name] = value.value();
+            builder.AddField(field.name, boolean.value());
+            m_defaultBoolFields[field.name] = boolean.value();
           } break;
 
-          case FieldType::Int32Array:
+          case FieldType::String:
 
           {
-            auto value = ExtractFieldByNameWithValidation<vrml_proc::parser::Int32Array>(field.name, node.fields);
-            if (value.has_error()) {
-              return cpp::fail(value.error());
+            auto string = ExtractFieldByNameWithValidation<std::string>(field.name, node.fields);
+            if (string.has_error()) {
+              return cpp::fail(string.error());
             }
-            builder.AddField(field.name, value.value());
-            m_defaultInt32ArrayFields[field.name] = value.value();
-          } break;
-
-          case FieldType::Node:
-
-          {
-            auto vrmlNode = ExtractVrmlNodeWithValidation(field.name, node.fields, manager);
-            if (vrmlNode.has_error()) {
-              return cpp::fail(vrmlNode.error());
-            }
-
-            if (vrmlNode.value().has_value()) {
-              auto headerResult = CheckForOnlyAllowedVrmlNodeHeaders(
-                  m_validHeaderNames[field.name], vrmlNode.value().value().get(), field.name);
-              if (headerResult.has_error()) {
-                return cpp::fail(headerResult.error());
-              }
-            }
-            builder.AddField(field.name, vrmlNode.value());
-            m_defaultNodeFields[field.name] = vrmlNode.value();
-          } break;
-
-          case FieldType::NodeArray:
-
-          {
-            auto vrmlNodeArray = ExtractVrmlNodeArrayWithValidation(field.name, node.fields, manager, true);
-            if (vrmlNodeArray.has_error()) {
-              return cpp::fail(vrmlNodeArray.error());
-            }
-            builder.AddField(field.name, vrmlNodeArray.value());
-            m_defaultNodeArrayFields[field.name] = vrmlNodeArray.value();
+            builder.AddField(field.name, string.value());
+            m_defaultStringFields[field.name] = string.value();
           } break;
 
           default:
@@ -244,8 +310,8 @@ namespace vrml_proc::traversor::node_descriptor {
     }
 
    private:
-    std::string m_id;
-    std::unordered_set<std::string> m_additionalIds;
+    std::string m_name;
+    std::unordered_set<std::string> m_synonyms;
 
     std::map<std::string, FieldType> m_fieldTypes;
     std::map<std::string, std::unordered_set<std::string>> m_validHeaderNames;
@@ -268,6 +334,12 @@ namespace vrml_proc::traversor::node_descriptor {
     std::map<std::string, std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>>
         m_defaultNodeArrayFields;
 
+    /**
+     * @brief Extracts field names of the map.
+     *
+     * @param fieldTypes map, where key is name of the field and value is FieldType of that field
+     * @returns all unique field names
+     */
     static std::unordered_set<std::string> ExtractFieldNames(const std::map<std::string, FieldType>& fieldTypes) {
       std::unordered_set<std::string> fieldNames;
       for (const auto& [key, _] : fieldTypes) {

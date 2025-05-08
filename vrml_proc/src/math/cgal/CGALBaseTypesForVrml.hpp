@@ -7,6 +7,13 @@
 #include "Vec3fArray.hpp"
 #include "VrmlUnits.hpp"
 
+/**
+ * @brief Namespace containing basic CGAL types.
+ *
+ * @todo Ideally, vrmlproc should be link CGAl at all, and all these types should be defined in togeom. However, because
+ * vrmlproc's TransformationMatrix is dependent on CGAl matrix type, this cannot be done until we use diiferent
+ * abstraction for matrix.
+ */
 namespace vrml_proc::math::cgal {
 
   using CGALKernel = CGAL::Simple_cartesian<double>;
@@ -15,12 +22,30 @@ namespace vrml_proc::math::cgal {
 
   using CGALPoint = CGALKernel::Point_3;
 
+  /**
+   * @brief Converts Ve3f to CGAL vector.
+   *
+   * @param vec3 vector to convert
+   * @returns CGAl converted vector
+   */
   inline CGALVector3 Vec3fToCGALVector3(const vrml_proc::parser::Vec3f& vec3) {
     return CGALVector3(vec3.x, vec3.y, vec3.z);
   }
 
+  /**
+   * @brief Converts Ve3f to CGAL point.
+   *
+   * @param vec3 vector to convert
+   * @returns CGAl converted point
+   */
   inline CGALPoint Vec3fToCGALPoint(const vrml_proc::parser::Vec3f& vec3) { return CGALPoint(vec3.x, vec3.y, vec3.z); }
 
+  /**
+   * @brief Converts an array of Vec3f vectors into list of CGAL points.
+   *
+   * @param vec3Array array of vectors to convert
+   * @returns list of CGAL points
+   */
   inline std::vector<CGALPoint> Vec3fArrayToCGALPoints(const vrml_proc::parser::Vec3fArray& vec3Array) {
     std::vector<CGALPoint> cgalPoints;
     cgalPoints.reserve(vec3Array.vectors.size());
@@ -30,13 +55,5 @@ namespace vrml_proc::math::cgal {
     }
 
     return cgalPoints;
-  }
-
-  inline CGALVector3 CGALPointToCGALVector3(const CGALPoint& point) {
-    return CGALVector3(point.x(), point.y(), point.z());
-  }
-
-  inline CGALPoint CGALVector3ToCGALPoint(const CGALVector3& vector) {
-    return CGALPoint(vector.x(), vector.y(), vector.z());
   }
 }  // namespace vrml_proc::math::cgal

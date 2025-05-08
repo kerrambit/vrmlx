@@ -12,9 +12,9 @@
 #include "MeshTaskConversionContext.hpp"
 #include "ShapeAction.hpp"
 #include "SwitchAction.hpp"
+#include "ToGeomConfig.hpp"
 #include "TransformAction.hpp"
 #include "Vec3f.hpp"
-#include "ToGeomConfig.hpp"
 #include "VrmlNode.hpp"
 
 namespace to_geom::conversion_context {

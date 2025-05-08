@@ -62,9 +62,9 @@ namespace vrmlxpy {
 
   void PrintVersion() {
     std::cout << Logo << R"(
-            vrmlxpy (version 0.1)
-            vrmlproc (version 0.1)
-            togeom (vesion 0.1))"
+            vrmlxpy  (version 1.0)
+            vrmlproc (version 1.0)
+            togeom   (version 1.0))"
               << std::endl;
   }
 

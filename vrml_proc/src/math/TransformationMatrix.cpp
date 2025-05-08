@@ -30,7 +30,8 @@ static vrml_proc::math::TransformationMatrix CreateScaleMatrix(const vrml_proc::
  *
  * @note Link for the algorithm is https://www.cprogramming.com/tutorial/3d/quaternions.html.
  */
-static vrml_proc::math::TransformationMatrix CreateRotationMatrix(const vrml_proc::math::Quaternion& quaternion) {
+static vrml_proc::math::TransformationMatrix CreateRotationMatrix(const vrml_proc::math::Quaternion& quaternion) {  //
+
   double x = quaternion.x;
   double y = quaternion.y;
   double z = quaternion.z;
@@ -46,7 +47,6 @@ static vrml_proc::math::TransformationMatrix CreateRotationMatrix(const vrml_pro
  * @brief Creates translation matrix based on the fiven offset vector.
  *
  * @param offset determines in which way and how much to translate
- *
  * @returns translation matrix
  */
 static vrml_proc::math::TransformationMatrix CreateTranslationMatrix(const vrml_proc::math::cgal::CGALVector3& offset) {

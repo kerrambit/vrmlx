@@ -3,22 +3,24 @@
 #include "Vec3f.hpp"
 #include "Vec4f.hpp"
 
-using vrml_proc::parser::Vec3f;
-using vrml_proc::parser::Vec4f;
-
 namespace vrml_proc::math {
+
+  /**
+   * @brief Represents a Transformation object, which is used in VRML 2.0 format. It basically mirros the data inside
+   * Transform node.
+   */
   struct Transformation {
-    Vec3f center;
-    Vec4f rotation;
-    Vec3f scale;
-    Vec4f scaleOrientation;
-    Vec3f translation;
+    vrml_proc::parser::Vec3f center;
+    vrml_proc::parser::Vec4f rotation;
+    vrml_proc::parser::Vec3f scale;
+    vrml_proc::parser::Vec4f scaleOrientation;
+    vrml_proc::parser::Vec3f translation;
 
     Transformation()
-        : center(Vec3f()),
-          rotation(Vec4f(0.0f, 0.0f, 1.0f, 0.0f)),
-          scale(Vec3f(1.0f, 1.0f, 1.0f)),
-          scaleOrientation(Vec4f(0.0f, 0.0f, 1.0f, 0.0f)),
-          translation(Vec3f()) {}
+        : center(vrml_proc::parser::Vec3f()),
+          rotation(vrml_proc::parser::Vec4f(0.0f, 0.0f, 1.0f, 0.0f)),
+          scale(vrml_proc::parser::Vec3f(1.0f, 1.0f, 1.0f)),
+          scaleOrientation(vrml_proc::parser::Vec4f(0.0f, 0.0f, 1.0f, 0.0f)),
+          translation(vrml_proc::parser::Vec3f()) {}
   };
 }  // namespace vrml_proc::math

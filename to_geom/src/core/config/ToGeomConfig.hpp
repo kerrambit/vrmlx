@@ -46,8 +46,11 @@ namespace to_geom::core::config {
    * @brief Represents a configuration file for `togeom` library.
    *
    * Configuration file for `togeom` has following properties:
-   *  - exportFormat (ExportFormat),
    *  - vrmlProcConfig (inherited properties from VrmlProcConfig class).
+   *  - IndexedFaceSet settings
+   *  - parallelism settings
+   *  - exportFormat settings
+   *  - meshSimplification settings
    *
    * @implements `Config` class with Load() method.
    */
@@ -106,7 +109,8 @@ namespace to_geom::core::config {
      * @return result containing error on failure, else empty
      */
     cpp::result<void, std::shared_ptr<vrml_proc::core::error::Error>> Load(
-        const std::filesystem::path& filepath) override {
+        const std::filesystem::path& filepath) override {  //
+
       vrml_proc::core::io::JsonFileReader reader;
       auto json = reader.Read(filepath);
 
@@ -152,7 +156,7 @@ namespace to_geom::core::config {
             }
           }
         } catch (const nlohmann::json::exception& e) {
-          return cpp::fail(std::make_shared<vrml_proc::core::error::JsonError>(e.what()));
+          return cpp::fail(std::make_shared<vrml_proc::core::io::error::JsonError>(e.what()));
         }
 
         return {};

@@ -92,25 +92,25 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
 
   {
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("VRML");
-    CHECK(nd.GetId() == "VRML");
-    CHECK(nd.GetAdditionalIds().size() == 0);
+    CHECK(nd.GetName() == "VRML");
+    CHECK(nd.GetSynonyms().size() == 0);
   }
 
   {
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("vrml", "A");
-    CHECK(nd.GetId() == "vrml");
-    CHECK(nd.GetAdditionalIds().size() == 1);
-    CHECK(nd.GetAdditionalIds().find("A") != nd.GetAdditionalIds().end());
+    CHECK(nd.GetName() == "vrml");
+    CHECK(nd.GetSynonyms().size() == 1);
+    CHECK(nd.GetSynonyms().find("A") != nd.GetSynonyms().end());
   }
 
   {
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("vrml", {"A", "B", "C"});
-    CHECK(nd.GetId() == "vrml");
-    CHECK(nd.GetAdditionalIds().size() == 3);
-    CHECK(nd.GetAdditionalIds().find("A") != nd.GetAdditionalIds().end());
-    CHECK(nd.GetAdditionalIds().find("B") != nd.GetAdditionalIds().end());
-    CHECK(nd.GetAdditionalIds().find("C") != nd.GetAdditionalIds().end());
-    CHECK(nd.GetAdditionalIds().find("D") == nd.GetAdditionalIds().end());
+    CHECK(nd.GetName() == "vrml");
+    CHECK(nd.GetSynonyms().size() == 3);
+    CHECK(nd.GetSynonyms().find("A") != nd.GetSynonyms().end());
+    CHECK(nd.GetSynonyms().find("B") != nd.GetSynonyms().end());
+    CHECK(nd.GetSynonyms().find("C") != nd.GetSynonyms().end());
+    CHECK(nd.GetSynonyms().find("D") == nd.GetSynonyms().end());
   }
 
   {
@@ -197,7 +197,7 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
     manager.AddDefinitionNode("ID", n);
     auto result = nd.Validate(node, manager);
     REQUIRE(result.has_value());
-    CHECK(result.value()->GetId() == "Root");
+    CHECK(result.value()->GetName() == "Root");
 
     CHECK(result.value()->FieldExists("string"));
     CHECK_FALSE(result.value()->FieldExists("unknown"));

@@ -23,8 +23,8 @@
 
 namespace vrml_proc::traversor::node_descriptor {
   /**
-   * @brief Represents a wrapper around VrmlNode. Enables to retrieve node's data in strctured manner, to store
-   * addtional information.
+   * @brief Represents a wrapper around VrmlNode. Enables to retrieve node's data in structured manner, and to store
+   * additional information.
    */
   class NodeView {
    public:
@@ -32,8 +32,8 @@ namespace vrml_proc::traversor::node_descriptor {
      * @brief Constructs default object.
      */
     NodeView()
-        : m_id(""),
-          m_additionalIds(),
+        : m_name(""),
+          m_synonyms(),
           m_fieldTypes(),
           m_boolFields(),
           m_stringFields(),
@@ -59,11 +59,11 @@ namespace vrml_proc::traversor::node_descriptor {
     bool FieldExists(const std::string& fieldName) const { return m_fieldTypes.find(fieldName) != m_fieldTypes.end(); }
 
     /**
-     * @brief Retrieve node's data stored in the given field. It is templated
+     * @brief Retrieve node's data stored in the given field.
      *
-     * @param fieldName name of the field
      * @tparam Type type of the data to get (full type must be provided; e.g. if you retrieve
-     * std::reference_wrapper<const std::string> - full must be provided)
+     * std::reference_wrapper<const std::string> - full type must be provided)
+     * @param fieldName name of the field
      * @returns data
      * @warning Make sure that field name exists, otherwise an exception from underlying data strucures might be thrown.
      */
@@ -88,9 +88,9 @@ namespace vrml_proc::traversor::node_descriptor {
      *
      * @returns node's header as string
      */
-    std::string GetId() const { return m_id; }
+    std::string GetName() const { return m_name; }
 
-    const std::unordered_set<std::string>& GetAdditionalIds() const { return m_additionalIds; }
+    const std::unordered_set<std::string>& GetSynonyms() const { return m_synonyms; }
 
     void SetShapeDescendant(bool isNodeShapeDescendant) { m_isDescendantOfShape = isNodeShapeDescendant; }
 
@@ -102,11 +102,16 @@ namespace vrml_proc::traversor::node_descriptor {
 
     vrml_proc::math::TransformationMatrix GetTransformationMatrix() const { return m_transformationMatrix; }
 
+    /**
+     * @brief Builder architecture for this NodeView class.
+     */
     class Builder;
 
    private:
-    std::string m_id;
-    std::unordered_set<std::string> m_additionalIds;
+    std::string m_name;
+    std::unordered_set<std::string> m_synonyms;
+    bool m_isDescendantOfShape;
+    vrml_proc::math::TransformationMatrix m_transformationMatrix = vrml_proc::math::TransformationMatrix();
 
     std::map<std::string, FieldType> m_fieldTypes;
     std::map<std::string, std::optional<std::reference_wrapper<const bool>>> m_boolFields;
@@ -125,15 +130,19 @@ namespace vrml_proc::traversor::node_descriptor {
     std::map<std::string, std::optional<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>> m_nodeFields;
     std::map<std::string, std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>>
         m_nodeArrayFields;
-
-    bool m_isDescendantOfShape;
-    vrml_proc::math::TransformationMatrix m_transformationMatrix = vrml_proc::math::TransformationMatrix();
   };
 
   class NodeView::Builder {
    public:
+    /**
+     * @brief Constructs empty NodeView.
+     */
     Builder() : m_view(std::make_shared<NodeView>()) {}
 
+    /**
+     * @brief Sets default values based on the values in given NodeDescriptor.
+     * @todo This has to be made differently.
+     */
     Builder& SetDefaultValues(const std::map<std::string, FieldType>& fieldTypes,
         const std::map<std::string, std::optional<std::reference_wrapper<const bool>>>& boolFields,
         const std::map<std::string, std::optional<std::reference_wrapper<const std::string>>>& stringFields,
@@ -152,7 +161,9 @@ namespace vrml_proc::traversor::node_descriptor {
         const std::map<std::string, std::optional<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>&
             nodeFields,
         const std::map<std::string,
-            std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>>& nodeArrayFields) {
+            std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>>&
+            nodeArrayFields) {  //
+
       m_view->m_fieldTypes = fieldTypes;
       m_view->m_boolFields = boolFields;
       m_view->m_stringFields = stringFields;
@@ -170,18 +181,18 @@ namespace vrml_proc::traversor::node_descriptor {
       return *this;
     }
 
-    Builder& SetId(const std::string& id) {
-      m_view->m_id = id;
+    Builder& SetName(const std::string& name) {
+      m_view->m_name = name;
       return *this;
     }
 
-    Builder& AddAdditionalId(const std::string& id) {
-      m_view->m_additionalIds.insert(id);
+    Builder& AddSynonyms(const std::string& id) {
+      m_view->m_synonyms.insert(id);
       return *this;
     }
 
-    Builder& AddAdditionalId(const std::unordered_set<std::string>& ids) {
-      m_view->m_additionalIds.insert(ids.begin(), ids.end());
+    Builder& AddSynonyms(const std::unordered_set<std::string>& ids) {
+      m_view->m_synonyms.insert(ids.begin(), ids.end());
       return *this;
     }
 
@@ -268,6 +279,9 @@ namespace vrml_proc::traversor::node_descriptor {
       return *this;
     }
 
+    /**
+     * @returns Buils the NodeView object.
+     */
     std::shared_ptr<NodeView> Build() { return m_view; }
 
    private:

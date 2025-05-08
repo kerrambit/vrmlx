@@ -16,7 +16,8 @@ vrml_proc::core::io::MemoryMappedFile::MemoryMappedFile(const std::string& filep
     : m_mappedFile(filepath, boost::iostreams::mapped_file::readonly) {}
 
 vrml_proc::core::io::FileReader<vrml_proc::core::io::MemoryMappedFile>::LoadFileResult
-vrml_proc::core::io::MemoryMappedFileReader::Read(const std::filesystem::path& filepath) {
+vrml_proc::core::io::MemoryMappedFileReader::Read(const std::filesystem::path& filepath) {  //
+
   using namespace vrml_proc::core::error;
   using namespace vrml_proc::core::io::error;
   using namespace vrml_proc::core::logger;
@@ -36,7 +37,7 @@ vrml_proc::core::io::MemoryMappedFileReader::Read(const std::filesystem::path& f
   double time = timer.End();
 
   LogInfo(FormatString("Time to read and load file <", filepath.string(), "> of size ", result.GetSize(),
-                       " bytes into string took ", time, " seconds."),
-          LOGGING_INFO);
+              " bytes into string took ", time, " seconds."),
+      LOGGING_INFO);
   return result;
 }

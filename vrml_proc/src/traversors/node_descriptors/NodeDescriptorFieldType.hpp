@@ -1,6 +1,9 @@
 #pragma once
 
 namespace vrml_proc::traversor::node_descriptor {
+  /**
+   * @brief Represents all possible field types for NodeDescriptor.
+   */
   enum class FieldType {
     Unknown,
     Bool,
@@ -16,4 +19,4 @@ namespace vrml_proc::traversor::node_descriptor {
     Node,
     NodeArray
   };
-}
+}  // namespace vrml_proc::traversor::node_descriptor

@@ -9,6 +9,11 @@
 
 namespace vrml_proc::parser::model::validator {
 
+  /**
+   * @brief Checks if the vector of three floats contains non-zero and greater than zero values.
+   * @param vector vector to check
+   * @returns result containing a concrete error object if the vector does not stand the condition, otherwise void
+   */
   inline cpp::result<void, std::shared_ptr<error::ModelValidationError>> CheckVec3fIsGreaterThanZero(
       const Vec3f& vector) {  //
 

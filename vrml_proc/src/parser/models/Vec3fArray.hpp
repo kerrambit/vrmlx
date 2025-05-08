@@ -5,6 +5,9 @@
 #include "Vec3f.hpp"
 
 namespace vrml_proc::parser {
+  /**
+   * @brief Represents a MF value containing list of vec3f.
+   */
   struct Vec3fArray {
     Vec3fArray() : vectors({}) {}
 

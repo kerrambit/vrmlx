@@ -8,6 +8,9 @@
 #include "VrmlNode.hpp"
 
 namespace vrml_proc::traversor::error {
+  /**
+   * @brief Represents an error for invalid VrmlFile.
+   */
   class FileTraversorError : public vrml_proc::core::error::Error {
    public:
     FileTraversorError(

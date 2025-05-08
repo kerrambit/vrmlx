@@ -7,7 +7,7 @@
 static inline void PrintHelp(const std::string& app) {
   std::cout << "There are two modes for this application. Either single conversion (default) or bulk conversion.\n";
   std::cout << "For single conversion, you do not specify the mode:\n";
-  std::cout << "\t" << app << " <input_file> <output_file> <config_file>\n";
+  std::cout << "\t" << app << " <input_file> <output_file> <config_file>\n\n";
   std::cout << "For bulk conversion, you must specify the mode by adding option '--bulk':\n";
   std::cout << "\t" << app << " --bulk <input_folder> <output_folder>" << std::endl;
 }
