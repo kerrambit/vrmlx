@@ -7,12 +7,12 @@
 
 #include "Error.hpp"
 
-#include "VrmlProcessingExport.hpp"
+#include "VrmlProcExport.hpp"
 
 namespace vrml_proc::core::io {
 
   template <typename T>
-  class VRMLPROCESSING_API FileWriter {
+  class VRMLPROC_API FileWriter {
    public:
     using FileWriteResult = cpp::result<void, std::shared_ptr<vrml_proc::core::error::Error>>;
 

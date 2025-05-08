@@ -7,7 +7,7 @@
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/utility/setup/file.hpp>
 
-#include "VrmlProcessingExport.hpp"
+#include "VrmlProcExport.hpp"
 
 #define LOGGING_INFO __FILE__, __LINE__, __FUNCTION__
 
@@ -15,26 +15,26 @@ BOOST_LOG_GLOBAL_LOGGER(Logger, boost::log::sources::severity_logger_mt<boost::l
 
 namespace vrml_proc::core::logger {
   enum class Level { Trace, Debug, Info, Warning, Error, Fatal };
-  VRMLPROCESSING_API void InitLogging();
-  VRMLPROCESSING_API void InitLogging(const std::string& loggingDirectory, const std::string& projectName);
-  VRMLPROCESSING_API void LogUnformattedText(const std::string& title,
+  VRMLPROC_API void InitLogging();
+  VRMLPROC_API void InitLogging(const std::string& loggingDirectory, const std::string& projectName);
+  VRMLPROC_API void LogUnformattedText(const std::string& title,
       const std::string& text,
       Level level,
       const std::string& file,
       int line,
       const std::string& function);
-  VRMLPROCESSING_API void Log(
+  VRMLPROC_API void Log(
       const std::string& text, Level level, const std::string& file, int line, const std::string& function);
-  VRMLPROCESSING_API void LogTrace(
+  VRMLPROC_API void LogTrace(
       const std::string& text, const std::string& file, int line, const std::string& function);
-  VRMLPROCESSING_API void LogDebug(
+  VRMLPROC_API void LogDebug(
       const std::string& text, const std::string& file, int line, const std::string& function);
-  VRMLPROCESSING_API void LogInfo(
+  VRMLPROC_API void LogInfo(
       const std::string& text, const std::string& file, int line, const std::string& function);
-  VRMLPROCESSING_API void LogWarning(
+  VRMLPROC_API void LogWarning(
       const std::string& text, const std::string& file, int line, const std::string& function);
-  VRMLPROCESSING_API void LogError(
+  VRMLPROC_API void LogError(
       const std::string& text, const std::string& file, int line, const std::string& function);
-  VRMLPROCESSING_API void LogFatal(
+  VRMLPROC_API void LogFatal(
       const std::string& text, const std::string& file, int line, const std::string& function);
 }  // namespace vrml_proc::core::logger

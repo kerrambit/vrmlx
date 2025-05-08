@@ -8,12 +8,12 @@
 #include "CGALBaseTypesForVrml.hpp"
 #include "Transformation.hpp"
 
-#include "VrmlProcessingExport.hpp"
+#include "VrmlProcExport.hpp"
 
 namespace vrml_proc::math {
 
   using TransformationMatrix = CGAL::Aff_transformation_3<vrml_proc::math::cgal::CGALKernel>;
 
-  VRMLPROCESSING_API TransformationMatrix UpdateTransformationMatrix(const TransformationMatrix& currentMatrix,
+  VRMLPROC_API TransformationMatrix UpdateTransformationMatrix(const TransformationMatrix& currentMatrix,
                                                                      const Transformation& transformationData);
 }  // namespace vrml_proc::math

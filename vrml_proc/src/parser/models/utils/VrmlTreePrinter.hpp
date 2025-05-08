@@ -14,7 +14,7 @@
 #include "VrmlField.hpp"
 #include "VrmlNode.hpp"
 
-#include "VrmlProcessingExport.hpp"
+#include "VrmlProcExport.hpp"
 
 #define ONE_INDENTATION_LEVEL_LENGTH 2
 
@@ -23,7 +23,7 @@ namespace vrml_proc::parser::model::utils {
   /**
    * @brief Represent a class which prints a tree-like strcture of VRML node.
    */
-  class VRMLPROCESSING_API VrmlTreePrinter {
+  class VRMLPROC_API VrmlTreePrinter {
    public:
     /**
      * @brief Constructs new VrmlTreePrinter.

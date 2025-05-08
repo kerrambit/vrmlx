@@ -10,45 +10,43 @@
 #include "VrmlUnits.hpp"
 #include "ToGeomConfig.hpp"
 
-#include "VrmlProcessingExport.hpp"
+#include "ToGeomExport.hpp"
 
-namespace to_geom {
-  namespace action {
+namespace to_geom::action {
+  /**
+   * @brief Represents an action for IndexedFaceSet VRML node.
+   *
+   * Converts a VRML `IndexedFaceSet` node into a geometric representation.
+   * Inherits from `GeometryAction`.
+   */
+  class TOGEOM_API IndexedFaceSetAction : public to_geom::action::GeometryAction {
+   public:
     /**
-     * @brief Represents an action for IndexedFaceSet VRML node.
-     *
-     * Converts a VRML `IndexedFaceSet` node into a geometric representation.
-     * Inherits from `GeometryAction` to integrate with the conversion system.
+     * @brief Properties for `IndexedFaceSetAction`. See VRML 2.0 specification for more information.
      */
-    class VRMLPROCESSING_API IndexedFaceSetAction : public to_geom::action::GeometryAction {
-     public:
-      /**
-       * @brief Properties for `IndexedFaceSetAction`. See VRML 2.0 specification for more information.
-       */
-      struct Properties {
-        std::reference_wrapper<const vrml_proc::parser::VrmlNode> coord;
-        std::reference_wrapper<const bool> convex;
-        std::reference_wrapper<const vrml_proc::parser::Int32Array> coordIndex;
-        std::shared_ptr<to_geom::core::config::ToGeomConfig> config;
-      };
-
-      /**
-       * @brief Constructs a IndexedFaceSetAction with specified properties.
-       * @param properties properties for IndexedFaceSetAction
-       * @param geometryProperties geometry properties
-       */
-      IndexedFaceSetAction(Properties properties, GeometryAction::Properties geometryProperties);
-
-      /**
-       * @brief The method is focused only on geometry field, which is only passed through this method with no
-       * modification.
-       *
-       * @return A shared pointer to the MeshTaskConversionContext.
-       */
-      std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> Execute() override;
-
-     private:
-      Properties m_properties;
+    struct Properties {
+      std::reference_wrapper<const vrml_proc::parser::VrmlNode> coord;
+      std::reference_wrapper<const bool> convex;
+      std::reference_wrapper<const vrml_proc::parser::Int32Array> coordIndex;
+      std::shared_ptr<to_geom::core::config::ToGeomConfig> config;
     };
-  }  // namespace action
-}  // namespace to_geom
+
+    /**
+     * @brief Constructs a IndexedFaceSetAction with specified properties.
+     * @param properties properties for IndexedFaceSetAction
+     * @param geometryProperties geometry properties
+     */
+    IndexedFaceSetAction(Properties properties, GeometryAction::Properties geometryProperties);
+
+    /**
+     * @brief The method is focused only on geometry field, which is only passed through this method with no
+     * modification.
+     *
+     * @return A shared pointer to the MeshTaskConversionContext.
+     */
+    std::shared_ptr<to_geom::conversion_context::MeshTaskConversionContext> Execute() override;
+
+   private:
+    Properties m_properties;
+  };
+}  // namespace to_geom::action

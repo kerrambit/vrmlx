@@ -13,7 +13,7 @@ add_library(vrmlproc SHARED
     "${CMAKE_CURRENT_SOURCE_DIR}/../vendor/json/nlohmann"
 
     # DLL export macro.
-    "src/VrmlProcessingExport.hpp"
+    "src/VrmlProcExport.hpp"
 
     # Core.
     "src/core/Object.hpp"

@@ -7,10 +7,10 @@
 #include "TransformationMatrix.hpp"
 #include "CalculatorResult.hpp"
 
-#include "VrmlToGeomExport.hpp"
+#include "ToGeomExport.hpp"
 
 namespace to_geom::calculator {
-  class VRMLTOGEOM_API IndexedLineSetCalculator {
+  class TOGEOM_API IndexedLineSetCalculator {
    public:
     to_geom::calculator::CalculatorResult Generate3DMesh(
         std::reference_wrapper<const vrml_proc::parser::Int32Array> coordinateIndices,

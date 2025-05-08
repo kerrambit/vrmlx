@@ -7,14 +7,14 @@
 #include "Int32Array.hpp"
 #include "Vec3fArray.hpp"
 
-#include "VrmlToGeomExport.hpp"
+#include "ToGeomExport.hpp"
 
 namespace to_geom::calculator {
   /**
    * @brief Represents a calculator for generating 3D meshes from IndexedFaceSet VRML node, where all faces are
    * tringular.
    */
-  class VRMLTOGEOM_API IndexedTriangularFaceSetCalculator {
+  class TOGEOM_API IndexedTriangularFaceSetCalculator {
    public:
     /**
      * @brief Generates 3D mesh from coordinates and coordinates indices lists.

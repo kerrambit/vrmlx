@@ -6,7 +6,8 @@
 #include <boost/iostreams/device/mapped_file.hpp>
 
 #include "FileReader.hpp"
-#include "VrmlProcessingExport.hpp"
+
+#include "VrmlProcExport.hpp"
 
 namespace vrml_proc::core::io {
 
@@ -21,7 +22,7 @@ namespace vrml_proc::core::io {
     boost::iostreams::mapped_file m_mappedFile;
   };
 
-  class VRMLPROCESSING_API MemoryMappedFileReader : public FileReader<MemoryMappedFile> {
+  class VRMLPROC_API MemoryMappedFileReader : public FileReader<MemoryMappedFile> {
    public:
     LoadFileResult Read(const std::filesystem::path& filepath) override;
   };

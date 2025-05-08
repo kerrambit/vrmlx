@@ -7,9 +7,9 @@
 #include "Parser.hpp"
 #include "VrmlFile.hpp"
 #include "VrmlFileGrammar.hpp"
-#include "VrmlProcessingExport.hpp"
-
 #include "MemoryMappedFileReader.hpp"
+
+#include "VrmlProcExport.hpp"
 
 namespace vrml_proc::parser {
   /**
@@ -17,7 +17,7 @@ namespace vrml_proc::parser {
    *
    * Note that not the whole standart is supported.
    */
-  class VRMLPROCESSING_API VrmlParser : public Parser<BufferView, VrmlFile> {
+  class VRMLPROC_API VrmlParser : public Parser<BufferView, VrmlFile> {
    public:
     VrmlParser() = delete;
 

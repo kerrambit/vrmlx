@@ -6,11 +6,11 @@
 #include "CalculatorResult.hpp"
 #include "Vec3f.hpp"
 
-#include "VrmlToGeomExport.hpp"
+#include "ToGeomExport.hpp"
 
 namespace to_geom {
   namespace calculator {
-    class VRMLTOGEOM_API BoxCalculator {
+    class TOGEOM_API BoxCalculator {
      public:
       to_geom::calculator::CalculatorResult Generate3DMesh(std::reference_wrapper<const vrml_proc::parser::Vec3f> size,
           const vrml_proc::math::TransformationMatrix& matrix);
