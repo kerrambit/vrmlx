@@ -8,6 +8,9 @@
 #include "VrmlField.hpp"
 
 namespace vrml_proc::parser {
+  /**
+   * @brief Represents a VRML node.
+   */
   struct VrmlNode {
     VrmlNode() : definitionName(""), header(""), fields(std::vector<VrmlField>()) {}
 

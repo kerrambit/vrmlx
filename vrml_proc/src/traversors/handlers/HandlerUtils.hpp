@@ -17,6 +17,15 @@
 
 namespace vrml_proc::traversor::handler::HandlerUtils {
 
+  /**
+   * @brief Validates given geometry primitive node.
+   *
+   * @param nd node view
+   * @param manager manager
+   * @param fieldName field name to verify
+   *
+   * @returns error if validation fails, otherwise void
+   */
   inline cpp::result<void, std::shared_ptr<vrml_proc::core::error::Error>> ValidateGeometryPrimitiveNode(
       std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd,
       const vrml_proc::parser::VrmlNodeManager& manager,

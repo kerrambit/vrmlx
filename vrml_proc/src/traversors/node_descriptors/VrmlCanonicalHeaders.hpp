@@ -1,15 +1,14 @@
 #pragma once
 
-#include <unordered_set>
-#include <string>
 #include <map>
+#include <string>
+#include <unordered_set>
 
 #include "Hash.hpp"
 
 namespace vrml_proc::traversor::node_descriptor {
-
   /**
-   * @brief Groups all posible header names and their mapping to canonical VRML header name.
+   * @brief Queires a map, which groups all posible header names and their mapping to canonical VRML header name.
    * Each pair is {POSSIBLE_NAME, CANONICAL_FORM}.
    */
   inline const std::map<std::string, std::string>& GetHeaderToCanonicalNameMap() {
@@ -64,6 +63,9 @@ namespace vrml_proc::traversor::node_descriptor {
     return headerToCanonicalName;
   }
 
+  /**
+   * @brief Groups all hashes to canonical names.
+   */
   namespace CanonicalHeaderHashes {
     using namespace vrml_proc::core::utils;
 
@@ -107,6 +109,15 @@ namespace vrml_proc::traversor::node_descriptor {
     return header;
   }
 
+  /**
+   * @brief Returns all possible header names that map to one of the given canonical names.
+   *
+   * This function searches through the mapping returned by `GetHeaderToCanonicalNameMap()` and collects all
+   * original (non-canonical) names that correspond to the canonical name.
+   *
+   * @param canonicalName canonical name to match
+   * @return set of original header names that map to any of the given canonical names
+   */
   inline std::unordered_set<std::string> GetPossibleNamesForCanonical(const std::string& canonicalName) {
     std::unordered_set<std::string> result;
     for (const auto& [possible, canonical] : GetHeaderToCanonicalNameMap()) {
@@ -117,6 +128,16 @@ namespace vrml_proc::traversor::node_descriptor {
     return result;
   }
 
+  /**
+   * @brief Returns all possible header names that map to one of the given canonical names.
+   *
+   * This function searches through the mapping returned by `GetHeaderToCanonicalNameMap()` and collects all
+   * original (non-canonical) names that correspond to any of the three specified canonical names.
+   *
+   * @param canonicalName1 first canonical name to match
+   * @param canonicalName2 second canonical name to match
+   * @return set of original header names that map to any of the given canonical names
+   */
   inline std::unordered_set<std::string> GetPossibleNamesForCanonical(
       const std::string& canonicalName1, const std::string& canonicalName2) {
     std::unordered_set<std::string> result;
@@ -128,6 +149,17 @@ namespace vrml_proc::traversor::node_descriptor {
     return result;
   }
 
+  /**
+   * @brief Returns all possible header names that map to one of the given canonical names.
+   *
+   * This function searches through the mapping returned by `GetHeaderToCanonicalNameMap()` and collects all
+   * original (non-canonical) names that correspond to any of the three specified canonical names.
+   *
+   * @param canonicalName1 first canonical name to match
+   * @param canonicalName2 second canonical name to match
+   * @param canonicalName3 third canonical name to match
+   * @return set of original header names that map to any of the given canonical names
+   */
   inline std::unordered_set<std::string> GetPossibleNamesForCanonical(
       const std::string& canonicalName1, const std::string& canonicalName2, const std::string& canonicalName3) {
     std::unordered_set<std::string> result;

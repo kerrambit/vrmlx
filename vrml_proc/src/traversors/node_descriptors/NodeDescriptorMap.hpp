@@ -3,16 +3,26 @@
 #include <optional>
 
 #include "NodeDescriptor.hpp"
-#include "VrmlCanonicalHeaders.hpp"
 #include "Vec2fArray.hpp"
 #include "Vec3fArray.hpp"
 #include "Vec4f.hpp"
+#include "VrmlCanonicalHeaders.hpp"
 
 namespace vrml_proc::traversor::node_descriptor {
 
+  /**
+   * @brief Fucntion which creates a node descriptor.
+   */
   using NodeDescriptorFactory = std::function<NodeDescriptor()>;
+
+  /**
+   * @brief Type alias for mapping: node name and its factory.
+   */
   using NodeDescriptorMap = std::map<std::string, NodeDescriptorFactory>;
 
+  /**
+   * @brief Lists all node types based on the VRML 2.0 standart.
+   */
   inline NodeDescriptorMap GetNodeDescriptorMap() {
     static NodeDescriptorMap nodeDescriptionMap;
     static bool initialized = false;
@@ -382,9 +392,17 @@ namespace vrml_proc::traversor::node_descriptor {
     return nodeDescriptionMap;
   }
 
-  inline std::optional<NodeDescriptor> CreateNodeDescriptor(const std::string& header) {
+  /**
+   * @brief Helper function, which queires a NodeDescriptor from NodeDescriptorMap.
+   *
+   * @param name name of the node to create
+   * @returns node descriptor or nullopt, if given node descriptor cannot be found
+   *
+   * @todo This functionality rather should be excapsulated in the class together with NodeDescriptorMap.
+   */
+  inline std::optional<NodeDescriptor> CreateNodeDescriptor(const std::string& name) {
     auto descriptorMap = GetNodeDescriptorMap();
-    auto it = descriptorMap.find(ConvertToCanonicalHeader(header));
+    auto it = descriptorMap.find(ConvertToCanonicalHeader(name));
     if (it != descriptorMap.end()) {
       return it->second();
     }

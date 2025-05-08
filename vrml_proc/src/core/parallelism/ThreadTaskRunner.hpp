@@ -7,7 +7,7 @@
 
 namespace vrml_proc::core::parallelism {
   /**
-   * @brief Represents an object - kind of thread pool - which runs list of tasks parallely
+   * @brief Represents an object - kind of thread pool - which runs list of tasks parallely.
    *
    * @tparam TaskType type of the tasks
    * @tparam ResultType type of the result

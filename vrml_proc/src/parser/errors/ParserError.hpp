@@ -5,7 +5,9 @@
 #include "Error.hpp"
 
 namespace vrml_proc::parser::error {
-
+  /**
+   * @brief Represents a generic parser error.
+   */
   class ParserError : public vrml_proc::core::error::Error {
    protected:
     virtual std::string GetMessageInternal() const {

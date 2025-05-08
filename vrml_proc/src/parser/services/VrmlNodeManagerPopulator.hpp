@@ -6,5 +6,8 @@
 #include "VrmlProcExport.hpp"
 
 namespace vrml_proc::parser::VrmlNodeManagerPopulator {
+  /**
+   * @brief Populates given VrmlNodeManager `manager` with all DEf-nodes found searching through given root `node`.
+   */
   VRMLPROC_API void Populate(VrmlNodeManager& manager, const VrmlNode& node);
-}
+}  // namespace vrml_proc::parser::VrmlNodeManagerPopulator

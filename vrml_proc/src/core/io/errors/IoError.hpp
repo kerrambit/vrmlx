@@ -4,11 +4,17 @@
 
 namespace vrml_proc::core::io::error {
 
+  /**
+   * @brief Represents a general IO error.
+   */
   class IoError : public vrml_proc::core::error::Error {
    protected:
     virtual std::string GetMessageInternal() const { return "[IoError]: IO error occured!\n"; }
   };
 
+  /**
+   * @brief Represents a conrete IO error meaning that filepath object is invalid or empty.
+   */
   class EmptyFilePathError : public IoError {
    public:
     EmptyFilePathError(const std::string& filepath) : m_filepath(filepath) {}
@@ -24,6 +30,9 @@ namespace vrml_proc::core::io::error {
     std::string m_filepath;
   };
 
+  /**
+   * @brief Represents a conrete IO error meaning that directory was not found.
+   */
   class DirectoryNotFoundError : public IoError {
    public:
     DirectoryNotFoundError(const std::string& directoryPath) : m_directoryPath(directoryPath) {}
@@ -39,6 +48,9 @@ namespace vrml_proc::core::io::error {
     std::string m_directoryPath;
   };
 
+  /**
+   * @brief Represents a conrete IO error meaning that filepath was not found.
+   */
   class FileNotFoundError : public IoError {
    public:
     FileNotFoundError(const std::string& filePath) : m_filePath(filePath) {}
@@ -54,6 +66,9 @@ namespace vrml_proc::core::io::error {
     std::string m_filePath;
   };
 
+  /**
+   * @brief Represents a general IO write error.
+   */
   class GeneralWriteError : public IoError {
    public:
     GeneralWriteError(const std::string& filepath) : m_filepath(filepath) {}
@@ -78,6 +93,9 @@ namespace vrml_proc::core::io::error {
     std::string m_details;
   };
 
+  /**
+   * @brief Represents a general IO read error.
+   */
   class GeneralReadError : public IoError {
    public:
     GeneralReadError(const std::string& filepath) : m_filepath(filepath), m_details("") {}

@@ -9,7 +9,7 @@ namespace vrml_proc::parser::error {
   /**
    * @brief Represents a structure describing the error while parsing coming from any grammar.
    *
-   * @note This struct is not used, as the mechanism to indentify parser errors in grammars is missing.
+   * @note This struct is not used, as the mechanism to indentify parser errors in grammars is not implemented yet.
    */
   struct ParserErrorData {
     size_t bytesCountFromStringStartToErrorPosition;
@@ -21,7 +21,7 @@ namespace vrml_proc::parser::error {
   /**
    * @brief Represents an error coming from any grammar.
    *
-   * @note This struct is not used, as the mechanism to indentify parser errors in grammars is missing.
+   * @note This struct is not used, as the mechanism to indentify parser errors in grammars is not implememented yet.
    */
   class GrammarError : public vrml_proc::core::error::Error {
    protected:

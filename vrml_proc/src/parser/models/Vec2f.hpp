@@ -5,6 +5,9 @@
 #include "VrmlUnits.hpp"
 
 namespace vrml_proc::parser {
+  /**
+   * @brief Represents SF containing 2 floats.
+   */
   struct Vec2f {
     Vec2f() : u(0.0f), v(0.0f) {}
 

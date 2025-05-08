@@ -4,6 +4,9 @@
 #include <cstdint>
 
 namespace vrml_proc::parser {
+  /**
+   * @brief Represents MF field containing list of integers.
+   */
   struct Int32Array {
     Int32Array() : integers({}) {}
 

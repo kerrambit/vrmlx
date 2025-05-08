@@ -12,7 +12,8 @@
 #include "ScopedTimer.hpp"
 
 vrml_proc::core::io::FileReader<std::string>::LoadFileResult vrml_proc::core::io::SimpleFileReader::Read(
-    const std::filesystem::path& filepath) {
+    const std::filesystem::path& filepath) {  //
+
   using namespace vrml_proc::core::error;
   using namespace vrml_proc::core::io::error;
   using namespace vrml_proc::core::logger;
@@ -43,7 +44,7 @@ vrml_proc::core::io::FileReader<std::string>::LoadFileResult vrml_proc::core::io
   }
 
   LogInfo(FormatString("Time to read and load file <", filepath.string(), "> of size ", fileSize,
-                       " bytes into string took ", time, " seconds."),
-          LOGGING_INFO);
+              " bytes into string took ", time, " seconds."),
+      LOGGING_INFO);
   return std::move(fileContents);
 }

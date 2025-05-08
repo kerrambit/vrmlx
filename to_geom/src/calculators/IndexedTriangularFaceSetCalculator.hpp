@@ -3,8 +3,8 @@
 #include <functional>
 
 #include "CalculatorResult.hpp"
-#include "TransformationMatrix.hpp"
 #include "Int32Array.hpp"
+#include "TransformationMatrix.hpp"
 #include "Vec3fArray.hpp"
 
 #include "ToGeomExport.hpp"
@@ -24,6 +24,7 @@ namespace to_geom::calculator {
      * @param matrix transformation matrix applied to points
      * @param checkRange flag indicating if coordinate index should be checked for range when accessing `coordinates`
      * list
+     * @returns calculator result (mesh object or error if generation failed)
      */
     to_geom::calculator::CalculatorResult Generate3DMesh(
         std::reference_wrapper<const vrml_proc::parser::Int32Array> coordinateIndices,

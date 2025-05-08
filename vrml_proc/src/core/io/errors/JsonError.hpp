@@ -1,14 +1,21 @@
 #pragma once
 
-#include <memory>
 #include <sstream>
 #include <string>
 
 #include "Error.hpp"
 
-namespace vrml_proc::core::error {
-  class JsonError : public Error {
+namespace vrml_proc::core::io::error {
+  /**
+   * @brief Represents an error related to JSON manipulation.
+   */
+  class JsonError : public vrml_proc::core::error::Error {
    public:
+    /**
+     * @brief Constructs a JsonError with additional detail information.
+     *
+     * @param details A string describing the specific cause or context of the error.
+     */
     JsonError(const std::string& details) : m_details(details) {}
 
    protected:
@@ -22,4 +29,4 @@ namespace vrml_proc::core::error {
    private:
     std::string m_details;
   };
-}  // namespace vrml_proc::core::error
+}  // namespace vrml_proc::core::io::error

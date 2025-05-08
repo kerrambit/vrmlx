@@ -7,10 +7,10 @@
 
 #include <nlohmann/json.hpp>
 
+#include "Config.hpp"
 #include "Error.hpp"
 #include "JsonError.hpp"
 #include "JsonFileReader.hpp"
-#include "Config.hpp"
 
 namespace vrml_proc::core::config {
   /**
@@ -67,7 +67,7 @@ namespace vrml_proc::core::config {
         logFileDirectory = json.value("logFileDirectory", std::filesystem::current_path().string());
         logFileName = json.value("logFileName", "vrmlproc");
       } catch (const nlohmann::json::exception& e) {
-        return cpp::fail(std::make_shared<vrml_proc::core::error::JsonError>(e.what()));
+        return cpp::fail(std::make_shared<vrml_proc::core::io::error::JsonError>(e.what()));
       }
       return {};
     }

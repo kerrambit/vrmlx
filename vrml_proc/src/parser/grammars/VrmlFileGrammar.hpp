@@ -18,7 +18,6 @@
 #include "VrmlNode.hpp"
 #include "UseNode.hpp"
 #include "VrmlNodeManager.hpp"
-
 #include "IdentifierGrammar.hpp"
 #include "Vec2fGrammar.hpp"
 #include "Vec3fGrammar.hpp"
@@ -50,13 +49,20 @@ namespace vrml_proc::parser {
   };
 
   /**
-   * @brief Represents a grammar parsing VRML file.
+   * @brief Grammar for parsing VRML 2.0 file.
+   *
+   * @tparam Iterator The iterator type used for parsing input.
+   * @tparam Skipper  The skipper parser used to skip irrelevant input (e.g., whitespace).
    */
   template <typename Iterator, typename Skipper>
   class VrmlFileGrammar : public boost::spirit::qi::grammar<Iterator, VrmlFile(), Skipper>,
                           public BaseGrammar<Iterator, VrmlFile(), Skipper> {
    public:
-    VrmlFileGrammar() : VrmlFileGrammar::base_type(this->m_start) {
+    /**
+     * @brief Constructs new grammar and initializes parsing rules.
+     */
+    VrmlFileGrammar() : VrmlFileGrammar::base_type(this->m_start) {  //
+
       m_identifier = std::make_unique<IdentifierGrammar<Iterator, Skipper>>();
 
       m_quotedString = std::make_unique<QuotedStringGrammar<Iterator, Skipper>>();

@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include <NodeView.hpp>
 #include "ConversionContextable.hpp"
 #include "VrmlProcConfig.hpp"
+#include <NodeView.hpp>
 
 namespace vrml_proc::traversor::handler {
   /**

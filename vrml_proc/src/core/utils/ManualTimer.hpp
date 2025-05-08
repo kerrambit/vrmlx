@@ -48,7 +48,7 @@ namespace vrml_proc::core::utils {
 
     /**
      * @brief Ends the timer and resets its state.
-     * @returns Total elapsed time.
+     * @returns Total elapsed time in seconds.
      */
     double End() {
       auto timeSpan = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - m_startTime).count();

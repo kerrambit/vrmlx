@@ -18,9 +18,16 @@
 
 namespace to_geom::core::io {
 
+  /**
+   * @brief Represents a file writer for OBJ format.
+   */
   class ObjFileWriter : public vrml_proc::core::io::FileWriter<to_geom::core::Mesh> {
    public:
-    FileWriteResult Write(const std::filesystem::path& filepath, const to_geom::core::Mesh& data) override {
+    /**
+     * @brief Inheritted method from `FileWriter`. It writes mesh in `data` into file on `filepath`.
+     */
+    FileWriteResult Write(const std::filesystem::path& filepath, const to_geom::core::Mesh& data) override {  //
+
       using namespace vrml_proc::core::error;
       using namespace vrml_proc::core::io::error;
       using namespace vrml_proc::core::logger;

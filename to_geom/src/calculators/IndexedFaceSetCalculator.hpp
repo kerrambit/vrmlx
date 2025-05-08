@@ -27,6 +27,8 @@ namespace to_geom::calculator {
      *
      * @important It is crucial to set `checkRange` to false and mainly `onlyTriangularFaces` to true (if the data are
      * in this representation), as the calculations are hugely optimilized for this case.
+     *
+     * @returns calculator result (mesh object or error if generation failed)
      */
     to_geom::calculator::CalculatorResult Generate3DMesh(
         std::reference_wrapper<const vrml_proc::parser::Int32Array> coordinateIndices,

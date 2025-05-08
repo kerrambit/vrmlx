@@ -12,9 +12,17 @@
 #include "ManualTimer.hpp"
 
 namespace vrml_proc::core::io {
-
+  /**
+   * @brief Represents a reader for JSON files.
+   */
   class JsonFileReader : public FileReader<nlohmann::json> {
    public:
+    /**
+     * @brief Reads a JSON file on `filepath`.
+     *
+     * @param filepath path to the JSON file
+     * @returns read result type
+     */
     LoadFileResult Read(const std::filesystem::path& filepath) override {
       using namespace vrml_proc::core::error;
       using namespace vrml_proc::core::io::error;

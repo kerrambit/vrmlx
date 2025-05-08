@@ -11,12 +11,17 @@
 #include "VrmlUnits.hpp"
 
 namespace vrml_proc::parser::model::validator::error {
-
+  /**
+   * @brief Represents a generic model validation error.
+   */
   class ModelValidationError : public core::error::Error {
    protected:
     virtual std::string GetMessageInternal() const { return "[ModelValidationError]"; }
   };
 
+  /**
+   * @brief Error for an empty array.
+   */
   class EmptyArrayError : public ModelValidationError {
    public:
     EmptyArrayError(std::string name) : m_name(name) {}
@@ -36,6 +41,9 @@ namespace vrml_proc::parser::model::validator::error {
     std::string m_name;
   };
 
+  /**
+   * @brief Error for number out of range.
+   */
   template <core::contract::Comparable T>
   class NumberOutOfRangeError : public ModelValidationError {
    public:
@@ -59,6 +67,9 @@ namespace vrml_proc::parser::model::validator::error {
     T m_actual;
   };
 
+  /**
+   * @brief Error for vec3f out of range.
+   */
   class Vec3fOutOfRangeError : public ModelValidationError {
    public:
     Vec3fOutOfRangeError(core::utils::Range<float32_t> expectedRange, Vec3f vector)

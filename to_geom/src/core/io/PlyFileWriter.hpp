@@ -17,13 +17,29 @@
 #include "ScopedTimer.hpp"
 
 namespace to_geom::core::io {
-
+  /**
+   * @brief Represents a file writer for PLY format.
+   */
   class PlyFileWriter : public vrml_proc::core::io::FileWriter<to_geom::core::Mesh> {
    public:
+    /**
+     * @brief Constructs new object. It sets up a flag indicating if the file should be written in binary PLY format to
+     * true.
+     */
     PlyFileWriter() : m_binaryMode(true) {}
+
+    /**
+     * @brief Constructs new object.
+     *
+     * @param binaryMode boolean flag indicating if the file should be written in binary PLY format
+     */
     PlyFileWriter(bool binaryMode) : m_binaryMode(binaryMode) {}
 
-    FileWriteResult Write(const std::filesystem::path& filepath, const to_geom::core::Mesh& data) override {
+    /**
+     * @brief Inheritted method from `FileWriter`. It writes mesh in `data` into file on `filepath`.
+     */
+    FileWriteResult Write(const std::filesystem::path& filepath, const to_geom::core::Mesh& data) override {  //
+
       using namespace vrml_proc::core::error;
       using namespace vrml_proc::core::io::error;
       using namespace vrml_proc::core::logger;

@@ -6,9 +6,11 @@
 namespace vrml_proc::core::utils {
   /**
    * @brief Returns hash of the given string.
+   *
    * @param string string to hash
-   * @note Source: https://stackoverflow.com/questions/650162/why-cant-the-switch-statement-be-applied-to-strings.
    * @returns hash code of the string
+   *
+   * @note Source: https://stackoverflow.com/questions/650162/why-cant-the-switch-statement-be-applied-to-strings.
    */
   inline constexpr uint32_t Hash(std::string_view string) noexcept {
     uint32_t hash = 5381;

@@ -7,8 +7,8 @@
 namespace vrml_proc::action {
   /**
    * @brief Base abstract class representing Action object. The Action defines an interface
-   * with method called Execute() which returns a shared pointer owning a BaseConversionContext object.
-   * The Action object is encapsulation of a "program" or a "function" which returns a BaseConversionContext object.
+   * with method called Execute() which returns a shared pointer owning a ConversionContext object.
+   * The Action object is encapsulation of a "program" or a "function", which returns a ConversionContext object.
    */
   template <ConversionContextable ConversionContext>
   class ConversionContextAction {
