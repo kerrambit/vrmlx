@@ -55,16 +55,10 @@ namespace to_geom::action {
      */
     vrml_proc::parser::VrmlNodeManager manager;
     vrml_proc::action::ConversionContextActionMap<Vec3fArrayConversionContext> map;
-
     map.AddAction(
         "Coordinate", [this](vrml_proc::traversor::handler::HandlerToActionBundle<Vec3fArrayConversionContext> data) {
-          try {
-            return std::make_shared<HelperCoordinateAction>(HelperCoordinateAction::Properties{
-                data.nodeView->GetField<std::reference_wrapper<const vrml_proc::parser::Vec3fArray>>("point")});
-          } catch (const std::bad_any_cast& e) {
-            LogFatal("Invalid arguments for HelperCoordinateAction!", LOGGING_INFO);
-            throw;
-          }
+          return std::make_shared<HelperCoordinateAction>(HelperCoordinateAction::Properties{
+              data.nodeView->GetField<std::reference_wrapper<const vrml_proc::parser::Vec3fArray>>("point")});
         });
 
     auto coordResult = Traverse<Vec3fArrayConversionContext>(
