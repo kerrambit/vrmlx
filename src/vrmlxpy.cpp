@@ -64,7 +64,7 @@ namespace vrmlxpy {
     std::cout << Logo << R"(
             vrmlxpy  (version 1.0)
             vrmlproc (version 1.0)
-            togeom   (version 1.0)"
+            togeom   (version 1.0))"
               << std::endl;
   }
 
