@@ -43,3 +43,4 @@ testConfigWindows.json
 testConfigLinux.json
 pypi/dist
 pypi/vrmlxpy.egg-info
+data/segmentation/data/*.wrl
