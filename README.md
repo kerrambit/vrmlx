@@ -66,6 +66,7 @@ This project is licensed under the **GNU General Public License v3.0 or later** 
 ### Linux
 - You can run unit tests using *CTest*, which is a program that comes with *CMake*.
 - Before running the command below, make sure that tests have access to configuration file (for Windows, use [```this file```](testConfig.windows.json), and for Linux [```this file```](testConfig.linux.json)), which should placed inside ```vrmlxpy\out\build\<BUILD_CONFIGURATION>\to_geom``` folder (and make sure that the name is only ```testConfig.json```). The paths in these configuration files point to directories with input test data (```vrmlxpy\data\segmentation_data```) and expected data ```vrmlxpy\data\expected_data```.
+- Note that input files are placed in a archive, and it is necessary to extract the archive first (you can choose from ```archive.tar.gz``` and ```archive.zip```).
 - Run the following commands: ```ctest --test-dir out/build/<BUILD_CONFIGURATION> vrml_proc``` and ```ctest --test-dir out/build/<BUILD_CONFIGURATION>/to_geom```.
 - You might want to use ```--verbose``` for the command above.
 
