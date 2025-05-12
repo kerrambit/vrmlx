@@ -1,7 +1,7 @@
 {
     "ignoreUnknownNode": false,
-    "logFileDirectory: "/home/joe/vrml/vrmlxpy"
-    "logFileName": "vrmlproc",
+    "logFileName": "vrmlxpy",
+    "logFileDirectory": ".",
 
     "exportFormat": {
         "format": "stl",
@@ -11,11 +11,11 @@
     },
     "parallelismSettings": {
         "active": true,
-        "threadsNumberLimit": 4
+        "threadsNumberLimit": 12
     },
-     "meshSimplification": {
-        "active": true,
-        "percentageOfAllEdgesToSimplify": 85.5
+    "meshSimplification": {
+        "active": false,
+        "percentageOfAllEdgesToSimplify": 80
     },
     "IFSSettings": {
         "checkRange": false,
