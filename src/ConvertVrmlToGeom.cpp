@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
 
   std::string extension = vrmlxpy::GetExpectedOutputFileExtension(configFilePath.string());
   for (const auto& entry : std::filesystem::directory_iterator(inputFolder)) {
-    if (entry.is_regular_file() && entry.path().extension() == ".wrl") {
+    if (entry.is_regular_file() && (entry.path().extension() == ".wrl" || entry.path().extension() == ".vrml")) {
       std::string filename = entry.path().filename().string();
 
       std::filesystem::path outputFile = outputFolder / entry.path().stem();

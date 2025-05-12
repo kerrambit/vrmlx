@@ -38,8 +38,8 @@ pypi/vrmlxpy/*.pyd
 vendor/pybind11
 vendor/CGAL-6.0.1
 vendor/boost
-vrmlxpyConfig.json
 testConfigWindows.json
 testConfigLinux.json
 pypi/dist
 pypi/vrmlxpy.egg-info
+data/segmentation_data/*.wrl

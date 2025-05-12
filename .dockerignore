@@ -35,3 +35,6 @@ Makefile
 # Ignore Docker files if needed
 Dockerfile
 .dockerignore
+
+# Ignore data folders
+data/

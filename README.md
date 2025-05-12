@@ -63,14 +63,32 @@ This project is licensed under the **GNU General Public License v3.0 or later** 
 - *Visual Studio* should handle the process of generating and building the library automatically.
 
 ## Run C++ tests
+
+This project includes C++ unit tests that can be executed using either *CTest* or by running the test executables directly. The tests require a configuration file (`testConfig.json`) that defines paths to input and expected test data.
+
 ### Linux
-- You can run unit tests using *CTest*, which is a program that comes with *CMake*.
-- Before running the command below, make sure that tests have access to configuration file [```testConfig.json```](testConfig.json.example), which should
-  be inside ```vrmlxpy\out\build\<BUILD_CONFIGURATION>\to_geom``` folder. The paths in the configuration file should point to directories with test data (**test data are not part of repository yet!**).
-- Run the following commands: ```ctest --test-dir out/build/<BUILD_CONFIGURATION> vrml_proc``` and ```ctest --test-dir out/build/<BUILD_CONFIGURATION>/to_geom```.
-- You might want to use ```--verbose``` for the command above.
+- Use the [```testConfig.linux.json```](testConfig.linux.json) file as a base. Copy or rename it to `testConfig.json`.
+- Place this file inside the build output directory:  
+  ```vrmlxpy/out/build/<BUILD_CONFIGURATION>/to_geom```.
+- The configuration file references input and expected data located at:
+  - Input: `vrmlxpy/data/segmentation_data`
+  - Expected: `vrmlxpy/data/expected_data`
+- Input data is archived. Make sure to extract it first (either `archive.tar.gz` or `archive.zip`).
+- You can run tests using **CTest**:
+  ```ctest --test-dir out/build/<BUILD_CONFIGURATION>/vrml_proc``` and 
+  ```ctest --test-dir out/build/<BUILD_CONFIGURATION>/to_geom```.
+- Add the ```--verbose``` flag for more detailed output: ```ctest --test-dir out/build/<BUILD_CONFIGURATION>/to_geom --verbose```.
 
 ### Windows
-- TODO
+- Use the [```testConfig.windows.json```](testConfig.windows.json) file as a base. Copy or rename it to `testConfig.json`.
+- Place this file inside: ```vrmlxpy\out\build\<BUILD_CONFIGURATION>\to_geom```.
+- The configuration file references input and expected data located at:
+  - Input: `vrmlxpy\data\segmentation_data`
+  - Expected: `vrmlxpy\data\expected_data`
+- Make sure the input data archive (```archive.zip``` or ```rchive.tar.gz```) has been extracted.
+- You can run tests using **CTest** from Command Prompt or PowerShell:
+  ``` ctest --test-dir out\build\<BUILD_CONFIGURATION>\vrml_proc``` and
+  ```ctest --test-dir out\build\<BUILD_CONFIGURATION>\to_geom```.
+- Add ```--verbose``` for detailed output: ```ctest --test-dir out\build\<BUILD_CONFIGURATION>\to_geom --verbose```.
 
 ## Troubleshooting
