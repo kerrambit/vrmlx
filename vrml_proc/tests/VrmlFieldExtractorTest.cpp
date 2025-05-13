@@ -61,7 +61,7 @@ TEST_CASE("ExtractByNameExtended - Missing Field", "[invalid]") {
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Int32Array>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Int32Array>(
           "light", fields, invalidType);
   REQUIRE(result.has_error());
   CHECK(result.error() == vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameError::FieldNotFound);
@@ -76,11 +76,11 @@ TEST_CASE("ExtractByNameExtended - Validation Error", "[invalid]") {
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Int32Array>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Int32Array>(
           "shape", fields, invalidType);
   REQUIRE(result.has_error());
   CHECK(result.error() == vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameError::ValidationError);
-  CHECK(invalidType.find("vrml_proc::parser::VrmlNode") != std::string::npos);
+  CHECK(invalidType.find("vrml_proc::parser::model::VrmlNode") != std::string::npos);
 }
 
 TEST_CASE("ExtractByNameExtended - VrmlNode Non-recursive I.", "[valid]") {
@@ -89,10 +89,10 @@ TEST_CASE("ExtractByNameExtended - VrmlNode Non-recursive I.", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::VrmlNode* ptr = boost::get<vrml_proc::parser::VrmlNode>(&fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::VrmlNode* ptr = boost::get<vrml_proc::parser::model::VrmlNode>(&fieldsOfRoot.at(0).value);
 
   std::string invalidType;
-  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::VrmlNode>(
+  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::VrmlNode>(
       "shape", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -104,12 +104,12 @@ TEST_CASE("ExtractByNameExtended - VrmlNode Non-recursive II.", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::VrmlNode& shape = boost::get<vrml_proc::parser::VrmlNode>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::VrmlNode& shape = boost::get<vrml_proc::parser::model::VrmlNode>(fieldsOfRoot.at(0).value);
   auto& fieldsOfShape = shape.fields;
-  vrml_proc::parser::VrmlNode* ptr = boost::get<vrml_proc::parser::VrmlNode>(&fieldsOfShape.at(0).value);
+  vrml_proc::parser::model::VrmlNode* ptr = boost::get<vrml_proc::parser::model::VrmlNode>(&fieldsOfShape.at(0).value);
 
   std::string invalidType;
-  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::VrmlNode>(
+  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::VrmlNode>(
       "geometry", fieldsOfShape, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -121,17 +121,17 @@ TEST_CASE("ExtractByNameExtended - VrmlNode Array", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>>* ptr =
-      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>(&fieldsOfRoot.at(0).value);
+  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>* ptr =
+      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>(&fieldsOfRoot.at(0).value);
 
-  boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>* firstOfChildrenPtr = &ptr->at(0);
+  boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>* firstOfChildrenPtr = &ptr->at(0);
 
   std::string invalidType;
   auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<std::vector<boost::variant<
-      boost::recursive_wrapper<vrml_proc::parser::VrmlNode>, boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>(
+      boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>, boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>(
       "children", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -147,7 +147,7 @@ TEST_CASE("ExtractByNameExtended - Empty Array of Vec2f's", "[valid]") {
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Vec2fArray>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Vec2fArray>(
           "array", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(result.value().get().vectors.size() == 0);
@@ -159,11 +159,11 @@ TEST_CASE("ExtractByNameExtended - Empty Array of Vec3f's", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::Vec3fArray* ptr = boost::get<vrml_proc::parser::Vec3fArray>(&fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::Vec3fArray* ptr = boost::get<vrml_proc::parser::model::Vec3fArray>(&fieldsOfRoot.at(0).value);
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Vec3fArray>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Vec3fArray>(
           "array", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -178,7 +178,7 @@ TEST_CASE("ExtractByNameExtended - Empty Array of Int32's", "[valid]") {
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Int32Array>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Int32Array>(
           "array", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(result.value().get().integers.size() == 0);
@@ -193,7 +193,7 @@ TEST_CASE("ExtractByNameExtended - Empty Array of VRML nodes", "[valid]") {
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::VrmlNodeArray>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::VrmlNodeArray>(
           "array", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(result.value().get().size() == 0);
@@ -235,10 +235,10 @@ TEST_CASE("ExtractByNameExtended - Vec3f", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::Vec3f* ptr = boost::get<vrml_proc::parser::Vec3f>(&fieldsOfRoot.at(2).value);
+  vrml_proc::parser::model::Vec3f* ptr = boost::get<vrml_proc::parser::model::Vec3f>(&fieldsOfRoot.at(2).value);
 
   std::string invalidType;
-  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Vec3f>(
+  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Vec3f>(
       "vec3f", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -250,11 +250,11 @@ TEST_CASE("ExtractByNameExtended - Vec3fArray", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::Vec3fArray* ptr = boost::get<vrml_proc::parser::Vec3fArray>(&fieldsOfRoot.at(3).value);
+  vrml_proc::parser::model::Vec3fArray* ptr = boost::get<vrml_proc::parser::model::Vec3fArray>(&fieldsOfRoot.at(3).value);
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Vec3fArray>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Vec3fArray>(
           "vec3farray", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -266,10 +266,10 @@ TEST_CASE("ExtractByNameExtended - Vec4", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::Vec4f* ptr = boost::get<vrml_proc::parser::Vec4f>(&fieldsOfRoot.at(4).value);
+  vrml_proc::parser::model::Vec4f* ptr = boost::get<vrml_proc::parser::model::Vec4f>(&fieldsOfRoot.at(4).value);
 
   std::string invalidType;
-  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Vec4f>(
+  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Vec4f>(
       "vec4f", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -281,11 +281,11 @@ TEST_CASE("ExtractByNameExtended - Int32Array", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::Int32Array* ptr = boost::get<vrml_proc::parser::Int32Array>(&fieldsOfRoot.at(5).value);
+  vrml_proc::parser::model::Int32Array* ptr = boost::get<vrml_proc::parser::model::Int32Array>(&fieldsOfRoot.at(5).value);
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Int32Array>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Int32Array>(
           "int32array", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -327,10 +327,10 @@ TEST_CASE("ExtractByNameExtended - Vec2f", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::Vec2f* ptr = boost::get<vrml_proc::parser::Vec2f>(&fieldsOfRoot.at(8).value);
+  vrml_proc::parser::model::Vec2f* ptr = boost::get<vrml_proc::parser::model::Vec2f>(&fieldsOfRoot.at(8).value);
 
   std::string invalidType;
-  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Vec2f>(
+  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Vec2f>(
       "vec2f", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -342,13 +342,13 @@ TEST_CASE("ExtractByNameExtended - Vec2fArray", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::Vec2fArray* ptr = boost::get<vrml_proc::parser::Vec2fArray>(&fieldsOfRoot.at(9).value);
-  vrml_proc::parser::Vec2f* vecPtr = &ptr->vectors.at(0);
-  vrml_proc::parser::float32_t* floatPtr = &vecPtr->u;
+  vrml_proc::parser::model::Vec2fArray* ptr = boost::get<vrml_proc::parser::model::Vec2fArray>(&fieldsOfRoot.at(9).value);
+  vrml_proc::parser::model::Vec2f* vecPtr = &ptr->vectors.at(0);
+  vrml_proc::parser::model::float32_t* floatPtr = &vecPtr->u;
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::Vec2fArray>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::Vec2fArray>(
           "vec2farray", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -362,11 +362,11 @@ TEST_CASE("ExtractByNameExtended - UseNode", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::VrmlNode& shape = boost::get<vrml_proc::parser::VrmlNode>(fieldsOfRoot.at(0).value);
-  vrml_proc::parser::UseNode* ptr = boost::get<vrml_proc::parser::UseNode>(&shape.fields.at(2).value);
+  vrml_proc::parser::model::VrmlNode& shape = boost::get<vrml_proc::parser::model::VrmlNode>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::UseNode* ptr = boost::get<vrml_proc::parser::model::UseNode>(&shape.fields.at(2).value);
 
   std::string invalidType;
-  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::UseNode>(
+  auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::UseNode>(
       "validUseId", shape.fields, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -378,19 +378,19 @@ TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - Invalid I.", "[i
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>>& children =
-      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>(fieldsOfRoot.at(0).value);
-  vrml_proc::parser::VrmlNode& node = boost::get<vrml_proc::parser::VrmlNode>(children.at(0));
+  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>& children =
+      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::VrmlNode& node = boost::get<vrml_proc::parser::model::VrmlNode>(children.at(0));
 
   std::string invalidType;
-  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant = children.at(0);
+  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant = children.at(0);
   auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractVrmlNodeFromVariantWithoutResolvingExtended<
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>(variant, invalidType);
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>(variant, invalidType);
   REQUIRE(!result.has_value());
-  CHECK(invalidType.find("vrml_proc::parser::VrmlNode") != std::string::npos);
+  CHECK(invalidType.find("vrml_proc::parser::model::VrmlNode") != std::string::npos);
 }
 
 TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - Invalid II.", "[invalid]") {
@@ -399,18 +399,18 @@ TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - Invalid II.", "[
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>>& children =
-      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>(fieldsOfRoot.at(0).value);
+  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>& children =
+      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>(fieldsOfRoot.at(0).value);
 
   std::string invalidType;
-  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant = children.at(1);
+  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant = children.at(1);
   auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractVrmlNodeFromVariantWithoutResolvingExtended<
-      vrml_proc::parser::VrmlNode>(variant, invalidType);
+      vrml_proc::parser::model::VrmlNode>(variant, invalidType);
   REQUIRE(!result.has_value());
-  CHECK(invalidType.find("vrml_proc::parser::UseNode") != std::string::npos);
+  CHECK(invalidType.find("vrml_proc::parser::model::UseNode") != std::string::npos);
 }
 
 TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - VrmlNode", "[valid]") {
@@ -419,18 +419,18 @@ TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - VrmlNode", "[val
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>>& children =
-      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>(fieldsOfRoot.at(0).value);
-  vrml_proc::parser::VrmlNode& node = boost::get<vrml_proc::parser::VrmlNode>(children.at(0));
-  vrml_proc::parser::VrmlNode* ptr = &node;
+  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>& children =
+      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::VrmlNode& node = boost::get<vrml_proc::parser::model::VrmlNode>(children.at(0));
+  vrml_proc::parser::model::VrmlNode* ptr = &node;
 
   std::string invalidType;
-  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant = children.at(0);
+  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant = children.at(0);
   auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractVrmlNodeFromVariantWithoutResolvingExtended<
-      vrml_proc::parser::VrmlNode>(variant, invalidType);
+      vrml_proc::parser::model::VrmlNode>(variant, invalidType);
   REQUIRE(result.has_value());
   CHECK(&result.value().get() == ptr);
 }
@@ -441,18 +441,18 @@ TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - UseNode", "[vali
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>>& children =
-      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>(fieldsOfRoot.at(0).value);
-  vrml_proc::parser::UseNode& node = boost::get<vrml_proc::parser::UseNode>(children.at(1));
-  vrml_proc::parser::UseNode* ptr = &node;
+  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>& children =
+      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::UseNode& node = boost::get<vrml_proc::parser::model::UseNode>(children.at(1));
+  vrml_proc::parser::model::UseNode* ptr = &node;
 
   std::string invalidType;
-  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant = children.at(1);
+  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant = children.at(1);
   auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractVrmlNodeFromVariantWithoutResolvingExtended<
-      vrml_proc::parser::UseNode>(variant, invalidType);
+      vrml_proc::parser::model::UseNode>(variant, invalidType);
   REQUIRE(result.has_value());
   CHECK(&result.value().get() == ptr);
 }
@@ -463,22 +463,22 @@ TEST_CASE("ExtractVrmlNodeFromVariantExtended - VrmlNode", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>>& children =
-      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>(fieldsOfRoot.at(0).value);
-  vrml_proc::parser::VrmlNode& node = boost::get<vrml_proc::parser::VrmlNode>(children.at(0));
-  vrml_proc::parser::VrmlNode* ptr = &node;
+  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>& children =
+      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::VrmlNode& node = boost::get<vrml_proc::parser::model::VrmlNode>(children.at(0));
+  vrml_proc::parser::model::VrmlNode* ptr = &node;
 
-  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant = children.at(0);
+  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant = children.at(0);
 
   std::string invalidType;
   std::string useId;
   auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractVrmlNodeFromVariantExtended(
       variant, manager, invalidType, useId);
   REQUIRE(result.has_value());
-  std::reference_wrapper<const vrml_proc::parser::VrmlNode>& wrapper = result.value();
+  std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>& wrapper = result.value();
   CHECK(&wrapper.get() == ptr);
 }
 
@@ -488,20 +488,20 @@ TEST_CASE("ExtractVrmlNodeFromVariantExtended - UseNode", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>>& children =
-      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>(fieldsOfRoot.at(0).value);
+  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>& children =
+      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>(fieldsOfRoot.at(0).value);
 
-  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant = children.at(1);
+  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant = children.at(1);
 
   std::string invalidType;
   std::string useId;
   auto result = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractVrmlNodeFromVariantExtended(
       variant, manager, invalidType, useId);
   REQUIRE(result.has_value());
-  std::reference_wrapper<const vrml_proc::parser::VrmlNode>& wrapper = result.value();
+  std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>& wrapper = result.value();
   CHECK(&wrapper.get() == &(manager.GetDefinitionNode("id").value().get()));
 }
 
@@ -511,13 +511,13 @@ TEST_CASE("ExtractVrmlNodeFromVariantExtended - UseNode Is Missing", "[invalid]"
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>>& children =
-      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>(fieldsOfRoot.at(0).value);
+  std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>& children =
+      boost::get<std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>(fieldsOfRoot.at(0).value);
 
-  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-      boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant = children.at(2);
+  const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant = children.at(2);
 
   std::string invalidType;
   std::string useId;
@@ -535,7 +535,7 @@ TEST_CASE("ExtractVrmlNodeExtended - Field Not Found", "[invalid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::VrmlNode& shape = boost::get<vrml_proc::parser::VrmlNode>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::VrmlNode& shape = boost::get<vrml_proc::parser::model::VrmlNode>(fieldsOfRoot.at(0).value);
 
   std::string invalidType;
   std::string useId;
@@ -551,7 +551,7 @@ TEST_CASE("ExtractVrmlNodeExtended - Validation Error", "[invalid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::VrmlNode& shape = boost::get<vrml_proc::parser::VrmlNode>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::VrmlNode& shape = boost::get<vrml_proc::parser::model::VrmlNode>(fieldsOfRoot.at(0).value);
 
   std::string invalidType;
   std::string useId;
@@ -559,7 +559,7 @@ TEST_CASE("ExtractVrmlNodeExtended - Validation Error", "[invalid]") {
       "appearance", shape.fields, manager, invalidType, useId);
   REQUIRE(result.has_error());
   CHECK(result.error() == vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractVrmlNodeError::ValidationError);
-  CHECK(invalidType.find("vrml_proc::parser::Vec4f") != std::string::npos);
+  CHECK(invalidType.find("vrml_proc::parser::model::Vec4f") != std::string::npos);
 }
 
 TEST_CASE("ExtractVrmlNodeExtended - Missing USE Id Error", "[invalid]") {
@@ -568,7 +568,7 @@ TEST_CASE("ExtractVrmlNodeExtended - Missing USE Id Error", "[invalid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::VrmlNode& shape = boost::get<vrml_proc::parser::VrmlNode>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::VrmlNode& shape = boost::get<vrml_proc::parser::model::VrmlNode>(fieldsOfRoot.at(0).value);
 
   std::string invalidType;
   std::string useId;
@@ -585,7 +585,7 @@ TEST_CASE("ExtractVrmlNodeExtended - USENode", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::VrmlNode& shape = boost::get<vrml_proc::parser::VrmlNode>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::VrmlNode& shape = boost::get<vrml_proc::parser::model::VrmlNode>(fieldsOfRoot.at(0).value);
 
   std::string invalidType;
   std::string useId;
@@ -601,8 +601,8 @@ TEST_CASE("ExtractVrmlNodeExtended - VrmlNode", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::VrmlNode& shape = boost::get<vrml_proc::parser::VrmlNode>(fieldsOfRoot.at(0).value);
-  vrml_proc::parser::VrmlNode& geometry = boost::get<vrml_proc::parser::VrmlNode>(shape.fields.at(0).value);
+  vrml_proc::parser::model::VrmlNode& shape = boost::get<vrml_proc::parser::model::VrmlNode>(fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::VrmlNode& geometry = boost::get<vrml_proc::parser::model::VrmlNode>(shape.fields.at(0).value);
 
   std::string invalidType;
   std::string useId;
@@ -633,11 +633,11 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Int as float", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::float32_t* ptr = boost::get<vrml_proc::parser::float32_t>(&fieldsOfRoot.at(0).value);
+  vrml_proc::parser::model::float32_t* ptr = boost::get<vrml_proc::parser::model::float32_t>(&fieldsOfRoot.at(0).value);
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::float32_t>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::float32_t>(
           "int", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
 }
@@ -662,11 +662,11 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Float without decimal as float",
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::float32_t* ptr = boost::get<vrml_proc::parser::float32_t>(&fieldsOfRoot.at(1).value);
+  vrml_proc::parser::model::float32_t* ptr = boost::get<vrml_proc::parser::model::float32_t>(&fieldsOfRoot.at(1).value);
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::float32_t>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::float32_t>(
           "float_without_decimals", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -692,11 +692,11 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Float as float", "[valid]") {
   REQUIRE(parseResult);
 
   auto& fieldsOfRoot = parseResult.value().at(0).fields;
-  vrml_proc::parser::float32_t* ptr = boost::get<vrml_proc::parser::float32_t>(&fieldsOfRoot.at(2).value);
+  vrml_proc::parser::model::float32_t* ptr = boost::get<vrml_proc::parser::model::float32_t>(&fieldsOfRoot.at(2).value);
 
   std::string invalidType;
   auto result =
-      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::float32_t>(
+      vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByNameExtended<vrml_proc::parser::model::float32_t>(
           "float", fieldsOfRoot, invalidType);
   REQUIRE(result.has_value());
   CHECK(ptr == &(result.value().get()));
@@ -712,7 +712,7 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Complicated example", "[valid]")
       vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractVrmlNode("children", fieldsOfFirst, manager)
           .value()
           .get();
-  auto result1 = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByName<vrml_proc::parser::float32_t>(
+  auto result1 = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByName<vrml_proc::parser::model::float32_t>(
       "float", nodeFirst.fields);
   REQUIRE(result1.has_value());
 
@@ -721,7 +721,7 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Complicated example", "[valid]")
       vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractVrmlNode("children", fieldsOfSecond, manager)
           .value()
           .get();
-  auto result2 = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByName<vrml_proc::parser::float32_t>(
+  auto result2 = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByName<vrml_proc::parser::model::float32_t>(
       "float", nodeSecond.fields);
   REQUIRE(result2.has_value());
 
@@ -736,7 +736,7 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Complicated example", "[valid]")
   CHECK(&(result3.value().get()) == &(result4.value().get()));
 
   auto& fieldsOfThird = parseResult.value().at(3).fields;
-  auto result5 = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByName<vrml_proc::parser::float32_t>(
+  auto result5 = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByName<vrml_proc::parser::model::float32_t>(
       "float", fieldsOfThird);
   auto result6 = vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractByName<int32_t>("int", fieldsOfThird);
 

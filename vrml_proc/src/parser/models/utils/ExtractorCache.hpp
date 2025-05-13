@@ -37,7 +37,7 @@ namespace vrml_proc::parser::model::utils {
      * @param key memory adrress of the original data
      * @param value flaot value to store
      */
-    void StoreFloat(std::uintptr_t key, vrml_proc::parser::float32_t value) {
+    void StoreFloat(std::uintptr_t key, vrml_proc::parser::model::float32_t value) {
 #ifdef USE_BOOST_CONCURRENT_MAP
       m_cachedFloats.insert_or_assign(key, value);
 #else
@@ -65,8 +65,8 @@ namespace vrml_proc::parser::model::utils {
      * @param key key
      * @returns reference to value or nullopt if key is not found
      */
-    std::optional<std::reference_wrapper<const vrml_proc::parser::float32_t>> GetFloat(std::uintptr_t key) {
-      std::optional<std::reference_wrapper<const vrml_proc::parser::float32_t>> result;
+    std::optional<std::reference_wrapper<const vrml_proc::parser::model::float32_t>> GetFloat(std::uintptr_t key) {
+      std::optional<std::reference_wrapper<const vrml_proc::parser::model::float32_t>> result;
 #ifdef USE_BOOST_CONCURRENT_MAP
       m_cachedFloats.visit(key, [&](const auto& value) { result = std::make_optional(std::cref(value.second)); });
 #else
@@ -100,10 +100,10 @@ namespace vrml_proc::parser::model::utils {
 
    private:
 #ifdef USE_BOOST_CONCURRENT_MAP
-    boost::unordered::concurrent_node_map<std::uintptr_t, vrml_proc::parser::float32_t> m_cachedFloats;
+    boost::unordered::concurrent_node_map<std::uintptr_t, vrml_proc::parser::model::float32_t> m_cachedFloats;
     boost::unordered::concurrent_node_map<std::uintptr_t, int32_t> m_cachedInts;
 #else
-    std::map<std::uintptr_t, vrml_proc::parser::float32_t> m_cachedFloats;
+    std::map<std::uintptr_t, vrml_proc::parser::model::float32_t> m_cachedFloats;
     std::map<std::uintptr_t, int32_t> m_cachedInts;
     std::mutex m_mutexFloats;
     std::mutex m_mutexInts;

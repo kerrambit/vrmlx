@@ -4,9 +4,9 @@
 
 #include "VrmlNode.hpp"
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::model {
   /**
    * @brief Represents a VRML file: list of any number of root nodes.
    */
   using VrmlFile = std::vector<VrmlNode>;
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::model

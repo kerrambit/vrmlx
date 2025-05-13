@@ -7,7 +7,7 @@
 #include "Object.hpp"
 #include "VrmlUnits.hpp"
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::model {
   /**
    * @brief Represents a SF value contaning 3 floats.
    */
@@ -42,4 +42,4 @@ namespace vrml_proc::parser {
     float32_t y;
     float32_t z;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::model

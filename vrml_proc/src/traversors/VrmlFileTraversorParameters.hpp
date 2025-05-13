@@ -16,12 +16,12 @@ namespace vrml_proc::traversor {
      * @param manager manager to resolve USE nodes
      * @param config configuration file
      */
-    VrmlFileTraversorParameters(const vrml_proc::parser::VrmlFile& file,
+    VrmlFileTraversorParameters(const vrml_proc::parser::model::VrmlFile& file,
         const vrml_proc::parser::service::VrmlNodeManager& manager,
         std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config)
         : file(file), manager(manager), config(config) {}
 
-    const vrml_proc::parser::VrmlFile& file;
+    const vrml_proc::parser::model::VrmlFile& file;
     const vrml_proc::parser::service::VrmlNodeManager& manager;
     std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config;
   };

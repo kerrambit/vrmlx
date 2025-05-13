@@ -21,7 +21,7 @@ namespace to_geom::action {
      */
     struct Properties {
       /** @brief Points inside Coordinate VRML node. */
-      std::reference_wrapper<const vrml_proc::parser::Vec3fArray> points;
+      std::reference_wrapper<const vrml_proc::parser::model::Vec3fArray> points;
     };
 
     /**

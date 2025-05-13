@@ -9,11 +9,11 @@
 #include "Vec3fGrammar.hpp"
 #include "test_data/Vec3fGrammarTestDataset.hpp"
 
-static std::optional<vrml_proc::parser::Vec3f> ParseVec3f(std::string& text) {
+static std::optional<vrml_proc::parser::model::Vec3f> ParseVec3f(std::string& text) {
   auto iterator = text.begin();
 
   vrml_proc::parser::grammar::Vec3fGrammar<const char*, vrml_proc::parser::grammar::CommentSkipper> grammar;
-  vrml_proc::parser::Vec3f data;
+  vrml_proc::parser::model::Vec3f data;
   vrml_proc::parser::grammar::CommentSkipper skipper;
 
   bool success = boost::spirit::qi::phrase_parse(text.c_str(), text.c_str() + text.size(), grammar, skipper, data);

@@ -33,8 +33,8 @@ namespace to_geom::action {
     using to_geom::conversion_context::MeshTaskConversionContext;
     using to_geom::core::config::ToGeomConfig;
     using vrml_proc::math::TransformationMatrix;
-    using vrml_proc::parser::Int32Array;
-    using vrml_proc::parser::Vec3fArray;
+    using vrml_proc::parser::model::Int32Array;
+    using vrml_proc::parser::model::Vec3fArray;
     using vrml_proc::traversor::VrmlNodeTraversor::Traverse;
     using namespace vrml_proc::core::logger;
 
@@ -58,7 +58,7 @@ namespace to_geom::action {
     map.AddAction(
         "Coordinate", [this](vrml_proc::traversor::handler::HandlerToActionBundle<Vec3fArrayConversionContext> data) {
           return std::make_shared<HelperCoordinateAction>(HelperCoordinateAction::Properties{
-              data.nodeView->GetField<std::reference_wrapper<const vrml_proc::parser::Vec3fArray>>("point")});
+              data.nodeView->GetField<std::reference_wrapper<const vrml_proc::parser::model::Vec3fArray>>("point")});
         });
 
     auto coordResult = Traverse<Vec3fArrayConversionContext>(

@@ -35,7 +35,7 @@
  * @param expectedConversionContextSize traversor creates vector of individual submeshes, this is expected count of them
  * @return false if traversing fails or if the expected count is not met, otherwise true
  */
-static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
+static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::model::VrmlFile> parseResult,
     const vrml_proc::parser::service::VrmlNodeManager& manager,
     size_t expectedConversionContextSize) {
   auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
@@ -67,7 +67,7 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
  * @return false if traversing fails, if the expected count of taksks/submeshes is not met or if export fails, otherwise
  * true
  */
-static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
+static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::model::VrmlFile> parseResult,
     const vrml_proc::parser::service::VrmlNodeManager& manager,
     size_t expectedConversionContextSize,
     const std::filesystem::path& outputFilepath,
@@ -135,7 +135,7 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
  * @return false if traversing fails, if the expected count of taksks/submeshes is not met or if export fails, otherwise
  * true
  */
-static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
+static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::model::VrmlFile> parseResult,
     const vrml_proc::parser::service::VrmlNodeManager& manager,
     size_t expectedConversionContextSize,
     const std::filesystem::path& outputFilepath,
@@ -197,7 +197,7 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
  * @param manager VRML node manager
  * @return false if traversing fails, otherwise true
  */
-static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
+static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::model::VrmlFile> parseResult,
     const vrml_proc::parser::service::VrmlNodeManager& manager) {
   auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
   auto traversorResult =

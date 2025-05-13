@@ -8,11 +8,11 @@
 #include "Int32Array.hpp"
 #include "Int32ArrayGrammar.hpp"
 
-static std::optional<vrml_proc::parser::Int32Array> ParseInt32Array(std::string& text) {
+static std::optional<vrml_proc::parser::model::Int32Array> ParseInt32Array(std::string& text) {
   auto iterator = text.begin();
 
   vrml_proc::parser::grammar::Int32ArrayGrammar<const char*, vrml_proc::parser::grammar::CommentSkipper> grammar;
-  vrml_proc::parser::Int32Array data;
+  vrml_proc::parser::model::Int32Array data;
   vrml_proc::parser::grammar::CommentSkipper skipper;
 
   bool success = boost::spirit::qi::phrase_parse(text.c_str(), text.c_str() + text.size(), grammar, skipper, data);

@@ -34,8 +34,8 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
   using vrml_proc::math::Transformation;
   using vrml_proc::math::TransformationMatrix;
   using vrml_proc::math::UpdateTransformationMatrix;
-  using vrml_proc::parser::Vec3f;
-  using vrml_proc::parser::Vec4f;
+  using vrml_proc::parser::model::Vec3f;
+  using vrml_proc::parser::model::Vec4f;
 
   Vec3f size;
   size.x = 10.0f;
@@ -88,7 +88,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
 
   transformationData = Transformation();
   matrix = TransformationMatrix();
-  transformationData.center = vrml_proc::parser::Vec3f(10.0f, 10.0f, 0.0f);
+  transformationData.center = vrml_proc::parser::model::Vec3f(10.0f, 10.0f, 0.0f);
   transformationData.rotation = Vec4f(0.0f, 0.0f, 1.0f, 0.785398163f);
   matrix = UpdateTransformationMatrix(matrix, transformationData);
   auto result3 = (calculator.Generate3DMesh({std::cref(size)}, matrix)).value();
@@ -103,7 +103,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
 
   transformationData = Transformation();
   matrix = TransformationMatrix();
-  transformationData.center = vrml_proc::parser::Vec3f(10.0f, 10.0f, 0.0f);
+  transformationData.center = vrml_proc::parser::model::Vec3f(10.0f, 10.0f, 0.0f);
   matrix = UpdateTransformationMatrix(matrix, transformationData);
   auto result4 = (calculator.Generate3DMesh({std::cref(size)}, matrix)).value();
   {
@@ -131,7 +131,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
 
   transformationData = Transformation();
   matrix = TransformationMatrix();
-  transformationData.center = vrml_proc::parser::Vec3f(10.0f, 10.0f, 10.0f);
+  transformationData.center = vrml_proc::parser::model::Vec3f(10.0f, 10.0f, 10.0f);
   transformationData.rotation = Vec4f(0.0f, 1.0f, 0.0f, 0.785398163f);
   matrix = UpdateTransformationMatrix(matrix, transformationData);
   auto result6 = (calculator.Generate3DMesh({std::cref(size)}, matrix)).value();
@@ -146,7 +146,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
 
   transformationData = Transformation();
   matrix = TransformationMatrix();
-  transformationData.translation = vrml_proc::parser::Vec3f(10.0f, 10.0f, 10.0f);
+  transformationData.translation = vrml_proc::parser::model::Vec3f(10.0f, 10.0f, 10.0f);
   transformationData.rotation = Vec4f(0.0f, 0.0f, 1.0f, 0.785398163f);
   matrix = UpdateTransformationMatrix(matrix, transformationData);
   auto result7 = (calculator.Generate3DMesh({std::cref(size)}, matrix)).value();
@@ -161,11 +161,11 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
 
   transformationData = Transformation();
   matrix = TransformationMatrix();
-  transformationData.translation = vrml_proc::parser::Vec3f(0.0f, -25.0f, 0.0f);
-  transformationData.rotation = vrml_proc::parser::Vec4f(0.0f, 0.0f, 1.0f, 0.785398163f);
-  transformationData.scale = vrml_proc::parser::Vec3f(2.0f, 1.0f, 1.0f);
-  transformationData.scaleOrientation =
-      vrml_proc::parser::Vec4f(0.0f, 0.0f, 1.0f, 0.785398163f);  // without it applies scaling to world coordinates
+  transformationData.translation = vrml_proc::parser::model::Vec3f(0.0f, -25.0f, 0.0f);
+  transformationData.rotation = vrml_proc::parser::model::Vec4f(0.0f, 0.0f, 1.0f, 0.785398163f);
+  transformationData.scale = vrml_proc::parser::model::Vec3f(2.0f, 1.0f, 1.0f);
+  transformationData.scaleOrientation = vrml_proc::parser::model::Vec4f(
+      0.0f, 0.0f, 1.0f, 0.785398163f);  // without it applies scaling to world coordinates
   matrix = vrml_proc::math::UpdateTransformationMatrix(matrix, transformationData);
   auto result8 = (calculator.Generate3DMesh({std::cref(size)}, matrix)).value();
   {
@@ -179,9 +179,9 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
 
   transformationData = Transformation();
   matrix = TransformationMatrix();
-  transformationData.translation = vrml_proc::parser::Vec3f(0.0f, -25.0f, 0.0f);
-  transformationData.rotation = vrml_proc::parser::Vec4f(0.0f, 0.0f, 1.0f, 0.785398163f);
-  transformationData.scale = vrml_proc::parser::Vec3f(2.0f, 1.0f, 1.0f);
+  transformationData.translation = vrml_proc::parser::model::Vec3f(0.0f, -25.0f, 0.0f);
+  transformationData.rotation = vrml_proc::parser::model::Vec4f(0.0f, 0.0f, 1.0f, 0.785398163f);
+  transformationData.scale = vrml_proc::parser::model::Vec3f(2.0f, 1.0f, 1.0f);
   matrix = vrml_proc::math::UpdateTransformationMatrix(matrix, transformationData);
   auto result9 = (calculator.Generate3DMesh({std::cref(size)}, matrix)).value();
   {
@@ -194,8 +194,8 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
   // --- //
 
   transformationData = Transformation();
-  transformationData.translation = vrml_proc::parser::Vec3f(15.0f, 0.0f, 0.0f);
-  transformationData.rotation = vrml_proc::parser::Vec4f(1.0f, 0.0f, 0.0f, 0.785398163f);
+  transformationData.translation = vrml_proc::parser::model::Vec3f(15.0f, 0.0f, 0.0f);
+  transformationData.rotation = vrml_proc::parser::model::Vec4f(1.0f, 0.0f, 0.0f, 0.785398163f);
   matrix = vrml_proc::math::UpdateTransformationMatrix(matrix, transformationData);
   auto result10 = (calculator.Generate3DMesh({std::cref(size)}, matrix)).value();
   {
@@ -209,7 +209,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
 
   transformationData = Transformation();
   matrix = TransformationMatrix();
-  transformationData.scale = vrml_proc::parser::Vec3f(2.0f, 2.0f, 2.0f);
+  transformationData.scale = vrml_proc::parser::model::Vec3f(2.0f, 2.0f, 2.0f);
   matrix = vrml_proc::math::UpdateTransformationMatrix(matrix, transformationData);
   matrix = vrml_proc::math::UpdateTransformationMatrix(matrix, transformationData);
   matrix = vrml_proc::math::UpdateTransformationMatrix(matrix, transformationData);
@@ -226,7 +226,7 @@ TEST_CASE("BoxCalculator - Transform tests", "[valid]") {
 TEST_CASE("BoxCalculator - invalid", "[invalid]") {
   to_geom::calculator::BoxCalculator calculator = to_geom::calculator::BoxCalculator();
 
-  vrml_proc::parser::Vec3f size;
+  vrml_proc::parser::model::Vec3f size;
   size.x = 0.0f;
   size.y = 20.0f;
   size.z = 30.0f;
@@ -237,7 +237,7 @@ TEST_CASE("BoxCalculator - invalid", "[invalid]") {
     auto result = calculator.Generate3DMesh({std::cref(size)}, matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<
-        vrml_proc::parser::model::validator::error::NumberOutOfRangeError<vrml_proc::parser::float32_t>>(
+        vrml_proc::parser::model::validator::error::NumberOutOfRangeError<vrml_proc::parser::model::float32_t>>(
         result.error()));
     LogError(result.error());
   }
@@ -249,7 +249,7 @@ TEST_CASE("BoxCalculator - invalid", "[invalid]") {
     auto result = calculator.Generate3DMesh({std::cref(size)}, matrix);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<
-        vrml_proc::parser::model::validator::error::NumberOutOfRangeError<vrml_proc::parser::float32_t>>(
+        vrml_proc::parser::model::validator::error::NumberOutOfRangeError<vrml_proc::parser::model::float32_t>>(
         result.error()));
     LogError(result.error());
   }
@@ -258,8 +258,8 @@ TEST_CASE("BoxCalculator - invalid", "[invalid]") {
 TEST_CASE("IndexedFaceSetCalculator - valid I.", "[valid]") {
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Int32Array indices;
+  vrml_proc::parser::model::Vec3fArray points;
 
   vrml_proc::math::TransformationMatrix matrix;
 
@@ -273,12 +273,12 @@ TEST_CASE("IndexedFaceSetCalculator - valid I.", "[valid]") {
 TEST_CASE("IndexedFaceSetCalculator - invalid I.", "[invalid]") {
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(-1);
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
 
   vrml_proc::math::TransformationMatrix matrix;
 
@@ -291,14 +291,14 @@ TEST_CASE("IndexedFaceSetCalculator - invalid I.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - invalid II.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -316,15 +316,15 @@ TEST_CASE("IndexedFaceSetCalculator - invalid II.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - invalid III.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -342,16 +342,16 @@ TEST_CASE("IndexedFaceSetCalculator - invalid III.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - invalid IV.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -369,11 +369,11 @@ TEST_CASE("IndexedFaceSetCalculator - invalid IV.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - valid II.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
@@ -383,7 +383,7 @@ TEST_CASE("IndexedFaceSetCalculator - valid II.", "[invalid]") {
   indices.integers.emplace_back(3);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -405,17 +405,17 @@ TEST_CASE("IndexedFaceSetCalculator - valid II.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - invalid V.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(-2);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -434,17 +434,17 @@ TEST_CASE("IndexedFaceSetCalculator - invalid V.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - invalid VI.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(5);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -463,17 +463,17 @@ TEST_CASE("IndexedFaceSetCalculator - invalid VI.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - invalid VII.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(-2);
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -492,17 +492,17 @@ TEST_CASE("IndexedFaceSetCalculator - invalid VII.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - invalid VIII.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(5);
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -521,17 +521,17 @@ TEST_CASE("IndexedFaceSetCalculator - invalid VIII.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - invalid IX.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(-2);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -550,17 +550,17 @@ TEST_CASE("IndexedFaceSetCalculator - invalid IX.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - invalid X.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(5);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -579,11 +579,11 @@ TEST_CASE("IndexedFaceSetCalculator - invalid X.", "[invalid]") {
 }
 
 TEST_CASE("IndexedFaceSetCalculator - valid III.", "[valid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
@@ -609,7 +609,7 @@ TEST_CASE("IndexedFaceSetCalculator - valid III.", "[valid]") {
   indices.integers.emplace_back(4);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -630,7 +630,7 @@ TEST_CASE("IndexedFaceSetCalculator - valid III.", "[valid]") {
 }
 
 TEST_CASE("AlphaShapeCalculator - valid I.", "[valid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   std::vector<Vec3f> testPoints = {{5.0f, 0.0f, 1.0f}, {1.0f, 9.0f, 1.0f}, {1.0f, 1.0f, -5.0f}, {0.0f, 10.0f, 10.0f},
       {-11.0f, 0.0f, 12.0f}, {1.0f, 0.0f, 9.0f}, {1.0f, 7.0f, 8.0f}, {0.0f, -1.0f, 0.0f}, {0.25f, 0.25f, 0.25f},
@@ -638,7 +638,7 @@ TEST_CASE("AlphaShapeCalculator - valid I.", "[valid]") {
       {0.75f, 0.75f, 0.75f}, {0.25f, 0.75f, 0.75f}, {-0.5f, 0.5f, 0.5f}, {5.0f, -0.5f, 0.0f}, {9.0f, 0.5f, -1.0f},
       {5.5f, -4.0f, 10.5f}, {12.5f, 1.0f, 8.5f}, {-9.0f, 0.5f, 69.5f}, {1.0f, 7.5f, 2.5f}};
 
-  vrml_proc::parser::Vec3fArray pointCloud;
+  vrml_proc::parser::model::Vec3fArray pointCloud;
   pointCloud.vectors.insert(
       pointCloud.vectors.end(), std::make_move_iterator(testPoints.begin()), std::make_move_iterator(testPoints.end()));
   vrml_proc::math::TransformationMatrix matrix;
@@ -659,8 +659,8 @@ TEST_CASE("AlphaShapeCalculator - valid I.", "[valid]") {
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range check) - valid I.", "[valid]") {
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Int32Array indices;
+  vrml_proc::parser::model::Vec3fArray points;
 
   vrml_proc::math::TransformationMatrix matrix;
 
@@ -672,11 +672,11 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range c
 }
 
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range check) - valid II.", "[valid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
@@ -686,7 +686,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range c
   indices.integers.emplace_back(3);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -708,11 +708,11 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range c
 }
 
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range check) - valid III.", "[valid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
@@ -738,7 +738,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range c
   indices.integers.emplace_back(4);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -761,8 +761,8 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range c
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range check) - valid I.", "[valid]") {
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Int32Array indices;
+  vrml_proc::parser::model::Vec3fArray points;
 
   vrml_proc::math::TransformationMatrix matrix;
 
@@ -774,11 +774,11 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
 }
 
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range check) - valid II.", "[valid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
@@ -788,7 +788,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   indices.integers.emplace_back(3);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -810,11 +810,11 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
 }
 
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range check) - valid III.", "[valid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
@@ -840,7 +840,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   indices.integers.emplace_back(4);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -865,12 +865,12 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range check) - invalid I.", "[invalid]") {
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(-1);
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
 
   vrml_proc::math::TransformationMatrix matrix;
 
@@ -883,17 +883,17 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
 }
 
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range check) - invalid II.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(-2);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -912,17 +912,17 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
 }
 
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range check) - invalid III.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(5);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -941,17 +941,17 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
 }
 
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range check) - invalid IV.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(-2);
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -970,17 +970,17 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
 }
 
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range check) - invalid V.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(5);
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -999,17 +999,17 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
 }
 
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range check) - invalid VI.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(-2);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));
@@ -1028,17 +1028,17 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
 }
 
 TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range check) - invalid VII.", "[invalid]") {
-  using vrml_proc::parser::Vec3f;
+  using vrml_proc::parser::model::Vec3f;
 
   to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
 
-  vrml_proc::parser::Int32Array indices;
+  vrml_proc::parser::model::Int32Array indices;
   indices.integers.emplace_back(0);
   indices.integers.emplace_back(1);
   indices.integers.emplace_back(5);
   indices.integers.emplace_back(-1);
 
-  vrml_proc::parser::Vec3fArray points;
+  vrml_proc::parser::model::Vec3fArray points;
   points.vectors.emplace_back(Vec3f(0.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 0.0f, 0.0f));
   points.vectors.emplace_back(Vec3f(1.0f, 1.0f, 0.0f));

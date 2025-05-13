@@ -21,7 +21,7 @@ namespace to_geom::action {
      * @brief Properties for `BoxAction`. See VRML 2.0 specification for more information.
      */
     struct Properties {
-      std::reference_wrapper<const vrml_proc::parser::Vec3f> size;
+      std::reference_wrapper<const vrml_proc::parser::model::Vec3f> size;
     };
 
     /**

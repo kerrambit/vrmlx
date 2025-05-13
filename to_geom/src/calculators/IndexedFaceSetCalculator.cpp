@@ -39,8 +39,8 @@ static to_geom::calculator::CalculatorResult ReturnVertexIndexOutOfRangeError(
 
 namespace to_geom::calculator {
   to_geom::calculator::CalculatorResult IndexedFaceSetCalculator::Generate3DMesh(
-      std::reference_wrapper<const vrml_proc::parser::Int32Array> coordinateIndices,
-      std::reference_wrapper<const vrml_proc::parser::Vec3fArray> coordinates,
+      std::reference_wrapper<const vrml_proc::parser::model::Int32Array> coordinateIndices,
+      std::reference_wrapper<const vrml_proc::parser::model::Vec3fArray> coordinates,
       const vrml_proc::math::TransformationMatrix& matrix,
       bool checkRange,
       bool onlyTriangularFaces) {  //
@@ -67,7 +67,7 @@ namespace to_geom::calculator {
     auto error = std::make_shared<IndexedFaceSetCalculatorError>();
 
     const std::vector<int32_t>& indicides = coordinateIndices.get().integers;
-    const std::vector<vrml_proc::parser::Vec3f>& points = coordinates.get().vectors;
+    const std::vector<vrml_proc::parser::model::Vec3f>& points = coordinates.get().vectors;
 
     if (indicides.empty()) {
       LogWarning("No coordinate indices were found! There is nothing to calculate and empty mesh will be returned.",

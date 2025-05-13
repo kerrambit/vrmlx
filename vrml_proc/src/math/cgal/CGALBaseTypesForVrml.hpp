@@ -28,7 +28,7 @@ namespace vrml_proc::math::cgal {
    * @param vec3 vector to convert
    * @returns CGAl converted vector
    */
-  inline CGALVector3 Vec3fToCGALVector3(const vrml_proc::parser::Vec3f& vec3) {
+  inline CGALVector3 Vec3fToCGALVector3(const vrml_proc::parser::model::Vec3f& vec3) {
     return CGALVector3(vec3.x, vec3.y, vec3.z);
   }
 
@@ -38,7 +38,7 @@ namespace vrml_proc::math::cgal {
    * @param vec3 vector to convert
    * @returns CGAl converted point
    */
-  inline CGALPoint Vec3fToCGALPoint(const vrml_proc::parser::Vec3f& vec3) { return CGALPoint(vec3.x, vec3.y, vec3.z); }
+  inline CGALPoint Vec3fToCGALPoint(const vrml_proc::parser::model::Vec3f& vec3) { return CGALPoint(vec3.x, vec3.y, vec3.z); }
 
   /**
    * @brief Converts an array of Vec3f vectors into list of CGAL points.
@@ -46,7 +46,7 @@ namespace vrml_proc::math::cgal {
    * @param vec3Array array of vectors to convert
    * @returns list of CGAL points
    */
-  inline std::vector<CGALPoint> Vec3fArrayToCGALPoints(const vrml_proc::parser::Vec3fArray& vec3Array) {
+  inline std::vector<CGALPoint> Vec3fArrayToCGALPoints(const vrml_proc::parser::model::Vec3fArray& vec3Array) {
     std::vector<CGALPoint> cgalPoints;
     cgalPoints.reserve(vec3Array.vectors.size());
 

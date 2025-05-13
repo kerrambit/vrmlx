@@ -29,8 +29,8 @@ namespace to_geom::action {
     using to_geom::conversion_context::MeshTaskConversionContext;
     using to_geom::core::config::ToGeomConfig;
     using vrml_proc::math::TransformationMatrix;
-    using vrml_proc::parser::Int32Array;
-    using vrml_proc::parser::Vec3fArray;
+    using vrml_proc::parser::model::Int32Array;
+    using vrml_proc::parser::model::Vec3fArray;
     using vrml_proc::traversor::VrmlNodeTraversor::Traverse;
     using namespace vrml_proc::core::logger;
 

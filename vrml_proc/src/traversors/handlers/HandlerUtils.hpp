@@ -36,7 +36,7 @@ namespace vrml_proc::traversor::handler::HandlerUtils {
     using namespace vrml_proc::traversor::node_descriptor;
     using namespace vrml_proc::traversor::error;
 
-    auto node = nd->GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>(fieldName);
+    auto node = nd->GetField<std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>>(fieldName);
     auto ndResult = CreateNodeDescriptor(node.get().header);
 
     if (ndResult.has_value()) {

@@ -44,7 +44,7 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    * @param fields list of fields
    * @returns true if the name was found, otherwise false
    */
-  inline bool IsNamePresent(const std::string& name, const std::vector<vrml_proc::parser::VrmlField>& fields) {
+  inline bool IsNamePresent(const std::string& name, const std::vector<vrml_proc::parser::model::VrmlField>& fields) {
     for (const auto& field : fields) {
       if (field.name == name) {
         return true;
@@ -66,7 +66,7 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    */
   template <typename T>
   inline std::optional<std::reference_wrapper<const T>> ExtractExtended(
-      const vrml_proc::parser::VrmlFieldValue& fieldValue, std::string& invalidType) {
+      const vrml_proc::parser::model::VrmlFieldValue& fieldValue, std::string& invalidType) {
     ExtractorVisitor<T> visitor;
     auto result = boost::apply_visitor(visitor, fieldValue);
 
@@ -89,7 +89,7 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    * @returns optional storing the reference to the const T value from variant if T can be extracted, otherwise nullopt
    */
   template <typename T>
-  inline std::optional<std::reference_wrapper<const T>> Extract(const vrml_proc::parser::VrmlFieldValue& fieldValue) {
+  inline std::optional<std::reference_wrapper<const T>> Extract(const vrml_proc::parser::model::VrmlFieldValue& fieldValue) {
     std::string invalidType;
     return vrml_proc::parser::model::utils::VrmlFieldExtractor::ExtractExtended<T>(fieldValue, invalidType);
   }
@@ -120,7 +120,7 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    */
   template <typename T>
   inline cpp::result<std::reference_wrapper<const T>, ExtractByNameError> ExtractByNameExtended(
-      const std::string& name, const std::vector<vrml_proc::parser::VrmlField>& fields, std::string& invalidType) {  //
+      const std::string& name, const std::vector<vrml_proc::parser::model::VrmlField>& fields, std::string& invalidType) {  //
 
     for (const auto& field : fields) {
       if (field.name == name) {
@@ -156,7 +156,7 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    */
   template <typename T>
   inline cpp::result<std::reference_wrapper<const T>, ExtractByNameError> ExtractByName(
-      const std::string& name, const std::vector<vrml_proc::parser::VrmlField>& fields) {
+      const std::string& name, const std::vector<vrml_proc::parser::model::VrmlField>& fields) {
     std::string invalidType;
     return ExtractByNameExtended<T>(name, fields, invalidType);
   }
@@ -185,21 +185,21 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    * @param useId will be populated with the unresolved identifier if a `USE` reference fails to resolve.
    * @return a `cpp::result` containing a reference to the resolved `VrmlNode`, or an `ExtractVrmlNodeError` on failure
    */
-  inline cpp::result<std::reference_wrapper<const vrml_proc::parser::VrmlNode>, ExtractVrmlNodeError>
+  inline cpp::result<std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>, ExtractVrmlNodeError>
   ExtractVrmlNodeExtended(const std::string& name,
-      const std::vector<vrml_proc::parser::VrmlField>& fields,
+      const std::vector<vrml_proc::parser::model::VrmlField>& fields,
       const vrml_proc::parser::service::VrmlNodeManager& manager,
       std::string& invalidType,
       std::string& useId) {  //
 
     if (IsNamePresent(name, fields)) {
       std::string error = "";
-      auto vrmlNode = ExtractByNameExtended<vrml_proc::parser::VrmlNode>(name, fields, error);
+      auto vrmlNode = ExtractByNameExtended<vrml_proc::parser::model::VrmlNode>(name, fields, error);
       if (vrmlNode.has_value()) {
         return vrmlNode.value();
       }
 
-      auto useNode = ExtractByName<vrml_proc::parser::UseNode>(name, fields);
+      auto useNode = ExtractByName<vrml_proc::parser::model::UseNode>(name, fields);
       if (useNode.has_value()) {
         auto managerFound = manager.GetDefinitionNode(useNode.value().get().identifier);
         if (managerFound.has_value()) {
@@ -229,9 +229,9 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    * @param manager reference to the `VrmlNodeManager` used to resolve `USE` references
    * @return a `cpp::result` containing a reference to the resolved `VrmlNode`, or an `ExtractVrmlNodeError` on failure
    */
-  inline cpp::result<std::reference_wrapper<const vrml_proc::parser::VrmlNode>, ExtractVrmlNodeError> ExtractVrmlNode(
+  inline cpp::result<std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>, ExtractVrmlNodeError> ExtractVrmlNode(
       const std::string& name,
-      const std::vector<vrml_proc::parser::VrmlField>& fields,
+      const std::vector<vrml_proc::parser::model::VrmlField>& fields,
       const vrml_proc::parser::service::VrmlNodeManager& manager) {
     std::string invalidType;
     std::string useId;
@@ -255,8 +255,8 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    */
   template <typename T>
   inline std::optional<std::reference_wrapper<const T>> ExtractVrmlNodeFromVariantWithoutResolvingExtended(
-      const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant,
+      const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant,
       std::string& invalidType) {  //
 
     VariantVisitor<T> visitor;
@@ -284,8 +284,8 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    */
   template <typename T>
   inline std::optional<std::reference_wrapper<const T>> ExtractVrmlNodeFromVariantWithoutResolving(
-      const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant) {
+      const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant) {
     std::string invalidType;
     return ExtractVrmlNodeFromVariantWithoutResolvingExtended<T>(variant, invalidType);
   }
@@ -310,20 +310,20 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    * @param useId will be populated with the identifier from the `UseNode` if the resolution fails
    * @return a `cpp::result` holding either a reference to the resolved `VrmlNode` or an error code indicating failure
    */
-  inline cpp::result<std::reference_wrapper<const vrml_proc::parser::VrmlNode>, ExtractVrmlNodeFromVariantError>
-  ExtractVrmlNodeFromVariantExtended(const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-                                         boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant,
+  inline cpp::result<std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>, ExtractVrmlNodeFromVariantError>
+  ExtractVrmlNodeFromVariantExtended(const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+                                         boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant,
       const vrml_proc::parser::service::VrmlNodeManager& manager,
       std::string& invalidType,
       std::string& useId) {  //
 
     std::string out;
-    auto result = ExtractVrmlNodeFromVariantWithoutResolvingExtended<vrml_proc::parser::VrmlNode>(variant, out);
+    auto result = ExtractVrmlNodeFromVariantWithoutResolvingExtended<vrml_proc::parser::model::VrmlNode>(variant, out);
     if (result.has_value()) {
       return result.value();
     }
 
-    auto useNode = ExtractVrmlNodeFromVariantWithoutResolvingExtended<vrml_proc::parser::UseNode>(variant, out);
+    auto useNode = ExtractVrmlNodeFromVariantWithoutResolvingExtended<vrml_proc::parser::model::UseNode>(variant, out);
     if (useNode.has_value()) {
       auto managerFound = manager.GetDefinitionNode(useNode.value().get().identifier);
       if (managerFound.has_value()) {
@@ -349,9 +349,9 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
    * @param manager manager used to resolve nodes referenced by `USE` statements.
    * @return a `cpp::result` holding either a reference to the resolved `VrmlNode` or an error code indicating failure
    */
-  inline cpp::result<std::reference_wrapper<const vrml_proc::parser::VrmlNode>, ExtractVrmlNodeFromVariantError>
-  ExtractVrmlNodeFromVariant(const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-                                 boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant,
+  inline cpp::result<std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>, ExtractVrmlNodeFromVariantError>
+  ExtractVrmlNodeFromVariant(const boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+                                 boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>& variant,
       const vrml_proc::parser::service::VrmlNodeManager& manager) {
     std::string invalidType;
     std::string useId;
@@ -423,7 +423,7 @@ struct ExtractorVisitor
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const vrml_proc::parser::Vec3fArray& value) const {
+      const vrml_proc::parser::model::Vec3fArray& value) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit Vec3fArray. Object address is <", &value, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
@@ -431,13 +431,13 @@ struct ExtractorVisitor
     if (value.vectors.size() == 0) {
       vrml_proc::core::logger::Log("Array is empty.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-      if constexpr (std::is_same<T, vrml_proc::parser::Vec3fArray>::value) {
+      if constexpr (std::is_same<T, vrml_proc::parser::model::Vec3fArray>::value) {
         vrml_proc::core::logger::Log("Extract as Vec3fArray.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
         return std::cref(value);
       }
 
-      else if constexpr (std::is_same<T, vrml_proc::parser::Vec2fArray>::value) {
-        static const vrml_proc::parser::Vec2fArray emptyVec2fArray{};
+      else if constexpr (std::is_same<T, vrml_proc::parser::model::Vec2fArray>::value) {
+        static const vrml_proc::parser::model::Vec2fArray emptyVec2fArray{};
         vrml_proc::core::logger::Log(
             vrml_proc::core::utils::FormatString(
                 "Extract as Vec2fArray. Using static empty object with address <", &emptyVec2fArray, ">!"),
@@ -445,8 +445,8 @@ struct ExtractorVisitor
         return std::cref(emptyVec2fArray);
       }
 
-      else if constexpr (std::is_same<T, vrml_proc::parser::Int32Array>::value) {
-        static const vrml_proc::parser::Int32Array emptyInt32Array{};
+      else if constexpr (std::is_same<T, vrml_proc::parser::model::Int32Array>::value) {
+        static const vrml_proc::parser::model::Int32Array emptyInt32Array{};
         vrml_proc::core::logger::Log(
             vrml_proc::core::utils::FormatString(
                 "Extract as Int32Array. Using static empty object with address <", &emptyInt32Array, ">!"),
@@ -455,10 +455,10 @@ struct ExtractorVisitor
       }
 
       else if constexpr (std::is_same<T,
-                             std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-                                 boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>::value) {
-        static const std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-            boost::recursive_wrapper<vrml_proc::parser::UseNode>>>
+                             std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+                                 boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>::value) {
+        static const std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+            boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>
             emptyVrmlNodeArray{};
         vrml_proc::core::logger::Log(
             vrml_proc::core::utils::FormatString(
@@ -474,46 +474,46 @@ struct ExtractorVisitor
       }
     }
 
-    if constexpr (std::is_same<T, vrml_proc::parser::Vec3fArray>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::Vec3fArray>::value) {
       vrml_proc::core::logger::Log("Extract as Vec3fArray.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(value);
     }
 
     vrml_proc::core::logger::Log(
         "Vec3fArray could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::Vec3fArray>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::Vec3fArray>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const vrml_proc::parser::Vec2fArray& value) const {
+      const vrml_proc::parser::model::Vec2fArray& value) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit Vec2fArray. Object address is <", &value, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, vrml_proc::parser::Vec2fArray>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::Vec2fArray>::value) {
       vrml_proc::core::logger::Log("Extract as Vec2fArray.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(value);
     }
 
     vrml_proc::core::logger::Log(
         "Vec2fArray could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::Vec2fArray>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::Vec2fArray>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const vrml_proc::parser::Int32Array& value) const {
+      const vrml_proc::parser::model::Int32Array& value) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit Int32Array. Object address is <", &value, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, vrml_proc::parser::Int32Array>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::Int32Array>::value) {
       vrml_proc::core::logger::Log("Extract as Int32Array.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(value);
     }
 
     vrml_proc::core::logger::Log(
         "Int32Array could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::Int32Array>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::Int32Array>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(const float& value) const {
@@ -578,7 +578,7 @@ struct ExtractorVisitor
               LOGGING_INFO);
           return floatValue.value();
         } else {
-          cache.StoreFloat(reinterpret_cast<std::uintptr_t>(&value), static_cast<vrml_proc::parser::float32_t>(value));
+          cache.StoreFloat(reinterpret_cast<std::uintptr_t>(&value), static_cast<vrml_proc::parser::model::float32_t>(value));
           auto newFloatValue = cache.GetFloat(reinterpret_cast<std::uintptr_t>(&value)).value();
           LogDebug(FormatString("Edge case: int32_t can be expressed and extracted as static float32_t with address: <",
                        &(newFloatValue), ">."),
@@ -593,54 +593,54 @@ struct ExtractorVisitor
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const vrml_proc::parser::Vec2f& value) const {
+      const vrml_proc::parser::model::Vec2f& value) const {
     vrml_proc::core::logger::Log(vrml_proc::core::utils::FormatString("Visit Vec2f. Object address is <", &value, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, vrml_proc::parser::Vec2f>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::Vec2f>::value) {
       vrml_proc::core::logger::Log("Extract as Vec2f.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(value);
     }
 
     vrml_proc::core::logger::Log("Vec2f could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::Vec2f>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::Vec2f>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const vrml_proc::parser::Vec3f& value) const {
+      const vrml_proc::parser::model::Vec3f& value) const {
     vrml_proc::core::logger::Log(vrml_proc::core::utils::FormatString("Visit Vec3f. Object address is <", &value, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, vrml_proc::parser::Vec3f>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::Vec3f>::value) {
       vrml_proc::core::logger::Log("Extract as Vec3f.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(value);
     }
 
     vrml_proc::core::logger::Log("Vec3f could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::Vec3f>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::Vec3f>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const vrml_proc::parser::Vec4f& value) const {
+      const vrml_proc::parser::model::Vec4f& value) const {
     vrml_proc::core::logger::Log(vrml_proc::core::utils::FormatString("Visit Vec4f. Object address is <", &value, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, vrml_proc::parser::Vec4f>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::Vec4f>::value) {
       vrml_proc::core::logger::Log("Extract as Vec4f.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(value);
     }
 
     vrml_proc::core::logger::Log("Vec4f could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::Vec4f>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::Vec4f>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const vrml_proc::parser::UseNode& value) const {
+      const vrml_proc::parser::model::UseNode& value) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit UseNode (non-recursive). Object address is <", &value, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, vrml_proc::parser::UseNode>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::UseNode>::value) {
       vrml_proc::core::logger::Log(
           "Extract as UseNode (non-recursive).", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(value);
@@ -648,16 +648,16 @@ struct ExtractorVisitor
 
     vrml_proc::core::logger::Log(
         "UseNode (non-recursive) could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::UseNode>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::UseNode>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const boost::recursive_wrapper<vrml_proc::parser::UseNode>& node) const {
+      const boost::recursive_wrapper<vrml_proc::parser::model::UseNode>& node) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit UseNode (recursive). Object address is <", &node, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, vrml_proc::parser::UseNode>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::UseNode>::value) {
       vrml_proc::core::logger::Log(
           "Extract as UseNode (recursive).", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(node);
@@ -666,16 +666,16 @@ struct ExtractorVisitor
     vrml_proc::core::logger::Log(
         "UseNode (recursive) could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
     return cpp::fail(std::optional<std::string>(
-        vrml_proc::core::utils::TypeToString<boost::recursive_wrapper<vrml_proc::parser::UseNode>>()));
+        vrml_proc::core::utils::TypeToString<boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const boost::recursive_wrapper<vrml_proc::parser::VrmlNode>& node) const {
+      const boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>& node) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit VrmlNode (recursive). Object address is <", &node, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::VrmlNode>>::value) {
+    if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>>::value) {
       vrml_proc::core::logger::Log(
           "Extract as VrmlNode (recursive).", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(node);
@@ -683,39 +683,39 @@ struct ExtractorVisitor
 
     vrml_proc::core::logger::Log(
         "VrmlNode (recursive) could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::VrmlNode>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::VrmlNode>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const vrml_proc::parser::VrmlNode& node) const {
+      const vrml_proc::parser::model::VrmlNode& node) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit VrmlNode (non-recursive). Object address is <", &node, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, vrml_proc::parser::VrmlNode>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::VrmlNode>::value) {
       vrml_proc::core::logger::Log(
           "Extract as VrmlNode (non-recursive).", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(node);
     }
 
-    /*if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::VrmlNode>>::value) {
-        return std::cref(boost::recursive_wrapper<vrml_proc::parser::VrmlNode>(node));
+    /*if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>>::value) {
+        return std::cref(boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>(node));
     }*/
 
     vrml_proc::core::logger::Log(
         "VrmlNode (non-recursive) could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::VrmlNode>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::VrmlNode>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>>& value) const {
+      const std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>& value) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit VrmlNodeArray. Object address is <", &value, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-                                      boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>::value) {
+    if constexpr (std::is_same<T, std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+                                      boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>::value) {
       vrml_proc::core::logger::Log("Extract as VrmlNodeArray.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(value);
     }
@@ -723,8 +723,8 @@ struct ExtractorVisitor
     vrml_proc::core::logger::Log(
         "VrmlNodeArray could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
     return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<
-        std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-            boost::recursive_wrapper<vrml_proc::parser::UseNode>>>>()));
+        std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+            boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>>()));
   }
 
   template <typename U>
@@ -746,33 +746,33 @@ template <typename T>
 struct VariantVisitor
     : public boost::static_visitor<cpp::result<std::reference_wrapper<const T>, std::optional<std::string>>> {
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const vrml_proc::parser::UseNode& node) const {
+      const vrml_proc::parser::model::UseNode& node) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit UseNode (non-recursive). Object address is <", &node, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, vrml_proc::parser::UseNode>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::UseNode>::value) {
       vrml_proc::core::logger::Log(
           "Extract as UseNode (non-recursive).", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(node);
     }
 
-    /*if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::UseNode>>::value) {
-        return std::cref(boost::recursive_wrapper<vrml_proc::parser::UseNode>(node));
+    /*if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>::value) {
+        return std::cref(boost::recursive_wrapper<vrml_proc::parser::model::UseNode>(node));
     }*/
 
     vrml_proc::core::logger::Log(
         "UseNode (non-recursive) could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::UseNode>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::UseNode>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const boost::recursive_wrapper<vrml_proc::parser::UseNode>& node) const {
+      const boost::recursive_wrapper<vrml_proc::parser::model::UseNode>& node) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit UseNode (recursive). Object address is <", &node, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::UseNode>>::value) {
+    if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>::value) {
       vrml_proc::core::logger::Log(
           "Extract as UseNode (recursive).", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(node.get());
@@ -781,16 +781,16 @@ struct VariantVisitor
     vrml_proc::core::logger::Log(
         "UseNode (recursive) could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
     return cpp::fail(std::optional<std::string>(
-        vrml_proc::core::utils::TypeToString<boost::recursive_wrapper<vrml_proc::parser::UseNode>>()));
+        vrml_proc::core::utils::TypeToString<boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const boost::recursive_wrapper<vrml_proc::parser::VrmlNode>& node) const {
+      const boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>& node) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit VrmlNode (recursive). Object address is <", &node, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::VrmlNode>>::value) {
+    if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>>::value) {
       vrml_proc::core::logger::Log(
           "Extract as VrmlNode (recursive).", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(node.get());
@@ -799,28 +799,28 @@ struct VariantVisitor
     vrml_proc::core::logger::Log(
         "VrmlNode (recursive) could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
     return cpp::fail(std::optional<std::string>(
-        vrml_proc::core::utils::TypeToString<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>>()));
+        vrml_proc::core::utils::TypeToString<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>>()));
   }
 
   cpp::result<std::reference_wrapper<const T>, std::optional<std::string>> operator()(
-      const vrml_proc::parser::VrmlNode& node) const {
+      const vrml_proc::parser::model::VrmlNode& node) const {
     vrml_proc::core::logger::Log(
         vrml_proc::core::utils::FormatString("Visit VrmlNode (non-recursive). Object address is <", &node, ">."),
         vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
 
-    if constexpr (std::is_same<T, vrml_proc::parser::VrmlNode>::value) {
+    if constexpr (std::is_same<T, vrml_proc::parser::model::VrmlNode>::value) {
       vrml_proc::core::logger::Log(
           "Extract as VrmlNode (non-recursive).", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
       return std::cref(node);
     }
 
-    /*if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::VrmlNode>>::value) {
-        return std::cref(boost::recursive_wrapper<vrml_proc::parser::VrmlNode>(node));
+    /*if constexpr (std::is_same<T, boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>>::value) {
+        return std::cref(boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>(node));
     }*/
 
     vrml_proc::core::logger::Log(
         "VrmlNode (non-recursive) could not be extracted.", vrml_proc::core::logger::Level::Debug, LOGGING_INFO);
-    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::VrmlNode>()));
+    return cpp::fail(std::optional<std::string>(vrml_proc::core::utils::TypeToString<vrml_proc::parser::model::VrmlNode>()));
   }
 
   template <typename U>

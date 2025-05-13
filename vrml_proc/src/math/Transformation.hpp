@@ -10,17 +10,17 @@ namespace vrml_proc::math {
    * Transform node.
    */
   struct Transformation {
-    vrml_proc::parser::Vec3f center;
-    vrml_proc::parser::Vec4f rotation;
-    vrml_proc::parser::Vec3f scale;
-    vrml_proc::parser::Vec4f scaleOrientation;
-    vrml_proc::parser::Vec3f translation;
+    vrml_proc::parser::model::Vec3f center;
+    vrml_proc::parser::model::Vec4f rotation;
+    vrml_proc::parser::model::Vec3f scale;
+    vrml_proc::parser::model::Vec4f scaleOrientation;
+    vrml_proc::parser::model::Vec3f translation;
 
     Transformation()
-        : center(vrml_proc::parser::Vec3f()),
-          rotation(vrml_proc::parser::Vec4f(0.0f, 0.0f, 1.0f, 0.0f)),
-          scale(vrml_proc::parser::Vec3f(1.0f, 1.0f, 1.0f)),
-          scaleOrientation(vrml_proc::parser::Vec4f(0.0f, 0.0f, 1.0f, 0.0f)),
-          translation(vrml_proc::parser::Vec3f()) {}
+        : center(vrml_proc::parser::model::Vec3f()),
+          rotation(vrml_proc::parser::model::Vec4f(0.0f, 0.0f, 1.0f, 0.0f)),
+          scale(vrml_proc::parser::model::Vec3f(1.0f, 1.0f, 1.0f)),
+          scaleOrientation(vrml_proc::parser::model::Vec4f(0.0f, 0.0f, 1.0f, 0.0f)),
+          translation(vrml_proc::parser::model::Vec3f()) {}
   };
 }  // namespace vrml_proc::math

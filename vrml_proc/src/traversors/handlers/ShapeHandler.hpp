@@ -42,7 +42,7 @@ namespace vrml_proc::traversor::handler::ShapeHandler {
       std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {  //
 
     using namespace vrml_proc::traversor::VrmlNodeTraversor;
-    using vrml_proc::parser::VrmlNode;
+    using vrml_proc::parser::model::VrmlNode;
 
     vrml_proc::core::logger::LogDebug(
         vrml_proc::core::utils::FormatString("Handle VRML node <", params.node.header, ">."), LOGGING_INFO);

@@ -41,7 +41,7 @@ namespace to_geom::calculator::AlphaShapeCalculator {
    * @returns reconstrcuted mesh or error object if the point cloud is e.g. empty
    */
   to_geom::calculator::CalculatorResult Generate3DAlphaShapeMeshForPointCloud(
-      std::reference_wrapper<const vrml_proc::parser::Vec3fArray> pointCloud,
+      std::reference_wrapper<const vrml_proc::parser::model::Vec3fArray> pointCloud,
       double alphaValue,
       const vrml_proc::math::TransformationMatrix& matrix) {  //
 

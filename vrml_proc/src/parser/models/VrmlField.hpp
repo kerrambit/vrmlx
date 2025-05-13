@@ -15,7 +15,7 @@
 #include "Vec4f.hpp"
 #include "VrmlUnits.hpp"
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::model {
 
   // Forward declaration.
   struct VrmlNode;
@@ -57,4 +57,4 @@ namespace vrml_proc::parser {
     std::string name;
     VrmlFieldValue value;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::model

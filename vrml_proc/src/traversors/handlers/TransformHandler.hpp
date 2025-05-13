@@ -45,7 +45,7 @@ namespace vrml_proc::traversor::handler::TransformHandler {
     using namespace vrml_proc::core::logger;
     using namespace vrml_proc::core::utils;
     using namespace vrml_proc::math;
-    using namespace vrml_proc::parser;
+    using namespace vrml_proc::parser::model;
     using namespace vrml_proc::traversor::utils;
 
     LogDebug(FormatString("Handle VRML node <", params.node.header, ">."), LOGGING_INFO);

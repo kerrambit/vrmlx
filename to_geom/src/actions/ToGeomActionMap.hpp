@@ -49,7 +49,7 @@ namespace to_geom::conversion_context {
     actionMap.AddAction(
         "Box", [](vrml_proc::traversor::handler::HandlerToActionBundle<MeshTaskConversionContext> data) {
           return std::make_shared<BoxAction>(
-              BoxAction::Properties{data.nodeView->GetField<std::reference_wrapper<const Vec3f>>("size")},
+              BoxAction::Properties{data.nodeView->GetField<std::reference_wrapper<const model::Vec3f>>("size")},
               GeometryAction::Properties{
                   data.nodeView->IsNodeShapeDescendant(), data.nodeView->GetTransformationMatrix()});
         });
@@ -76,8 +76,8 @@ namespace to_geom::conversion_context {
 
     actionMap.AddAction(
         "IndexedFaceSet", [](vrml_proc::traversor::handler::HandlerToActionBundle<MeshTaskConversionContext> data) {
-          auto coord = data.nodeView->GetField<std::reference_wrapper<const VrmlNode>>("coord");
-          auto coordIndex = data.nodeView->GetField<std::reference_wrapper<const Int32Array>>("coordIndex");
+          auto coord = data.nodeView->GetField<std::reference_wrapper<const model::VrmlNode>>("coord");
+          auto coordIndex = data.nodeView->GetField<std::reference_wrapper<const model::Int32Array>>("coordIndex");
           auto convex = data.nodeView->GetField<std::reference_wrapper<const bool>>("convex");
           auto geomConfig = std::static_pointer_cast<to_geom::core::config::ToGeomConfig>(data.config);
 
@@ -90,8 +90,8 @@ namespace to_geom::conversion_context {
 
     actionMap.AddAction(
         "IndexedLineSet", [](vrml_proc::traversor::handler::HandlerToActionBundle<MeshTaskConversionContext> data) {
-          auto coord = data.nodeView->GetField<std::reference_wrapper<const VrmlNode>>("coord");
-          auto coordIndex = data.nodeView->GetField<std::reference_wrapper<const Int32Array>>("coordIndex");
+          auto coord = data.nodeView->GetField<std::reference_wrapper<const model::VrmlNode>>("coord");
+          auto coordIndex = data.nodeView->GetField<std::reference_wrapper<const model::Int32Array>>("coordIndex");
           return std::make_shared<IndexedLineSetAction>(IndexedLineSetAction::Properties{coord, coordIndex},
               GeometryAction::Properties{
                   data.nodeView->IsNodeShapeDescendant(), data.nodeView->GetTransformationMatrix()});

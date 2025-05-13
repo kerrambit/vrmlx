@@ -19,7 +19,7 @@ namespace vrml_proc::traversor {
      * @param transformation current transformation in the form of a matrix
      * @param config configuration file
      */
-    VrmlNodeTraversorParameters(const vrml_proc::parser::VrmlNode& node,
+    VrmlNodeTraversorParameters(const vrml_proc::parser::model::VrmlNode& node,
         const vrml_proc::parser::service::VrmlNodeManager& manager,
         bool isDescendantOfShape,
         vrml_proc::math::TransformationMatrix transformation,
@@ -30,7 +30,7 @@ namespace vrml_proc::traversor {
           transformation(transformation),
           config(config) {}
 
-    const vrml_proc::parser::VrmlNode& node;
+    const vrml_proc::parser::model::VrmlNode& node;
     const vrml_proc::parser::service::VrmlNodeManager& manager;
     bool IsDescendantOfShape;
     vrml_proc::math::TransformationMatrix transformation;

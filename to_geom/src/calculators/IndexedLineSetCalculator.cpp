@@ -25,13 +25,13 @@
 
 namespace to_geom::calculator {
   to_geom::calculator::CalculatorResult IndexedLineSetCalculator::Generate3DMesh(
-      std::reference_wrapper<const vrml_proc::parser::Int32Array> coordinateIndices,
-      std::reference_wrapper<const vrml_proc::parser::Vec3fArray> coordinates,
+      std::reference_wrapper<const vrml_proc::parser::model::Int32Array> coordinateIndices,
+      std::reference_wrapper<const vrml_proc::parser::model::Vec3fArray> coordinates,
       const vrml_proc::math::TransformationMatrix& matrix) {  //
 
     using namespace vrml_proc::core::logger;
     using vrml_proc::core::error::UnsupportedOperationError;
-    using vrml_proc::parser::Vec3f;
+    using vrml_proc::parser::model::Vec3f;
     using vrml_proc::parser::model::validator::error::EmptyArrayError;
 
     LogDebug("Generate 3D mesh using IndexedLineSetCalculator.", LOGGING_INFO);

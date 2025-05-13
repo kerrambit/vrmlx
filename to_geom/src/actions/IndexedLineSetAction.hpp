@@ -24,8 +24,8 @@ namespace to_geom::action {
      * @brief Properties for `IndexedLineSetAction`. See VRML 2.0 specification for more information.
      */
     struct Properties {
-      std::reference_wrapper<const vrml_proc::parser::VrmlNode> coord;
-      std::reference_wrapper<const vrml_proc::parser::Int32Array> coordIndex;
+      std::reference_wrapper<const vrml_proc::parser::model::VrmlNode> coord;
+      std::reference_wrapper<const vrml_proc::parser::model::Int32Array> coordIndex;
     };
 
     /**

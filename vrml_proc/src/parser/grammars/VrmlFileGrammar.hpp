@@ -29,13 +29,14 @@
 #include "BooleanGrammar.hpp"
 #include "BaseGrammar.hpp"
 
-BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::VrmlNode,
+BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::model::VrmlNode,
     (boost::optional<std::string>, definitionName)(std::string, header)(
-        std::vector<vrml_proc::parser::VrmlField>, fields))
+        std::vector<vrml_proc::parser::model::VrmlField>, fields))
 
-BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::UseNode, (std::string, identifier))
+BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::model::UseNode, (std::string, identifier))
 
-BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::VrmlField, (std::string, name)(vrml_proc::parser::VrmlFieldValue, value))
+BOOST_FUSION_ADAPT_STRUCT(
+    vrml_proc::parser::model::VrmlField, (std::string, name)(vrml_proc::parser::model::VrmlFieldValue, value))
 
 namespace vrml_proc::parser::grammar {
   /**
@@ -44,7 +45,7 @@ namespace vrml_proc::parser::grammar {
    * https://www.boost.org/doc/libs/1_87_0/libs/spirit/doc/html/spirit/qi/reference/numeric/real.html.
    *
    */
-  struct Float32Policy : boost::spirit::qi::real_policies<float32_t> {
+  struct Float32Policy : boost::spirit::qi::real_policies<model::float32_t> {
     static bool const expect_dot = true;
   };
 
@@ -55,8 +56,8 @@ namespace vrml_proc::parser::grammar {
    * @tparam Skipper  The skipper parser used to skip irrelevant input (e.g., whitespace).
    */
   template <typename Iterator, typename Skipper>
-  class VrmlFileGrammar : public boost::spirit::qi::grammar<Iterator, VrmlFile(), Skipper>,
-                          public BaseGrammar<Iterator, VrmlFile(), Skipper> {
+  class VrmlFileGrammar : public boost::spirit::qi::grammar<Iterator, model::VrmlFile(), Skipper>,
+                          public BaseGrammar<Iterator, model::VrmlFile(), Skipper> {
    public:
     /**
      * @brief Constructs new grammar and initializes parsing rules.
@@ -84,7 +85,7 @@ namespace vrml_proc::parser::grammar {
       m_vrmlFieldValue = (m_quotedString->GetStartRule() | m_boolean->GetStartRule() | m_vec3fArray->GetStartRule() |
                           m_vec2fArray->GetStartRule() | m_int32Array->GetStartRule() | m_vec4f->GetStartRule() |
                           m_vec3f->GetStartRule() | m_vec2f->GetStartRule() |
-                          boost::spirit::qi::real_parser<float32_t, Float32Policy>() | boost::spirit::qi::int_ |
+                          boost::spirit::qi::real_parser<model::float32_t, Float32Policy>() | boost::spirit::qi::int_ |
                           m_useNode | m_vrmlNode | m_vrmlNodeArray);
 
       m_vrmlField = (m_identifier->GetStartRule() >> m_vrmlFieldValue);
@@ -106,11 +107,11 @@ namespace vrml_proc::parser::grammar {
     }
 
    private:
-    boost::spirit::qi::rule<Iterator, VrmlNode(), Skipper> m_vrmlNode;
-    boost::spirit::qi::rule<Iterator, UseNode(), Skipper> m_useNode;
-    boost::spirit::qi::rule<Iterator, VrmlField(), Skipper> m_vrmlField;
-    boost::spirit::qi::rule<Iterator, VrmlFieldValue(), Skipper> m_vrmlFieldValue;
-    boost::spirit::qi::rule<Iterator, VrmlNodeArray(), Skipper> m_vrmlNodeArray;
+    boost::spirit::qi::rule<Iterator, model::VrmlNode(), Skipper> m_vrmlNode;
+    boost::spirit::qi::rule<Iterator, model::UseNode(), Skipper> m_useNode;
+    boost::spirit::qi::rule<Iterator, model::VrmlField(), Skipper> m_vrmlField;
+    boost::spirit::qi::rule<Iterator, model::VrmlFieldValue(), Skipper> m_vrmlFieldValue;
+    boost::spirit::qi::rule<Iterator, model::VrmlNodeArray(), Skipper> m_vrmlNodeArray;
 
     std::unique_ptr<IdentifierGrammar<Iterator, Skipper>> m_identifier;
     std::unique_ptr<Vec2fGrammar<Iterator, Skipper>> m_vec2f;

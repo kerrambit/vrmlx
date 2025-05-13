@@ -6,9 +6,9 @@
 #include "Vec4f.hpp"
 #include "BaseGrammar.hpp"
 
-BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::Vec4f,
-    (vrml_proc::parser::float32_t, x)(vrml_proc::parser::float32_t, y)(vrml_proc::parser::float32_t, z)(
-        vrml_proc::parser::float32_t, w))
+BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::model::Vec4f,
+    (vrml_proc::parser::model::float32_t, x)(vrml_proc::parser::model::float32_t, y)(
+        vrml_proc::parser::model::float32_t, z)(vrml_proc::parser::model::float32_t, w))
 
 namespace vrml_proc::parser::grammar {
   /**
@@ -18,8 +18,8 @@ namespace vrml_proc::parser::grammar {
    * @tparam Skipper  The skipper parser used to skip irrelevant input (e.g., whitespace).
    */
   template <typename Iterator, typename Skipper>
-  struct Vec4fGrammar : public boost::spirit::qi::grammar<Iterator, Vec4f(), Skipper>,
-                        public BaseGrammar<Iterator, Vec4f(), Skipper> {
+  struct Vec4fGrammar : public boost::spirit::qi::grammar<Iterator, model::Vec4f(), Skipper>,
+                        public BaseGrammar<Iterator, model::Vec4f(), Skipper> {
     /**
      * @brief Constructs new grammar and initializes parsing rules.
      */

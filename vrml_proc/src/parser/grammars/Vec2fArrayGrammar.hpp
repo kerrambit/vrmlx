@@ -10,7 +10,7 @@
 #include "Vec2fGrammar.hpp"
 #include "BaseGrammar.hpp"
 
-BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::Vec2fArray, (std::vector<vrml_proc::parser::Vec2f>, vectors))
+BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::model::Vec2fArray, (std::vector<vrml_proc::parser::model::Vec2f>, vectors))
 
 namespace vrml_proc::parser::grammar {
   /**
@@ -20,8 +20,8 @@ namespace vrml_proc::parser::grammar {
    * @tparam Skipper  The skipper parser used to skip irrelevant input (e.g., whitespace).
    */
   template <typename Iterator, typename Skipper>
-  class Vec2fArrayGrammar : public boost::spirit::qi::grammar<Iterator, Vec2fArray(), Skipper>,
-                            public BaseGrammar<Iterator, Vec2fArray(), Skipper> {
+  class Vec2fArrayGrammar : public boost::spirit::qi::grammar<Iterator, model::Vec2fArray(), Skipper>,
+                            public BaseGrammar<Iterator, model::Vec2fArray(), Skipper> {
    public:
     /**
      * @brief Constructs new grammar and initializes parsing rules.

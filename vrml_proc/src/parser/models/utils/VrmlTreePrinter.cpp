@@ -27,13 +27,13 @@ struct Visitor {
     *outputStream << std::endl;
   }
 
-  void operator()(const vrml_proc::parser::Vec2fArray& array) const { printer.Print(array, indentationLevel); }
+  void operator()(const vrml_proc::parser::model::Vec2fArray& array) const { printer.Print(array, indentationLevel); }
 
-  void operator()(const vrml_proc::parser::Vec3fArray& array) const { printer.Print(array, indentationLevel); }
+  void operator()(const vrml_proc::parser::model::Vec3fArray& array) const { printer.Print(array, indentationLevel); }
 
-  void operator()(const vrml_proc::parser::Int32Array& array) const { printer.Print(array, indentationLevel); }
+  void operator()(const vrml_proc::parser::model::Int32Array& array) const { printer.Print(array, indentationLevel); }
 
-  void operator()(vrml_proc::parser::float32_t value) const {
+  void operator()(vrml_proc::parser::model::float32_t value) const {
     *outputStream << VrmlTreePrinter::CreateIndentationString(indentationLevel) << "Float32 (" << &value << "): <"
                   << value << ">";
     *outputStream << std::endl;
@@ -45,20 +45,20 @@ struct Visitor {
     *outputStream << std::endl;
   }
 
-  void operator()(const vrml_proc::parser::Vec2f& vector) const { printer.Print(vector, indentationLevel); }
+  void operator()(const vrml_proc::parser::model::Vec2f& vector) const { printer.Print(vector, indentationLevel); }
 
-  void operator()(const vrml_proc::parser::Vec3f& vector) const { printer.Print(vector, indentationLevel); }
+  void operator()(const vrml_proc::parser::model::Vec3f& vector) const { printer.Print(vector, indentationLevel); }
 
-  void operator()(const vrml_proc::parser::Vec4f& vector) const { printer.Print(vector, indentationLevel); }
+  void operator()(const vrml_proc::parser::model::Vec4f& vector) const { printer.Print(vector, indentationLevel); }
 
-  void operator()(const vrml_proc::parser::UseNode& node) const { printer.Print(node, indentationLevel); }
+  void operator()(const vrml_proc::parser::model::UseNode& node) const { printer.Print(node, indentationLevel); }
 
-  void operator()(const boost::recursive_wrapper<vrml_proc::parser::VrmlNode>& node) const {
+  void operator()(const boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>& node) const {
     printer.Print(node.get(), indentationLevel);
   }
 
-  void operator()(const std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
-          boost::recursive_wrapper<vrml_proc::parser::UseNode>>>& nodes) const {  //
+  void operator()(const std::vector<boost::variant<boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>,
+          boost::recursive_wrapper<vrml_proc::parser::model::UseNode>>>& nodes) const {  //
 
     *outputStream << VrmlTreePrinter::CreateIndentationString(indentationLevel) << "VRMLNodeArray (" << &nodes
                   << "):\n";
@@ -72,11 +72,11 @@ struct Visitor {
       PrintVisitor(std::ostream* outputStream, VrmlTreePrinter::IndentationLevel indentationLevel)
           : outputStream(outputStream), indentationLevel(indentationLevel), printer(*outputStream) {}
 
-      void operator()(const boost::recursive_wrapper<vrml_proc::parser::VrmlNode>& node) const {
+      void operator()(const boost::recursive_wrapper<vrml_proc::parser::model::VrmlNode>& node) const {
         printer.Print(node.get(), indentationLevel);
       }
 
-      void operator()(const boost::recursive_wrapper<vrml_proc::parser::UseNode>& node) const {
+      void operator()(const boost::recursive_wrapper<vrml_proc::parser::model::UseNode>& node) const {
         printer.Print(node.get(), indentationLevel);
       }
     };
@@ -91,7 +91,7 @@ struct Visitor {
 
 // ----------------------------------------------------------------------------------------------------------//
 
-void VrmlTreePrinter::Print(const vrml_proc::parser::VrmlNode& object, IndentationLevel indentationLevel) const {
+void VrmlTreePrinter::Print(const vrml_proc::parser::model::VrmlNode& object, IndentationLevel indentationLevel) const {
   std::string indentationString = VrmlTreePrinter::CreateIndentationString(indentationLevel);
   indentationLevel++;
 
@@ -109,7 +109,7 @@ void VrmlTreePrinter::Print(const vrml_proc::parser::VrmlNode& object, Indentati
   }
 }
 
-void VrmlTreePrinter::Print(const vrml_proc::parser::UseNode& object, IndentationLevel indentationLevel) const {
+void VrmlTreePrinter::Print(const vrml_proc::parser::model::UseNode& object, IndentationLevel indentationLevel) const {
   std::string indentationString = VrmlTreePrinter::CreateIndentationString(indentationLevel);
   indentationLevel++;
 
@@ -120,7 +120,7 @@ void VrmlTreePrinter::Print(const vrml_proc::parser::UseNode& object, Indentatio
   *m_stream << std::endl;
 }
 
-void VrmlTreePrinter::Print(const vrml_proc::parser::Int32Array& object, IndentationLevel indentationLevel) const {  //
+void VrmlTreePrinter::Print(const vrml_proc::parser::model::Int32Array& object, IndentationLevel indentationLevel) const {  //
 
   std::string indentationString = VrmlTreePrinter::CreateIndentationString(indentationLevel);
   indentationLevel++;
@@ -142,7 +142,7 @@ void VrmlTreePrinter::Print(const vrml_proc::parser::Int32Array& object, Indenta
   *m_stream << std::endl;
 }
 
-void VrmlTreePrinter::Print(const vrml_proc::parser::Vec2f& object, IndentationLevel indentationLevel) const {
+void VrmlTreePrinter::Print(const vrml_proc::parser::model::Vec2f& object, IndentationLevel indentationLevel) const {
   std::string indentationString = VrmlTreePrinter::CreateIndentationString(indentationLevel);
   indentationLevel++;
 
@@ -152,7 +152,7 @@ void VrmlTreePrinter::Print(const vrml_proc::parser::Vec2f& object, IndentationL
             << "> )" << std::endl;
 }
 
-void VrmlTreePrinter::Print(const vrml_proc::parser::Vec2fArray& object, IndentationLevel indentationLevel) const {
+void VrmlTreePrinter::Print(const vrml_proc::parser::model::Vec2fArray& object, IndentationLevel indentationLevel) const {
   std::string indentationString = VrmlTreePrinter::CreateIndentationString(indentationLevel);
   indentationLevel++;
 
@@ -173,7 +173,7 @@ void VrmlTreePrinter::Print(const vrml_proc::parser::Vec2fArray& object, Indenta
   *m_stream << std::endl;
 }
 
-void VrmlTreePrinter::Print(const vrml_proc::parser::Vec3f& object, IndentationLevel indentationLevel) const {
+void VrmlTreePrinter::Print(const vrml_proc::parser::model::Vec3f& object, IndentationLevel indentationLevel) const {
   std::string indentationString = VrmlTreePrinter::CreateIndentationString(indentationLevel);
   indentationLevel++;
 
@@ -183,7 +183,7 @@ void VrmlTreePrinter::Print(const vrml_proc::parser::Vec3f& object, IndentationL
             << "> <" << object.z << "> )" << std::endl;
 }
 
-void VrmlTreePrinter::Print(const vrml_proc::parser::Vec3fArray& object, IndentationLevel indentationLevel) const {
+void VrmlTreePrinter::Print(const vrml_proc::parser::model::Vec3fArray& object, IndentationLevel indentationLevel) const {
   std::string indentationString = VrmlTreePrinter::CreateIndentationString(indentationLevel);
   indentationLevel++;
 
@@ -204,7 +204,7 @@ void VrmlTreePrinter::Print(const vrml_proc::parser::Vec3fArray& object, Indenta
   *m_stream << std::endl;
 }
 
-void VrmlTreePrinter::Print(const vrml_proc::parser::Vec4f& object, IndentationLevel indentationLevel) const {
+void VrmlTreePrinter::Print(const vrml_proc::parser::model::Vec4f& object, IndentationLevel indentationLevel) const {
   std::string indentationString = VrmlTreePrinter::CreateIndentationString(indentationLevel);
   indentationLevel++;
 
@@ -214,7 +214,7 @@ void VrmlTreePrinter::Print(const vrml_proc::parser::Vec4f& object, IndentationL
             << "> <" << object.z << "> <" << object.w << "> )" << std::endl;
 }
 
-void VrmlTreePrinter::Print(const vrml_proc::parser::VrmlField& object, IndentationLevel indentationLevel) const {  //
+void VrmlTreePrinter::Print(const vrml_proc::parser::model::VrmlField& object, IndentationLevel indentationLevel) const {  //
 
   std::string indentation_string = VrmlTreePrinter::CreateIndentationString(indentationLevel);
   *m_stream << indentation_string;

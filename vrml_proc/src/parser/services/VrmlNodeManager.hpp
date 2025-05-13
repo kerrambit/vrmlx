@@ -30,7 +30,7 @@ namespace vrml_proc::parser::service {
      * @param id identifier under which to store the node
      * @param node node to be associated with the identifier
      */
-    void AddDefinitionNode(const std::string& id, const VrmlNode& node);
+    void AddDefinitionNode(const std::string& id, const model::VrmlNode& node);
 
     /**
      * @brief Retrieves a node associated with the given identifier.
@@ -38,7 +38,7 @@ namespace vrml_proc::parser::service {
      * @param id identifier to look up
      * @return const reference to the node if found; std::nullopt otherwise
      */
-    std::optional<std::reference_wrapper<const VrmlNode>> GetDefinitionNode(const std::string& id) const;
+    std::optional<std::reference_wrapper<const model::VrmlNode>> GetDefinitionNode(const std::string& id) const;
 
     /**
      * @brief returns the total number of registered DEF nodes
@@ -47,6 +47,6 @@ namespace vrml_proc::parser::service {
     inline size_t GetDefNodesTotalCount() const { return m_definitionNodes.size(); }
 
    private:
-    std::unordered_map<std::string, std::reference_wrapper<const VrmlNode>> m_definitionNodes;
+    std::unordered_map<std::string, std::reference_wrapper<const model::VrmlNode>> m_definitionNodes;
   };
 }  // namespace vrml_proc::parser::service

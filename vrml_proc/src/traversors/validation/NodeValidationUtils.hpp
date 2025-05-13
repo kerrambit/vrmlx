@@ -36,7 +36,7 @@ namespace vrml_proc::traversor::validation {
      */
     inline cpp::result<void, std::shared_ptr<error::NodeValidationError>> CheckForOnlyUniqueAllowedFieldNames(
         const std::unordered_set<std::string>& validFieldNames,
-        const std::vector<vrml_proc::parser::VrmlField>& fields,
+        const std::vector<vrml_proc::parser::model::VrmlField>& fields,
         const std::string& nodeName) {  //
 
       std::unordered_set<std::string> alreadyFoundFieldNames;
@@ -65,7 +65,7 @@ namespace vrml_proc::traversor::validation {
      */
     inline cpp::result<void, std::shared_ptr<error::NodeValidationError>> CheckForOnlyAllowedVrmlNodeHeaders(
         const std::unordered_set<std::string>& validHeaders,
-        const vrml_proc::parser::VrmlNode& node,
+        const vrml_proc::parser::model::VrmlNode& node,
         const std::string& field) {  //
 
       if (validHeaders.empty()) {
@@ -90,10 +90,10 @@ namespace vrml_proc::traversor::validation {
      * @returns NodeValidationError if failure occurs (invalid field type, missing VrmlNode for UseNode id);
      * otherwise it returns empty optional (field is missing) or const reference to VRML node
      */
-    inline cpp::result<std::optional<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>,
+    inline cpp::result<std::optional<std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>>,
         std::shared_ptr<error::NodeValidationError>>
     ExtractVrmlNodeWithValidation(const std::string& fieldName,
-        const std::vector<vrml_proc::parser::VrmlField>& fields,
+        const std::vector<vrml_proc::parser::model::VrmlField>& fields,
         const vrml_proc::parser::service::VrmlNodeManager& manager) {  //
 
       using namespace vrml_proc::parser::model::utils::VrmlFieldExtractor;
@@ -106,16 +106,16 @@ namespace vrml_proc::traversor::validation {
 
       if (value.has_error()) {
         if (value.error() == ExtractVrmlNodeError::FieldNotFound) {
-          return std::optional<std::reference_wrapper<const VrmlNode>>{};
+          return std::optional<std::reference_wrapper<const model::VrmlNode>>{};
         } else if (value.error() == ExtractVrmlNodeError::ValidationError) {
           return cpp::fail(std::make_shared<error::InvalidFieldValueType>(
-              fieldName, TypeToString<VrmlNode>() + " or " + TypeToString<UseNode>(), invalidType));
+              fieldName, TypeToString<model::VrmlNode>() + " or " + TypeToString<model::UseNode>(), invalidType));
         } else if (value.error() == ExtractVrmlNodeError::UnknownUseNode) {
           return cpp::fail(std::make_shared<error::MissingDefNodeForUseNode>(missingUseId));
         }
       }
 
-      return std::optional<std::reference_wrapper<const VrmlNode>>(value.value());
+      return std::optional<std::reference_wrapper<const model::VrmlNode>>(value.value());
     }
 
     /**
@@ -132,7 +132,7 @@ namespace vrml_proc::traversor::validation {
     inline cpp::result<std::optional<std::reference_wrapper<const ExpectedType>>,
         std::shared_ptr<error::NodeValidationError>>
     ExtractFieldByNameWithValidation(
-        const std::string& fieldName, const std::vector<vrml_proc::parser::VrmlField>& fields) {  //
+        const std::string& fieldName, const std::vector<vrml_proc::parser::model::VrmlField>& fields) {  //
 
       using namespace vrml_proc::parser::model::utils::VrmlFieldExtractor;
       using namespace vrml_proc::parser;
@@ -166,10 +166,10 @@ namespace vrml_proc::traversor::validation {
      * DEF node); otherwise it returns empty optional (field is missing) or optional containing vector of const
      * references to VRML nodes
      */
-    inline cpp::result<std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>>,
+    inline cpp::result<std::optional<std::vector<std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>>>,
         std::shared_ptr<error::NodeValidationError>>
     ExtractVrmlNodeArrayWithValidation(const std::string& fieldName,
-        const std::vector<vrml_proc::parser::VrmlField>& fields,
+        const std::vector<vrml_proc::parser::model::VrmlField>& fields,
         const vrml_proc::parser::service::VrmlNodeManager& manager,
         bool enableSingleArrayNode = false) {  //
 
@@ -178,7 +178,7 @@ namespace vrml_proc::traversor::validation {
       using vrml_proc::core::utils::TypeToString;
 
       if (!IsNamePresent(fieldName, fields)) {
-        return std::optional<std::vector<std::reference_wrapper<const VrmlNode>>>{};
+        return std::optional<std::vector<std::reference_wrapper<const model::VrmlNode>>>{};
       }
 
       if (enableSingleArrayNode) {
@@ -191,25 +191,25 @@ namespace vrml_proc::traversor::validation {
             return cpp::fail(std::make_shared<error::MissingDefNodeForUseNode>(missingUseId));
           }
         } else {
-          std::vector<std::reference_wrapper<const VrmlNode>> resolvedChildren;
+          std::vector<std::reference_wrapper<const model::VrmlNode>> resolvedChildren;
           resolvedChildren.push_back(value.value());
           return resolvedChildren;
         }
       }
 
       std::string invalidType = "";
-      auto value = ExtractByNameExtended<VrmlNodeArray>(fieldName, fields, invalidType);
+      auto value = ExtractByNameExtended<model::VrmlNodeArray>(fieldName, fields, invalidType);
 
       if (value.has_error()) {
         if (value.error() == ExtractByNameError::FieldNotFound) {
-          return std::optional<std::vector<std::reference_wrapper<const VrmlNode>>>{};
+          return std::optional<std::vector<std::reference_wrapper<const model::VrmlNode>>>{};
         } else if (value.error() == ExtractByNameError::ValidationError) {
-          return cpp::fail(
-              std::make_shared<error::InvalidFieldValueType>(fieldName, TypeToString<VrmlNodeArray>(), invalidType));
+          return cpp::fail(std::make_shared<error::InvalidFieldValueType>(
+              fieldName, TypeToString<model::VrmlNodeArray>(), invalidType));
         }
       }
 
-      std::vector<std::reference_wrapper<const VrmlNode>> resolvedChildren;
+      std::vector<std::reference_wrapper<const model::VrmlNode>> resolvedChildren;
 
       for (const auto& child : value.value().get()) {
         std::string invalidType;
@@ -219,7 +219,7 @@ namespace vrml_proc::traversor::validation {
           switch (childResult.error()) {
             case ExtractVrmlNodeFromVariantError::ValidationError:
               return cpp::fail(std::make_shared<error::InvalidFieldValueType>(
-                  fieldName, TypeToString<vrml_proc::parser::VrmlNode>(), invalidType));
+                  fieldName, TypeToString<vrml_proc::parser::model::VrmlNode>(), invalidType));
             case ExtractVrmlNodeFromVariantError::UnknownUseNode:
               return cpp::fail(std::make_shared<error::MissingDefNodeForUseNode>(useId));
             default:

@@ -3,7 +3,7 @@
 #include <vector>
 #include <cstdint>
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::model {
   /**
    * @brief Represents MF field containing list of integers.
    */
@@ -12,4 +12,4 @@ namespace vrml_proc::parser {
 
     std::vector<int32_t> integers;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::model
