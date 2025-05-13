@@ -2,9 +2,9 @@
 
 #include <string>
 
-namespace vrmlxpy {
+namespace vrmlx {
   /**
-   * @brief Prints current vrmlxpy version.
+   * @brief Prints current vrmlx version.
    */
   void PrintVersion();
 
@@ -28,4 +28,4 @@ namespace vrmlxpy {
    */
   bool ConvertVrmlToGeom(
       const std::string& inputFilename, const std::string& outputFilename, const std::string& configFilename);
-}  // namespace vrmlxpy
+}  // namespace vrmlx

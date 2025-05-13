@@ -1,6 +1,6 @@
-# vrmlxpy
+# vrmlx
 Toolkit for parsing and traversing VRML files.
-Includes a standalone VRML parser library and a conversion library for transforming VRML into geometry format (such as STL), with modular C++ backends and Python bindings.
+Includes a standalone VRML parser library (```vrmlproc```) and a conversion library for transforming VRML into geometry format such as STL (```togeom```), with modular C++ backends and Python bindings (```vrmlxpy```).
 
 The modular architecture allows users to define their own actions—custom functions that process VRML nodes in any desired way. This flexibility enables conversions beyond STL, such as transforming VRML data into a custom geometry JSON format. Simply implement the necessary actions to achieve your desired output.
 
@@ -8,13 +8,13 @@ The modular architecture allows users to define their own actions—custom funct
 This project is licensed under the **GNU General Public License v3.0 or later** (GPL-3.0-or-later). See the [LICENSE](LICENSE) file for more details.
 
 ## Run as Docker container
-- Recommended way how to run *vrmlxpy* is to build *Docker* image and run it.
+- Recommended way how to run *vrmlx* is to build *Docker* image and run it.
 - See steps in this [manual](doc/docker_steps.md).
 
 ## Run as Executables
 - Whether you build the project yourself or use the executable from the **Releases** tab, running an executable is straightforward.
 - However, unlike using Docker, running the binary directly might expose you to platform-specific issues — for example, missing shared libraries (DLLs or `.so` files).
-- **Tip:** When running the application on Linux, you need to configure the dynamic linker to look for shared libraries in the current directory  ```LD_LIBRARY_PATH=. ./vrmlxpyConversionApp```
+- **Tip:** When running the application on Linux, you need to configure the dynamic linker to look for shared libraries in the current directory  ```LD_LIBRARY_PATH=. ./vrmlxConversionApp```
 
 ## [*Experimental*] Run as Python library
 - Please visit [official vrmlxpy PyPi page](https://pypi.org/project/vrmlxpy/) to read more.
@@ -31,10 +31,10 @@ This project is licensed under the **GNU General Public License v3.0 or later** 
 
 ## Build
 
-- The *vrmlxpy* project primarily consists of two libraries: *vrmlproc* and *togeom*. However, these are not standalone executables. To use them, you need an application that links against these libraries:
+- The *vrmlx* project primarily consists of two libraries: *vrmlproc* and *togeom*. However, these are not standalone executables. To use them, you need an application that links against these libraries:
 	- There are test executables that perform unit testing on the solution.
-	- Additionally, you can build and link C++ application: *vrmlxpyConversionApp* (more details [here](doc/docker_steps.md)).
-	- Lastly, there is a *Python* binding that allows you to use *vrmlxpy* as a *Python* module ([example script](scripts/run_vrmlxpy_from_docker.py)).
+	- Additionally, you can build and link C++ application: *vrmlxConversionApp* (more details [here](doc/docker_steps.md)).
+	- Lastly, there is a *Python* binding that allows you to use *vrmlx* as a *Python* module ([example script](scripts/run_vrmlxpy_from_docker.py)).
 
 - The project supports these build configurations:
 
@@ -69,10 +69,10 @@ This project includes C++ unit tests that can be executed using either *CTest* o
 ### Linux
 - Use the [```testConfig.linux.json```](testConfig.linux.json) file as a base. Copy or rename it to `testConfig.json`.
 - Place this file inside the build output directory:  
-  ```vrmlxpy/out/build/<BUILD_CONFIGURATION>/to_geom```.
+  ```vrmlx/out/build/<BUILD_CONFIGURATION>/to_geom```.
 - The configuration file references input and expected data located at:
-  - Input: `vrmlxpy/data/segmentation_data`
-  - Expected: `vrmlxpy/data/expected_data`
+  - Input: `vrmlx/data/segmentation_data`
+  - Expected: `vrmlx/data/expected_data`
 - Input data is archived. Make sure to extract it first (either `archive.tar.gz` or `archive.zip`).
 - You can run tests using **CTest**:
   ```ctest --test-dir out/build/<BUILD_CONFIGURATION>/vrml_proc``` and 
@@ -81,10 +81,10 @@ This project includes C++ unit tests that can be executed using either *CTest* o
 
 ### Windows
 - Use the [```testConfig.windows.json```](testConfig.windows.json) file as a base. Copy or rename it to `testConfig.json`.
-- Place this file inside: ```vrmlxpy\out\build\<BUILD_CONFIGURATION>\to_geom```.
+- Place this file inside: ```vrmlx\out\build\<BUILD_CONFIGURATION>\to_geom```.
 - The configuration file references input and expected data located at:
-  - Input: `vrmlxpy\data\segmentation_data`
-  - Expected: `vrmlxpy\data\expected_data`
+  - Input: `vrmlx\data\segmentation_data`
+  - Expected: `vrmlx\data\expected_data`
 - Make sure the input data archive (```archive.zip``` or ```rchive.tar.gz```) has been extracted.
 - You can run tests using **CTest** from Command Prompt or PowerShell:
   ``` ctest --test-dir out\build\<BUILD_CONFIGURATION>\vrml_proc``` and

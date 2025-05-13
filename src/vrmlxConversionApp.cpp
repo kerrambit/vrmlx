@@ -1,4 +1,4 @@
-#include "vrmlxpy.hpp"
+#include "vrmlx.hpp"
 
 #include <filesystem>
 #include <iostream>
@@ -38,9 +38,9 @@ int main(int argc, char* argv[]) {
       return -1;
     }
 
-    vrmlxpy::PrintVersion();
+    vrmlx::PrintVersion();
 
-    if (!vrmlxpy::ConvertVrmlToGeom(argv[1], argv[2], argv[3])) {
+    if (!vrmlx::ConvertVrmlToGeom(argv[1], argv[2], argv[3])) {
       return -1;
     }
     return 0;
@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
   bool foundConfig = false;
   std::filesystem::path configFilePath;
   for (const auto& entry : std::filesystem::directory_iterator(inputFolder)) {
-    if (entry.is_regular_file() && entry.path().filename() == "vrmlxpyConfig.json") {
+    if (entry.is_regular_file() && entry.path().filename() == "vrmlxConfig.json") {
       foundConfig = true;
       configFilePath = entry.path();
       break;
@@ -70,18 +70,18 @@ int main(int argc, char* argv[]) {
   }
 
   if (!foundConfig) {
-    std::cout << "Did not find necessary configuration file <vrmlxpyConfig.json> inside input folder!" << std::endl;
+    std::cout << "Did not find necessary configuration file <vrmlxConfig.json> inside input folder!" << std::endl;
     return -1;
   }
 
-  vrmlxpy::PrintVersion();
+  vrmlx::PrintVersion();
 
   if (std::ranges::distance(std::filesystem::directory_iterator(inputFolder), std::filesystem::directory_iterator{}) ==
       1) {
     std::cout << "\n>>> No files for conversion were found.\n" << std::endl;
   }
 
-  std::string extension = vrmlxpy::GetExpectedOutputFileExtension(configFilePath.string());
+  std::string extension = vrmlx::GetExpectedOutputFileExtension(configFilePath.string());
   for (const auto& entry : std::filesystem::directory_iterator(inputFolder)) {
     if (entry.is_regular_file() && (entry.path().extension() == ".wrl" || entry.path().extension() == ".vrml")) {
       std::string filename = entry.path().filename().string();
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
       std::filesystem::path outputFile = outputFolder / entry.path().stem();
       outputFile.replace_extension(extension);
 
-      vrmlxpy::ConvertVrmlToGeom(entry.path().string(), outputFile.string(), configFilePath.string());
+      vrmlx::ConvertVrmlToGeom(entry.path().string(), outputFile.string(), configFilePath.string());
       std::cout << std::endl;
     }
   }

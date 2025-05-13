@@ -1,0 +1,24 @@
+{
+  "ignoreUnknownNode": false,
+  "logFileName": "vrmlx",
+  "logFileDirectory": ".",
+
+  "exportFormat": {
+    "format": "stl",
+    "options": {
+      "binary": true
+    }
+  },
+  "parallelismSettings": {
+    "active": true,
+    "threadsNumberLimit": 12
+  },
+  "meshSimplification": {
+    "active": false,
+    "percentageOfAllEdgesToSimplify": 80
+  },
+  "IFSSettings": {
+    "checkRange": false,
+    "onlyTriangularFaces": true
+  }
+}
