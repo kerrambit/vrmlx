@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libboost-all-dev \
     libcgal-dev \
+    git \
     ninja-build \
     && rm -rf /var/lib/apt/lists/*
 
