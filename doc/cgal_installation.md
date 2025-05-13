@@ -15,8 +15,8 @@ Before you can build this project, you'll need to have the CGAL libraries instal
    - Precompiled version of GMP and MPFR are provided in the assets of CGAL library (*Releases* on [official CGAL GitHug page](https://github.com/CGAL/cgal)).
    - Extract *CGAL-[some version]-win64-auxiliary-libraries-gmp-mpfr.zip* archive inside the CGAL directory in ```\vendor``` folder. You should get the directory ```vendor\CGAL-[some version]\auxiliary\gmp```.
    - Then set up two new environment variables poitning to the path ```auxiliary\gml```.
-        - ```GMP_DIR = C:\dev\vrmlxpy\vendor\CGAL-6.0.1\auxiliry\gmp```
-        - ```MPFR_DIR = C:\dev\vrmlxpy\vendor\CGAL-6.0.1\auxiliry\gmp```
+        - ```GMP_DIR = C:\dev\vrmlx\vendor\CGAL-6.0.1\auxiliry\gmp```
+        - ```MPFR_DIR = C:\dev\vrmlx\vendor\CGAL-6.0.1\auxiliry\gmp```
    - If you do not know how to set up environment variables, see the following steps:
         - Go to **System Properties** → **Advanced** → **Environment Variables**.
         - Under **System variables**, click **New** and add name and path.

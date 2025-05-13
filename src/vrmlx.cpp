@@ -1,5 +1,5 @@
-#include "vrmlxpy.hpp"
-#include "vrmlxpy_logo.hpp"
+#include "vrmlx.hpp"
+#include "vrmlx_logo.hpp"
 
 #include <memory>
 #include <filesystem>
@@ -58,13 +58,13 @@ static void PrintInvalidSubmeshMessage(to_geom::calculator::CalculatorResult mes
   std::cout << "Encountered an invalid submesh:\n" << meshResult.error()->GetMessage() << std::endl;
 }
 
-namespace vrmlxpy {
+namespace vrmlx {
 
   void PrintVersion() {
     std::cout << Logo << R"(
-            vrmlxpy  (version 1.0)
-            vrmlproc (version 1.0)
-            togeom   (version 1.0))"
+     vrmlx    (version 1.0)
+     vrmlproc (version 1.0)
+     togeom   (version 1.0))"
               << std::endl;
   }
 
@@ -120,7 +120,7 @@ namespace vrmlxpy {
       PrintApplicationError(configResult.error());
       // Initialize logging on the current directory and push all saved messages into it, since configuratation file
       // could not be loaded.
-      InitLogging(current_path().string(), "vrmlxpy");
+      InitLogging(current_path().string(), "vrmlx");
       PrintDefaultLoggingMessage();
       return false;
     }
@@ -246,4 +246,4 @@ namespace vrmlxpy {
     std::cout << ">>> Conversion of VRML file to geometry format finished succesfully.\n" << std::endl;
     return true;
   }
-}  // namespace vrmlxpy
+}  // namespace vrmlx

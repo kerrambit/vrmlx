@@ -5,7 +5,7 @@
 ## Steps
 
 - Make sure your systems has *Docker* installed.
-- Clone the repository and go to the project folder ```vrmlxpy/```.
+- Clone the repository and go to the project folder ```vrmlx/```.
 - There is a [Dockerfile](../Dockerfile) in this root directory.
 - Build the image using the [Dockerfile](../Dockerfile) as ```docker build -t <IMAGE_NAME> .``` .
 - You can use following build argument:
@@ -13,12 +13,12 @@
 - After the image is built, you should be able to create and run container.
 <!-- Empty line here -->
 - Before running the container, make sure you have created two folders ```input``` and ```output``` on your current path. It is because we have to bind folders where the converted data and data to convert will be searched for.
-- Insert into ```input``` folder your ```.wrl``` files and the configuration file (it can look like [this](../vrmlxpyConfig.json.example)).
+- Insert into ```input``` folder your ```.wrl``` files and the configuration file (it can look like [this](../vrmlxConfig.json.example)).
 - There is one application you run, but it has two modes: **single file** conversion and **bulk** conversion, respectively:
-    - ```docker run -v $(pwd)/input:/app/input -v $(pwd)/output:/app/output <IMAGE_NAME> /app/vrmlxpyConversionApp /app/input/<YOUR_VRML_FILE> /app/output/<OUTPUT_FILENAME> /app/input/<CONFIG_FILE>```.
+    - ```docker run -v $(pwd)/input:/app/input -v $(pwd)/output:/app/output <IMAGE_NAME> /app/vrmlxConversionApp /app/input/<YOUR_VRML_FILE> /app/output/<OUTPUT_FILENAME> /app/input/<CONFIG_FILE>```.
     <!-- Empty line here -->
-    - ```docker run -v $(pwd)/input:/app/input -v $(pwd)/output:/app/output <IMAGE_NAME> /app/vrmlxpyConversionApp --bulk /app/input/ /app/output/```.
-        - **Tip**: the configuration file for bulk conversion has to be inside ```input``` folder and expected name is ```vrmlxpyConfig.json```!
+    - ```docker run -v $(pwd)/input:/app/input -v $(pwd)/output:/app/output <IMAGE_NAME> /app/vrmlxConversionApp --bulk /app/input/ /app/output/```.
+        - **Tip**: the configuration file for bulk conversion has to be inside ```input``` folder and expected name is ```vrmlxConfig.json```!
 ## Other commands
 
 - Another way how to work with a container is to switch to an interactive mode and do conversions inside the container: ```docker run -it -v $(pwd)/input:/app/input -v $(pwd)/output:/app/output <IMAGE_NAME> /bin/bash```

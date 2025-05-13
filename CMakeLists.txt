@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(vrmlxpy)
+project(vrmlx)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -113,12 +113,12 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(pybind11)
 
 # Create the Python bindings module.
-pybind11_add_module(vrmlxpy SHARED src/vrmlxpy.cpp src/bindings.cpp)
+pybind11_add_module(vrmlxpy SHARED src/vrmlx.cpp src/bindings.cpp)
 
 # Link against C++ libraries.
 target_link_libraries(vrmlxpy PRIVATE vrmlproc togeom pybind11::module Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread)
 
-# Ensure vrmlxpy.cpp can access headers from vrml_proc, to_geom and pybind11 projects.
+# Ensure vrmlx.cpp can access headers from vrml_proc, to_geom and pybind11 projects.
 target_include_directories(vrmlxpy PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/vrml_proc
@@ -142,26 +142,26 @@ endif()
 if (INCLUDE_RUNNER STREQUAL "ON")
 message(STATUS "C++ CLI runners will be included")
 
-add_executable(vrmlxpyConversionApp "src/vrmlxpy.cpp" "src/ConvertVrmlToGeom.cpp")
+add_executable(vrmlxConversionApp "src/vrmlx.cpp" "src/vrmlxConversionApp.cpp")
 
 # Link against C++ libraries.
-target_link_libraries(vrmlxpyConversionApp PRIVATE vrmlproc togeom Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread)
+target_link_libraries(vrmlxConversionApp PRIVATE vrmlproc togeom Boost::iostreams Boost::log Boost::date_time Boost::log_setup Boost::system Boost::thread)
 
-# Ensure vrmlxpy.cpp and runner.cpp can access headers from vrml_proc and to_geom projects.
-target_include_directories(vrmlxpyConversionApp PRIVATE
+# Ensure vrmlx.cpp and vrmlxConversionApp.cpp can access headers from vrml_proc and to_geom projects.
+target_include_directories(vrmlxConversionApp PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/vrml_proc
     ${CMAKE_CURRENT_SOURCE_DIR}/to_geom
 )
 
 # Copy vrmlproc.dll and togeom.dll to the folder for the runner to run.
-add_custom_command(TARGET vrmlxpyConversionApp POST_BUILD
+add_custom_command(TARGET vrmlxConversionApp POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "$<TARGET_FILE:vrmlproc>"
-        "$<TARGET_FILE_DIR:vrmlxpyConversionApp>"
+        "$<TARGET_FILE_DIR:vrmlxConversionApp>"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "$<TARGET_FILE:togeom>"
-        "$<TARGET_FILE_DIR:vrmlxpyConversionApp>"
+        "$<TARGET_FILE_DIR:vrmlxConversionApp>"
 )
 
 endif()

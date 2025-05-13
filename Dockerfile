@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libboost-all-dev \
     libcgal-dev \
+    git \
     ninja-build \
     && rm -rf /var/lib/apt/lists/*
 
@@ -40,8 +41,8 @@ ARG BUILD_CONFIGURATION=Production
 
 COPY --from=builder /app/out/build/${BUILD_CONFIGURATION}/libtogeom.so /app/
 COPY --from=builder /app/out/build/${BUILD_CONFIGURATION}/libvrmlproc.so /app/
-COPY --from=builder /app/out/build/${BUILD_CONFIGURATION}/vrmlxpyConversionApp /app/
+COPY --from=builder /app/out/build/${BUILD_CONFIGURATION}/vrmlxConversionApp /app/
 
 ENV LD_LIBRARY_PATH=/app:$LD_LIBRARY_PATH
 
-CMD ["/app/vrmlxpyConversionApp", "arg1", "arg2", "arg3"]
+CMD ["/app/vrmlxConversionApp", "arg1", "arg2", "arg3"]
