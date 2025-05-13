@@ -4,7 +4,7 @@
 #include <boost/spirit/include/qi.hpp>
 #include "BaseGrammar.hpp"
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Represents a grammar for parsing identifer as defined in VRML 2.0 specification.
    *
@@ -29,4 +29,4 @@ namespace vrml_proc::parser {
       BOOST_SPIRIT_DEBUG_NODE(this->m_start);
     }
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

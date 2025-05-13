@@ -10,7 +10,7 @@ BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::Vec4f,
     (vrml_proc::parser::float32_t, x)(vrml_proc::parser::float32_t, y)(vrml_proc::parser::float32_t, z)(
         vrml_proc::parser::float32_t, w))
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Grammar for parsing SF type of Vec4f value in VRML 2.0 syntax.
    *
@@ -30,4 +30,4 @@ namespace vrml_proc::parser {
       BOOST_SPIRIT_DEBUG_NODE(this->m_start);
     }
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

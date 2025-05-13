@@ -8,7 +8,7 @@
 
 BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::Int32Array, (std::vector<int32_t>, integers))
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Grammar for parsing MF type of Int32 values in VRML 2.0 syntax.
    *
@@ -28,4 +28,4 @@ namespace vrml_proc::parser {
       BOOST_SPIRIT_DEBUG_NODE(this->m_start);
     }
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

@@ -37,7 +37,7 @@ BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::UseNode, (std::string, identifier))
 
 BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::VrmlField, (std::string, name)(vrml_proc::parser::VrmlFieldValue, value))
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Policy which force to use decimal dot for float rule.
    * For more information, see
@@ -122,4 +122,4 @@ namespace vrml_proc::parser {
     std::unique_ptr<QuotedStringGrammar<Iterator, Skipper>> m_quotedString;
     std::unique_ptr<BooleanGrammar<Iterator, Skipper>> m_boolean;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

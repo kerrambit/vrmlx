@@ -38,8 +38,8 @@ namespace vrml_proc::parser {
     ParserResult<VrmlFile> Parse(BufferView buffer) override;
 
    private:
-    VrmlFileGrammar<const char*, CommentSkipper> m_grammar;
-    CommentSkipper m_skipper;
+    grammar::VrmlFileGrammar<const char*, grammar::CommentSkipper> m_grammar;
+    grammar::CommentSkipper m_skipper;
     service::VrmlNodeManager& m_manager;
   };
 }  // namespace vrml_proc::parser

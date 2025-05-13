@@ -12,7 +12,7 @@
 
 BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::Vec2fArray, (std::vector<vrml_proc::parser::Vec2f>, vectors))
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Grammar for parsing MF type of Vec2 values in VRML 2.0 syntax.
    *
@@ -39,4 +39,4 @@ namespace vrml_proc::parser {
    private:
     std::unique_ptr<Vec2fGrammar<Iterator, Skipper>> m_vec2f;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

@@ -12,7 +12,7 @@
 BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::Vec3f,
     (vrml_proc::parser::float32_t, x)(vrml_proc::parser::float32_t, y)(vrml_proc::parser::float32_t, z))
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Grammar for parsing SF type of Vec3f value in VRML 2.0 syntax.
    *
@@ -37,4 +37,4 @@ namespace vrml_proc::parser {
    private:
     boost::spirit::qi::rule<Iterator, float, Skipper> float32;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

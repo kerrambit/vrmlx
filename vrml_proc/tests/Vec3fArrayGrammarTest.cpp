@@ -12,9 +12,9 @@
 static std::optional<vrml_proc::parser::Vec3fArray> ParseVec3fArray(std::string& text) {
   auto iterator = text.begin();
 
-  vrml_proc::parser::Vec3fArrayGrammar<const char*, vrml_proc::parser::CommentSkipper> grammar;
+  vrml_proc::parser::grammar::Vec3fArrayGrammar<const char*, vrml_proc::parser::grammar::CommentSkipper> grammar;
   vrml_proc::parser::Vec3fArray data;
-  vrml_proc::parser::CommentSkipper skipper;
+  vrml_proc::parser::grammar::CommentSkipper skipper;
 
   bool success = boost::spirit::qi::phrase_parse(text.c_str(), text.c_str() + text.size(), grammar, skipper, data);
   if (success) {
