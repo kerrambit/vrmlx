@@ -4,7 +4,7 @@
 
 #include <boost/spirit/include/qi.hpp>
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Rule to skip VRML 2.0 comments and irrelevant input such as whitespaces.
    *
@@ -30,4 +30,4 @@ namespace vrml_proc::parser {
     boost::spirit::qi::rule<const char*> singleLineComment;
     boost::spirit::qi::rule<const char*> start;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

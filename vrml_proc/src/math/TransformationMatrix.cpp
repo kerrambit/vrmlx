@@ -18,7 +18,7 @@
  * @param scaleVector scale vector
  * @returns scale matrix
  */
-static vrml_proc::math::TransformationMatrix CreateScaleMatrix(const vrml_proc::parser::Vec3f& scaleVector) {
+static vrml_proc::math::TransformationMatrix CreateScaleMatrix(const vrml_proc::parser::model::Vec3f& scaleVector) {
   return vrml_proc::math::TransformationMatrix(scaleVector.x, 0, 0, 0, scaleVector.y, 0, 0, 0, scaleVector.z);
 }
 

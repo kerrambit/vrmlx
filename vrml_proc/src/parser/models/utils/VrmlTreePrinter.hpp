@@ -43,63 +43,63 @@ namespace vrml_proc::parser::model::utils {
      * @param object object (root) which will be printed (and possible its children etc.)
      * @param indentationLevel how many indentation objects should be used
      */
-    void Print(const vrml_proc::parser::VrmlNode& object, IndentationLevel indentationLevel = 0) const;
+    void Print(const vrml_proc::parser::model::VrmlNode& object, IndentationLevel indentationLevel = 0) const;
     /**
      * @brief Prints a possibly a a tree-like structure.
      *
      * @param object object (root) which will be printed (and possible its children etc.)
      * @param indentationLevel how many indentation objects should be used
      */
-    void Print(const vrml_proc::parser::UseNode& object, IndentationLevel indentationLevel = 0) const;
+    void Print(const vrml_proc::parser::model::UseNode& object, IndentationLevel indentationLevel = 0) const;
     /**
      * @brief Prints a possibly a a tree-like structure.
      *
      * @param object object (root) which will be printed (and possible its children etc.)
      * @param indentationLevel how many indentation objects should be used
      */
-    void Print(const vrml_proc::parser::Int32Array& object, IndentationLevel indentationLevel = 0) const;
+    void Print(const vrml_proc::parser::model::Int32Array& object, IndentationLevel indentationLevel = 0) const;
     /**
      * @brief Prints a possibly a a tree-like structure.
      *
      * @param object object (root) which will be printed (and possible its children etc.)
      * @param indentationLevel how many indentation objects should be used
      */
-    void Print(const vrml_proc::parser::Vec2f& object, IndentationLevel indentationLevel = 0) const;
+    void Print(const vrml_proc::parser::model::Vec2f& object, IndentationLevel indentationLevel = 0) const;
     /**
      * @brief Prints a possibly a a tree-like structure.
      *
      * @param object object (root) which will be printed (and possible its children etc.)
      * @param indentationLevel how many indentation objects should be used
      */
-    void Print(const vrml_proc::parser::Vec2fArray& object, IndentationLevel indentationLevel = 0) const;
+    void Print(const vrml_proc::parser::model::Vec2fArray& object, IndentationLevel indentationLevel = 0) const;
     /**
      * @brief Prints a possibly a a tree-like structure.
      *
      * @param object object (root) which will be printed (and possible its children etc.)
      * @param indentationLevel how many indentation objects should be used
      */
-    void Print(const vrml_proc::parser::Vec3f& object, IndentationLevel indentationLevel = 0) const;
+    void Print(const vrml_proc::parser::model::Vec3f& object, IndentationLevel indentationLevel = 0) const;
     /**
      * @brief Prints a possibly a a tree-like structure.
      *
      * @param object object (root) which will be printed (and possible its children etc.)
      * @param indentationLevel how many indentation objects should be used
      */
-    void Print(const vrml_proc::parser::Vec3fArray& object, IndentationLevel indentationLevel = 0) const;
+    void Print(const vrml_proc::parser::model::Vec3fArray& object, IndentationLevel indentationLevel = 0) const;
     /**
      * @brief Prints a possibly a a tree-like structure.
      *
      * @param object object (root) which will be printed (and possible its children etc.)
      * @param indentationLevel how many indentation objects should be used
      */
-    void Print(const vrml_proc::parser::Vec4f& object, IndentationLevel indentationLevel = 0) const;
+    void Print(const vrml_proc::parser::model::Vec4f& object, IndentationLevel indentationLevel = 0) const;
     /**
      * @brief Prints a possibly a a tree-like structure.
      *
      * @param object object (root) which will be printed (and possible its children etc.)
      * @param indentationLevel how many indentation objects should be used
      */
-    void Print(const vrml_proc::parser::VrmlField& object, IndentationLevel indentationLevel = 0) const;
+    void Print(const vrml_proc::parser::model::VrmlField& object, IndentationLevel indentationLevel = 0) const;
 
     /**
      * @brief Creates an indentation object as a string.

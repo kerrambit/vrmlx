@@ -28,7 +28,7 @@ namespace vrml_proc::traversor::handler::HandlerUtils {
    */
   inline cpp::result<void, std::shared_ptr<vrml_proc::core::error::Error>> ValidateGeometryPrimitiveNode(
       std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd,
-      const vrml_proc::parser::VrmlNodeManager& manager,
+      const vrml_proc::parser::service::VrmlNodeManager& manager,
       const std::string& fieldName) {  //
 
     using namespace vrml_proc::core::logger;
@@ -36,7 +36,7 @@ namespace vrml_proc::traversor::handler::HandlerUtils {
     using namespace vrml_proc::traversor::node_descriptor;
     using namespace vrml_proc::traversor::error;
 
-    auto node = nd->GetField<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>(fieldName);
+    auto node = nd->GetField<std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>>(fieldName);
     auto ndResult = CreateNodeDescriptor(node.get().header);
 
     if (ndResult.has_value()) {

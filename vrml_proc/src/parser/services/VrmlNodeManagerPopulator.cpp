@@ -4,8 +4,8 @@
 #include "VrmlNode.hpp"
 #include "VrmlNodeManager.hpp"
 
-namespace vrml_proc::parser::VrmlNodeManagerPopulator {
-  void Populate(VrmlNodeManager& manager, const VrmlNode& node) {  //
+namespace vrml_proc::parser::service::VrmlNodeManagerPopulator {
+  void Populate(VrmlNodeManager& manager, const model::VrmlNode& node) {  //
 
     using namespace model::utils::VrmlFieldExtractor;
 
@@ -18,16 +18,16 @@ namespace vrml_proc::parser::VrmlNodeManagerPopulator {
     }
 
     for (const auto& child : node.fields) {
-      auto nodeResult = Extract<VrmlNode>(child.value);
+      auto nodeResult = Extract<model::VrmlNode>(child.value);
       if (nodeResult.has_value()) {
         Populate(manager, nodeResult.value().get());
         continue;
       }
 
-      auto arrayResult = Extract<VrmlNodeArray>(child.value);
+      auto arrayResult = Extract<model::VrmlNodeArray>(child.value);
       if (arrayResult.has_value() && arrayResult.value().get().size() != 0) {
         for (const auto& variant : arrayResult.value().get()) {
-          auto variantResult = ExtractVrmlNodeFromVariantWithoutResolving<VrmlNode>(variant);
+          auto variantResult = ExtractVrmlNodeFromVariantWithoutResolving<model::VrmlNode>(variant);
           if (variantResult.has_value()) {
             Populate(manager, variantResult.value().get());
           }
@@ -35,4 +35,4 @@ namespace vrml_proc::parser::VrmlNodeManagerPopulator {
       }
     }
   }
-}  // namespace vrml_proc::parser::VrmlNodeManagerPopulator
+}  // namespace vrml_proc::parser::service::VrmlNodeManagerPopulator

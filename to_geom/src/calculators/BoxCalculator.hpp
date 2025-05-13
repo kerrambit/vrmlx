@@ -21,7 +21,7 @@ namespace to_geom::calculator {
      * @param matrix tranformation matrix applied to geometry
      * @returns calculator result (mesh object or error if generation failed)
      */
-    to_geom::calculator::CalculatorResult Generate3DMesh(std::reference_wrapper<const vrml_proc::parser::Vec3f> size,
+    to_geom::calculator::CalculatorResult Generate3DMesh(std::reference_wrapper<const vrml_proc::parser::model::Vec3f> size,
         const vrml_proc::math::TransformationMatrix& matrix);
   };
 }  // namespace to_geom::calculator

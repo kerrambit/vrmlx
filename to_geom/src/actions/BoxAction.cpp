@@ -25,7 +25,7 @@ namespace to_geom::action {
       return result;
     }
 
-    std::reference_wrapper<const vrml_proc::parser::Vec3f> size = m_properties.size;
+    std::reference_wrapper<const vrml_proc::parser::model::Vec3f> size = m_properties.size;
     vrml_proc::math::TransformationMatrix matrix = m_geometryProperties.matrix;
 
     result->Add([=]() {

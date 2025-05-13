@@ -6,9 +6,9 @@
 #include "BaseGrammar.hpp"
 #include "Int32Array.hpp"
 
-BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::Int32Array, (std::vector<int32_t>, integers))
+BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::model::Int32Array, (std::vector<int32_t>, integers))
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Grammar for parsing MF type of Int32 values in VRML 2.0 syntax.
    *
@@ -16,8 +16,8 @@ namespace vrml_proc::parser {
    * @tparam Skipper  The skipper parser used to skip irrelevant input (e.g., whitespace).
    */
   template <typename Iterator, typename Skipper>
-  class Int32ArrayGrammar : public boost::spirit::qi::grammar<Iterator, Int32Array(), Skipper>,
-                            public BaseGrammar<Iterator, Int32Array(), Skipper> {
+  class Int32ArrayGrammar : public boost::spirit::qi::grammar<Iterator, model::Int32Array(), Skipper>,
+                            public BaseGrammar<Iterator, model::Int32Array(), Skipper> {
    public:
     /**
      * @brief Constructs new grammar and initializes parsing rules.
@@ -28,4 +28,4 @@ namespace vrml_proc::parser {
       BOOST_SPIRIT_DEBUG_NODE(this->m_start);
     }
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

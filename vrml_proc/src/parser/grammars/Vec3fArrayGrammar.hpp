@@ -10,9 +10,9 @@
 #include "Vec3fArray.hpp"
 #include "Vec3fGrammar.hpp"
 
-BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::Vec3fArray, (std::vector<vrml_proc::parser::Vec3f>, vectors))
+BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::model::Vec3fArray, (std::vector<vrml_proc::parser::model::Vec3f>, vectors))
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Grammar for parsing MF type of Vec3f values in VRML 2.0 syntax.
    *
@@ -20,8 +20,8 @@ namespace vrml_proc::parser {
    * @tparam Skipper  The skipper parser used to skip irrelevant input (e.g., whitespace).
    */
   template <typename Iterator, typename Skipper>
-  class Vec3fArrayGrammar : public boost::spirit::qi::grammar<Iterator, Vec3fArray(), Skipper>,
-                            public BaseGrammar<Iterator, Vec3fArray(), Skipper> {
+  class Vec3fArrayGrammar : public boost::spirit::qi::grammar<Iterator, model::Vec3fArray(), Skipper>,
+                            public BaseGrammar<Iterator, model::Vec3fArray(), Skipper> {
    public:
     /**
      * @brief Constructs new grammar and initializes parsing rules.
@@ -40,4 +40,4 @@ namespace vrml_proc::parser {
    private:
     std::unique_ptr<Vec3fGrammar<Iterator, Skipper>> m_vec3f;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

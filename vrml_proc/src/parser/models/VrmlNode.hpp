@@ -7,7 +7,7 @@
 
 #include "VrmlField.hpp"
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::model {
   /**
    * @brief Represents a VRML node.
    */
@@ -18,4 +18,4 @@ namespace vrml_proc::parser {
     std::string header;
     std::vector<VrmlField> fields;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::model

@@ -20,7 +20,7 @@
 
 namespace to_geom::calculator {
   to_geom::calculator::CalculatorResult BoxCalculator::Generate3DMesh(
-      std::reference_wrapper<const vrml_proc::parser::Vec3f> size,
+      std::reference_wrapper<const vrml_proc::parser::model::Vec3f> size,
       const vrml_proc::math::TransformationMatrix& matrix) {  //
 
     using namespace vrml_proc::core::logger;

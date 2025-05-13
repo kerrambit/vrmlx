@@ -44,7 +44,7 @@ namespace vrml_proc::traversor::handler::GroupHandler {
     using namespace vrml_proc::core::logger;
     using namespace vrml_proc::core::utils;
     using namespace vrml_proc::traversor::VrmlNodeTraversor;
-    using vrml_proc::parser::VrmlNode;
+    using vrml_proc::parser::model::VrmlNode;
 
     LogDebug(FormatString("Handle VRML node <", params.node.header, ">."), LOGGING_INFO);
 

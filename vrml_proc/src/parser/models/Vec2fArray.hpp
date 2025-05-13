@@ -4,7 +4,7 @@
 
 #include "Vec2f.hpp"
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::model {
   /**
    * @brief Represents MF value containing list of vec2f.
    */
@@ -13,4 +13,4 @@ namespace vrml_proc::parser {
 
     std::vector<Vec2f> vectors;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::model

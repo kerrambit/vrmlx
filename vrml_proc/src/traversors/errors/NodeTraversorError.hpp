@@ -17,11 +17,11 @@ namespace vrml_proc::traversor::error {
     NodeTraversorError() : m_node(GetDefaultNode()) {}
 
     NodeTraversorError(
-        std::shared_ptr<vrml_proc::core::error::Error> innerError, const vrml_proc::parser::VrmlNode& errorNode)
+        std::shared_ptr<vrml_proc::core::error::Error> innerError, const vrml_proc::parser::model::VrmlNode& errorNode)
         : m_node(errorNode) {
       SetInnerError(innerError);
     }
-    const vrml_proc::parser::VrmlNode& GetErrorNode() const { return m_node; }
+    const vrml_proc::parser::model::VrmlNode& GetErrorNode() const { return m_node; }
 
    protected:
     std::string GetMessageInternal() const override {
@@ -31,10 +31,10 @@ namespace vrml_proc::traversor::error {
     }
 
    private:
-    const vrml_proc::parser::VrmlNode& m_node;
+    const vrml_proc::parser::model::VrmlNode& m_node;
 
-    static const vrml_proc::parser::VrmlNode& GetDefaultNode() {
-      static vrml_proc::parser::VrmlNode dummyNode;
+    static const vrml_proc::parser::model::VrmlNode& GetDefaultNode() {
+      static vrml_proc::parser::model::VrmlNode dummyNode;
       return dummyNode;
     }
   };

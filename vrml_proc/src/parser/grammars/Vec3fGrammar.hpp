@@ -9,10 +9,11 @@
 #include "BaseGrammar.hpp"
 #include "Vec3f.hpp"
 
-BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::Vec3f,
-    (vrml_proc::parser::float32_t, x)(vrml_proc::parser::float32_t, y)(vrml_proc::parser::float32_t, z))
+BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::model::Vec3f,
+    (vrml_proc::parser::model::float32_t, x)(vrml_proc::parser::model::float32_t, y)(
+        vrml_proc::parser::model::float32_t, z))
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Grammar for parsing SF type of Vec3f value in VRML 2.0 syntax.
    *
@@ -20,8 +21,8 @@ namespace vrml_proc::parser {
    * @tparam Skipper  The skipper parser used to skip irrelevant input (e.g., whitespace).
    */
   template <typename Iterator, typename Skipper>
-  struct Vec3fGrammar : public boost::spirit::qi::grammar<Iterator, Vec3f(), Skipper>,
-                        public BaseGrammar<Iterator, Vec3f(), Skipper> {
+  struct Vec3fGrammar : public boost::spirit::qi::grammar<Iterator, model::Vec3f(), Skipper>,
+                        public BaseGrammar<Iterator, model::Vec3f(), Skipper> {
    public:
     /**
      * @brief Constructs new grammar and initializes parsing rules.
@@ -37,4 +38,4 @@ namespace vrml_proc::parser {
    private:
     boost::spirit::qi::rule<Iterator, float, Skipper> float32;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

@@ -6,7 +6,7 @@
 
 #include "BaseGrammar.hpp"
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Grammar for parsing SF type of string in VRML 2.0 syntax.
    *
@@ -26,4 +26,4 @@ namespace vrml_proc::parser {
       BOOST_SPIRIT_DEBUG_NODE(this->m_start);
     }
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

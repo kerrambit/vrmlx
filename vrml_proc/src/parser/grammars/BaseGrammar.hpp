@@ -2,7 +2,7 @@
 
 #include <boost/spirit/include/qi.hpp>
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::grammar {
   /**
    * @brief Represents a base grammar.
    * Each derived grammar has to implement ` GetStartRule()` method. Base grammar should also store
@@ -32,4 +32,4 @@ namespace vrml_proc::parser {
     BaseGrammar(BaseGrammar&&) = delete;
     BaseGrammar& operator=(BaseGrammar&&) = delete;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::grammar

@@ -88,7 +88,7 @@ namespace vrml_proc::parser::model::validator::error {
     }
 
    private:
-    core::utils::Range<vrml_proc::parser::float32_t> m_expectedRange;
+    core::utils::Range<vrml_proc::parser::model::float32_t> m_expectedRange;
     Vec3f m_vector;
   };
 }  // namespace vrml_proc::parser::model::validator::error

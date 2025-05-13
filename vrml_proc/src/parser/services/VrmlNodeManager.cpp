@@ -9,19 +9,20 @@
 
 #include "VrmlNode.hpp"
 
-vrml_proc::parser::VrmlNodeManager::VrmlNodeManager() {
+vrml_proc::parser::service::VrmlNodeManager::VrmlNodeManager() {
   vrml_proc::core::logger::LogDebug("Construct new VrmlNodeManager.", LOGGING_INFO);
 }
 
-void vrml_proc::parser::VrmlNodeManager::AddDefinitionNode(
-    const std::string& id, const vrml_proc::parser::VrmlNode& node) {
+void vrml_proc::parser::service::VrmlNodeManager::AddDefinitionNode(
+    const std::string& id, const vrml_proc::parser::model::VrmlNode& node) {  //
+
   vrml_proc::core::logger::LogDebug(
       vrml_proc::core::utils::FormatString("Add DEF node with id <", id, "> into map."), LOGGING_INFO);
   vrml_proc::core::logger::LogDebug(
       vrml_proc::core::utils::FormatString("Address of VRML node: <", &node, ">."), LOGGING_INFO);
 
   auto result = m_definitionNodes.insert_or_assign(
-      id, std::reference_wrapper<const vrml_proc::parser::VrmlNode>(std::cref(node)));
+      id, std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>(std::cref(node)));
   if (!result.second) {
     vrml_proc::core::logger::LogDebug(
         vrml_proc::core::utils::FormatString(
@@ -30,8 +31,9 @@ void vrml_proc::parser::VrmlNodeManager::AddDefinitionNode(
   }
 }
 
-std::optional<std::reference_wrapper<const vrml_proc::parser::VrmlNode>>
-vrml_proc::parser::VrmlNodeManager::GetDefinitionNode(const std::string& id) const {
+std::optional<std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>>
+vrml_proc::parser::service::VrmlNodeManager::GetDefinitionNode(const std::string& id) const {  //
+
   vrml_proc::core::logger::LogDebug(
       vrml_proc::core::utils::FormatString("Retrieve DEF node with id <", id, "> from the map."), LOGGING_INFO);
   auto it = m_definitionNodes.find(id);

@@ -12,14 +12,14 @@
 #include "VrmlNodeManagerPopulator.hpp"
 
 namespace vrml_proc::parser {
-  ParserResult<VrmlFile> VrmlParser::Parse(BufferView buffer) {  //
+  ParserResult<model::VrmlFile> VrmlParser::Parse(BufferView buffer) {  //
 
     using namespace vrml_proc::core::logger;
     using namespace vrml_proc::core::utils;
 
     LogInfo("Parse VRML file content.", LOGGING_INFO);
 
-    VrmlFile parsedData;
+    model::VrmlFile parsedData;
     double time = 0.0;
     bool success = false;
     {
@@ -37,7 +37,7 @@ namespace vrml_proc::parser {
       {
         auto timer = ScopedTimer(time);
         for (const auto& root : parsedData) {
-          VrmlNodeManagerPopulator::Populate(m_manager, root);
+          service::VrmlNodeManagerPopulator::Populate(m_manager, root);
         }
       }
       LogInfo(

@@ -19,8 +19,8 @@ namespace vrml_proc::traversor {
      * @param transformation current transformation in the form of a matrix
      * @param config configuration file
      */
-    VrmlNodeTraversorParameters(const vrml_proc::parser::VrmlNode& node,
-        const vrml_proc::parser::VrmlNodeManager& manager,
+    VrmlNodeTraversorParameters(const vrml_proc::parser::model::VrmlNode& node,
+        const vrml_proc::parser::service::VrmlNodeManager& manager,
         bool isDescendantOfShape,
         vrml_proc::math::TransformationMatrix transformation,
         std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config)
@@ -30,8 +30,8 @@ namespace vrml_proc::traversor {
           transformation(transformation),
           config(config) {}
 
-    const vrml_proc::parser::VrmlNode& node;
-    const vrml_proc::parser::VrmlNodeManager& manager;
+    const vrml_proc::parser::model::VrmlNode& node;
+    const vrml_proc::parser::service::VrmlNodeManager& manager;
     bool IsDescendantOfShape;
     vrml_proc::math::TransformationMatrix transformation;
     std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config;
