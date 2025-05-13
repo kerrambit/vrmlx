@@ -26,7 +26,7 @@ namespace vrml_proc::parser {
      *
      * @param manager reference to VrmlNodemanager which will be populated with data in the source of parsing
      */
-    VrmlParser(VrmlNodeManager& manager)
+    VrmlParser(service::VrmlNodeManager& manager)
         : Parser<BufferView, VrmlFile>(), m_manager(manager), m_grammar(), m_skipper() {}
 
     /**
@@ -40,6 +40,6 @@ namespace vrml_proc::parser {
    private:
     VrmlFileGrammar<const char*, CommentSkipper> m_grammar;
     CommentSkipper m_skipper;
-    VrmlNodeManager& m_manager;
+    service::VrmlNodeManager& m_manager;
   };
 }  // namespace vrml_proc::parser

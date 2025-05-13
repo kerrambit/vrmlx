@@ -114,7 +114,7 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
   }
 
   {
-    vrml_proc::parser::VrmlNodeManager manager;
+    vrml_proc::parser::service::VrmlNodeManager manager;
     vrml_proc::parser::VrmlNode node;
     node.header = "Root";
 
@@ -133,7 +133,7 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
         "vrml", std::unordered_set<std::string>{"vrml2.0", "vrml3.0"});
     vrml_proc::parser::VrmlNode node;
     node.header = "vrml2.0";
-    vrml_proc::parser::VrmlNodeManager manager;
+    vrml_proc::parser::service::VrmlNodeManager manager;
     CHECK(nd.Validate(node, manager, true).has_value());
     node.header = "vrml4.0";
     CHECK(nd.Validate(node, manager, true).has_error());
@@ -147,7 +147,7 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
     vrml_proc::parser::VrmlNode node;
     node.header = "Root";
     node.fields.push_back(f1);
-    vrml_proc::parser::VrmlNodeManager manager;
+    vrml_proc::parser::service::VrmlNodeManager manager;
     auto result = nd.Validate(node, manager);
     REQUIRE(result.has_error());
     LogError(result.error());
@@ -193,7 +193,7 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
     node.fields.push_back(f10);
     node.fields.push_back(f11);
     node.fields.push_back(f12);
-    vrml_proc::parser::VrmlNodeManager manager;
+    vrml_proc::parser::service::VrmlNodeManager manager;
     manager.AddDefinitionNode("ID", n);
     auto result = nd.Validate(node, manager);
     REQUIRE(result.has_value());
@@ -325,7 +325,7 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
     node.fields.push_back(f10);
     node.fields.push_back(f11);
     node.fields.push_back(f12);
-    vrml_proc::parser::VrmlNodeManager manager;
+    vrml_proc::parser::service::VrmlNodeManager manager;
     manager.AddDefinitionNode("ID", n);
     auto result = nd.Validate(node, manager);
     REQUIRE(result.has_value());

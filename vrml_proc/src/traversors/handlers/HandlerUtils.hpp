@@ -28,7 +28,7 @@ namespace vrml_proc::traversor::handler::HandlerUtils {
    */
   inline cpp::result<void, std::shared_ptr<vrml_proc::core::error::Error>> ValidateGeometryPrimitiveNode(
       std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd,
-      const vrml_proc::parser::VrmlNodeManager& manager,
+      const vrml_proc::parser::service::VrmlNodeManager& manager,
       const std::string& fieldName) {  //
 
     using namespace vrml_proc::core::logger;

@@ -36,7 +36,7 @@
  * @return false if traversing fails or if the expected count is not met, otherwise true
  */
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
-    const vrml_proc::parser::VrmlNodeManager& manager,
+    const vrml_proc::parser::service::VrmlNodeManager& manager,
     size_t expectedConversionContextSize) {
   auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
   auto traversorResult =
@@ -68,7 +68,7 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
  * true
  */
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
-    const vrml_proc::parser::VrmlNodeManager& manager,
+    const vrml_proc::parser::service::VrmlNodeManager& manager,
     size_t expectedConversionContextSize,
     const std::filesystem::path& outputFilepath,
     size_t expectedSubmeshesCount) {
@@ -136,7 +136,7 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
  * true
  */
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
-    const vrml_proc::parser::VrmlNodeManager& manager,
+    const vrml_proc::parser::service::VrmlNodeManager& manager,
     size_t expectedConversionContextSize,
     const std::filesystem::path& outputFilepath,
     size_t expectedSubmeshesCount,
@@ -198,7 +198,7 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
  * @return false if traversing fails, otherwise true
  */
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::VrmlFile> parseResult,
-    const vrml_proc::parser::VrmlNodeManager& manager) {
+    const vrml_proc::parser::service::VrmlNodeManager& manager) {
   auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
   auto traversorResult =
       vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(

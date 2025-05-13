@@ -20,7 +20,7 @@ TEST_CASE("Initialization") {
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Box node", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validBoxNode, manager);
   REQUIRE(parseResult);
 
@@ -28,7 +28,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Box node", "[parsi
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Box node empty", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validBoxNodeEmpty, manager);
   REQUIRE(parseResult);
 
@@ -36,7 +36,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Box node empty", "
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Box node - Wrong Field Type", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidBoxNodeWrongDataType, manager);
   REQUIRE(parseResult);
 
@@ -44,7 +44,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Box node - Wrong
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Box node - Wrong Field Name", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidBoxNodeWrongFieldName, manager);
   REQUIRE(parseResult);
 
@@ -53,7 +53,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Box node - Wrong
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - WorldInfo node", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validWorldInfoNode, manager);
   REQUIRE(parseResult);
 
@@ -62,7 +62,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - WorldInfo node", "
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - WorldInfo node - Wrong Field Type",
           "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidWorldInfoNodeWrongDataType, manager);
   REQUIRE(parseResult);
 
@@ -71,7 +71,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - WorldInfo node -
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - WorldInfo node - Wrong Field Name",
           "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidWorldInfoNodeWrongFieldName, manager);
   REQUIRE(parseResult);
 
@@ -79,7 +79,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - WorldInfo node -
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Group node - Unknown node", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidGroupUnknownNode, manager);
   REQUIRE(parseResult);
 
@@ -87,7 +87,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Group node - Unk
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Group node", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validGroup, manager);
   REQUIRE(parseResult);
 
@@ -95,7 +95,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Group node", "[par
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Shape node", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validShape, manager);
   REQUIRE(parseResult);
 
@@ -103,7 +103,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Shape node", "[par
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Shape node with Group merging", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validShapeMerge, manager);
   REQUIRE(parseResult);
 
@@ -111,7 +111,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Shape node with Gr
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Shape empty node", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validShapeEmpty, manager);
   REQUIRE(parseResult);
 
@@ -119,7 +119,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Shape empty node",
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Shape node", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidShapeWrongNodeForGeometryField, manager);
   REQUIRE(parseResult);
 
@@ -127,7 +127,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Shape node", "[p
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - IndexedFaceSet node I.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validIndexedFaceSetNode, manager);
   REQUIRE(parseResult);
 
@@ -135,7 +135,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - IndexedFaceSet nod
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - IndexedFaceSet node II.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validIndexedFaceSetNodeNotInShape, manager);
   REQUIRE(parseResult);
 
@@ -143,7 +143,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - IndexedFaceSet nod
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - IndexedFaceSet node III.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validIndexedFaceSetPyramid, manager);
   REQUIRE(parseResult);
 
@@ -151,7 +151,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - IndexedFaceSet nod
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - IndexedFaceSet node I.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidIndexedFaceSetNodeWrongFieldNodeHeader, manager);
   REQUIRE(parseResult);
 
@@ -159,7 +159,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - IndexedFaceSet n
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Transformation node I.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validTransformatioNode, manager);
   REQUIRE(parseResult);
 
@@ -167,7 +167,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Transformation nod
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Transformation node II.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validTransformatioNodeEmpty, manager);
   REQUIRE(parseResult);
 
@@ -175,7 +175,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Transformation nod
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Transformation node I.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidTransformatioNodeWrongFieldNameCenter, manager);
   REQUIRE(parseResult);
 
@@ -183,7 +183,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Transformation n
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Transformation node II.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidTransformatioNodeWrongFieldNameChildren, manager);
   REQUIRE(parseResult);
 
@@ -191,7 +191,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Transformation n
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Transformation node III.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidTransformatioNodeWrongFieldTypeChildren, manager);
   REQUIRE(parseResult);
 
@@ -199,7 +199,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Transformation n
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Transformation node IV.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidTransformatioNodeWrongFieldTypeScaleOrientation, manager);
   REQUIRE(parseResult);
 
@@ -207,7 +207,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Transformation n
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Transformation node III.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validTransformatioNodeNested, manager);
   REQUIRE(parseResult);
 
@@ -215,7 +215,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Transformation nod
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Switch node I.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validSwitchNodeWithOneChoiceEmpty, manager);
   REQUIRE(parseResult);
 
@@ -223,7 +223,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Switch node I.", "
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Switch node II.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validSwitchNodeWithMulipleChoicesEmpty, manager);
   REQUIRE(parseResult);
 
@@ -231,7 +231,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Switch node II.", 
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Switch node III.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validSwitchNodeEmpty, manager);
   REQUIRE(parseResult);
 
@@ -239,7 +239,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Switch node III.",
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Switch node IV.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validSwitchNodeWithMulipleChoices, manager);
   REQUIRE(parseResult);
 
@@ -247,7 +247,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Switch node IV.", 
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Switch node I.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidSwitchNodeWithWrongMulipleChoices, manager);
   REQUIRE(parseResult);
 
@@ -255,7 +255,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Switch node I.",
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Switch node II.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidSwitchNodeInvalidFieldType, manager);
   REQUIRE(parseResult);
 
@@ -263,7 +263,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Switch node II."
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Switch node III.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidSwitchNodeWrongIndexUpper, manager);
   REQUIRE(parseResult);
 
@@ -271,7 +271,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Switch node III.
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Switch node IV.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidSwitchNodeWrongIndexLower, manager);
   REQUIRE(parseResult);
 
@@ -279,7 +279,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Switch node IV."
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Switch node V.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidSwitchNodeEmptyChoice, manager);
   REQUIRE(parseResult);
 
@@ -287,7 +287,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Switch node V.",
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Appearance node I.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validAppearanceNodeEmpty, manager);
   REQUIRE(parseResult);
 
@@ -295,7 +295,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Appearance node I.
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Appearance node II.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validAppearanceNode, manager);
   REQUIRE(parseResult);
 
@@ -303,7 +303,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Appearance node II
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Appearance node III.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validAppearanceNode2, manager);
   REQUIRE(parseResult);
 
@@ -311,7 +311,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Appearance node II
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Appearance node I.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidAppearanceNodeWrongMaterialFieldName, manager);
   REQUIRE(parseResult);
 
@@ -319,7 +319,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Appearance node 
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Appearance node II.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidAppearanceNodeWrongMaterialNodeHeader, manager);
   REQUIRE(parseResult);
 
@@ -327,7 +327,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Appearance node 
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Appearance node III.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidAppearanceNodeWrongDataType, manager);
   REQUIRE(parseResult);
 
@@ -335,7 +335,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - Appearance node 
 }
 
 TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - IndexedLineSet node I.", "[parsing][valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(validIndexedLineSetNode, manager);
   REQUIRE(parseResult);
 
@@ -343,7 +343,7 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - IndexedLineSet nod
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - IndexedLineSet node I.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidIndexedLineSetNodeWrongUnknownField, manager);
   REQUIRE(parseResult);
 
@@ -351,7 +351,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - IndexedLineSet n
 }
 
 TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - IndexedLineSet node II.", "[parsing][invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidIndexedLineSetNodeWrongFieldType, manager);
   REQUIRE(parseResult);
 
@@ -359,7 +359,7 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - IndexedLineSet n
 }
 
 TEST_CASE("Parse VRMLFile From File - Valid Input - Actin", "[parsing][valid][fromfile]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(
       std::filesystem::path(ReadTestInfo().baseInputPath) / std::filesystem::path(ReadTestInfo().testFiles.at("ACTIN")),
       manager);
@@ -375,7 +375,7 @@ TEST_CASE("Parse VRMLFile From File - Valid Input - Actin", "[parsing][valid][fr
 }
 
 TEST_CASE("Parse VRMLFile From File - Valid Input - Nucleus", "[parsing][valid][fromfile]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(std::filesystem::path(ReadTestInfo().baseInputPath) /
                                        std::filesystem::path(ReadTestInfo().testFiles.at("NUCLEUS")),
       manager);
@@ -391,7 +391,7 @@ TEST_CASE("Parse VRMLFile From File - Valid Input - Nucleus", "[parsing][valid][
 }
 
 TEST_CASE("Parse VRMLFile From File - Valid Input - Tubulin", "[parsing][valid][fromfile]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(std::filesystem::path(ReadTestInfo().baseInputPath) /
                                        std::filesystem::path(ReadTestInfo().testFiles.at("TUBULIN")),
       manager);
@@ -408,7 +408,7 @@ TEST_CASE("Parse VRMLFile From File - Valid Input - Tubulin", "[parsing][valid][
 
 // TEST_CASE("Parse VRMLFile From File - Valid Input - Tile 3x5 - 5 Stitch", "[parsing][valid][fromfile]") {
 //
-//     vrml_proc::parser::VrmlNodeManager manager;
+//     vrml_proc::parser::service::VrmlNodeManager manager;
 //     auto parseResult = ParseVrmlFile(std::filesystem::path(ReadTestInfo().baseInputPath) /
 //     std::filesystem::path(ReadTestInfo().testFiles.at("TILES")), manager); REQUIRE(parseResult);
 //

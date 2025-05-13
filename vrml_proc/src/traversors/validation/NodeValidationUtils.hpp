@@ -94,7 +94,7 @@ namespace vrml_proc::traversor::validation {
         std::shared_ptr<error::NodeValidationError>>
     ExtractVrmlNodeWithValidation(const std::string& fieldName,
         const std::vector<vrml_proc::parser::VrmlField>& fields,
-        const vrml_proc::parser::VrmlNodeManager& manager) {  //
+        const vrml_proc::parser::service::VrmlNodeManager& manager) {  //
 
       using namespace vrml_proc::parser::model::utils::VrmlFieldExtractor;
       using namespace vrml_proc::parser;
@@ -170,7 +170,7 @@ namespace vrml_proc::traversor::validation {
         std::shared_ptr<error::NodeValidationError>>
     ExtractVrmlNodeArrayWithValidation(const std::string& fieldName,
         const std::vector<vrml_proc::parser::VrmlField>& fields,
-        const vrml_proc::parser::VrmlNodeManager& manager,
+        const vrml_proc::parser::service::VrmlNodeManager& manager,
         bool enableSingleArrayNode = false) {  //
 
       using namespace vrml_proc::parser::model::utils::VrmlFieldExtractor;

@@ -142,7 +142,7 @@ namespace vrmlx {
 
     // -------------------------------------------------------------------------------------------------------------
 
-    VrmlNodeManager manager;
+    service::VrmlNodeManager manager;
     VrmlParser parser(manager);
     auto parseResult = parser.Parse(BufferView(readResult.value().GetBegin(), readResult.value().GetEnd()));
     if (parseResult.has_error()) {

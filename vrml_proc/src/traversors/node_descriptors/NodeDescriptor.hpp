@@ -128,7 +128,7 @@ namespace vrml_proc::traversor::node_descriptor {
     cpp::result<std::shared_ptr<NodeView>,
         std::shared_ptr<vrml_proc::traversor::validation::error::NodeValidationError>>
     Validate(const vrml_proc::parser::VrmlNode& node,
-        const vrml_proc::parser::VrmlNodeManager& manager,
+        const vrml_proc::parser::service::VrmlNodeManager& manager,
         bool checkName = false) {  //
 
       using namespace vrml_proc::traversor::validation::NodeValidationUtils;

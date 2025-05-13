@@ -4,7 +4,7 @@
 #include "VrmlNode.hpp"
 #include "VrmlNodeManager.hpp"
 
-namespace vrml_proc::parser::VrmlNodeManagerPopulator {
+namespace vrml_proc::parser::service::VrmlNodeManagerPopulator {
   void Populate(VrmlNodeManager& manager, const VrmlNode& node) {  //
 
     using namespace model::utils::VrmlFieldExtractor;
@@ -35,4 +35,4 @@ namespace vrml_proc::parser::VrmlNodeManagerPopulator {
       }
     }
   }
-}  // namespace vrml_proc::parser::VrmlNodeManagerPopulator
+}  // namespace vrml_proc::parser::service::VrmlNodeManagerPopulator

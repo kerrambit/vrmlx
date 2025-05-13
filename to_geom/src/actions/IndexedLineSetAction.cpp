@@ -53,7 +53,7 @@ namespace to_geom::action {
      * Vec3fArrayConversionContext, which stores a reference to data we need. Note that this geometry primitive node
      * should have been validated already in the IndexedLineSet handler.
      */
-    vrml_proc::parser::VrmlNodeManager manager;
+    vrml_proc::parser::service::VrmlNodeManager manager;
     vrml_proc::action::ConversionContextActionMap<Vec3fArrayConversionContext> map;
     map.AddAction(
         "Coordinate", [this](vrml_proc::traversor::handler::HandlerToActionBundle<Vec3fArrayConversionContext> data) {

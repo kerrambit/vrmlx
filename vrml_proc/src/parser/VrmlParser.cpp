@@ -37,7 +37,7 @@ namespace vrml_proc::parser {
       {
         auto timer = ScopedTimer(time);
         for (const auto& root : parsedData) {
-          VrmlNodeManagerPopulator::Populate(m_manager, root);
+          service::VrmlNodeManagerPopulator::Populate(m_manager, root);
         }
       }
       LogInfo(

@@ -188,7 +188,7 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
   inline cpp::result<std::reference_wrapper<const vrml_proc::parser::VrmlNode>, ExtractVrmlNodeError>
   ExtractVrmlNodeExtended(const std::string& name,
       const std::vector<vrml_proc::parser::VrmlField>& fields,
-      const vrml_proc::parser::VrmlNodeManager& manager,
+      const vrml_proc::parser::service::VrmlNodeManager& manager,
       std::string& invalidType,
       std::string& useId) {  //
 
@@ -232,7 +232,7 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
   inline cpp::result<std::reference_wrapper<const vrml_proc::parser::VrmlNode>, ExtractVrmlNodeError> ExtractVrmlNode(
       const std::string& name,
       const std::vector<vrml_proc::parser::VrmlField>& fields,
-      const vrml_proc::parser::VrmlNodeManager& manager) {
+      const vrml_proc::parser::service::VrmlNodeManager& manager) {
     std::string invalidType;
     std::string useId;
     return ExtractVrmlNodeExtended(name, fields, manager, invalidType, useId);
@@ -313,7 +313,7 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
   inline cpp::result<std::reference_wrapper<const vrml_proc::parser::VrmlNode>, ExtractVrmlNodeFromVariantError>
   ExtractVrmlNodeFromVariantExtended(const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
                                          boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant,
-      const vrml_proc::parser::VrmlNodeManager& manager,
+      const vrml_proc::parser::service::VrmlNodeManager& manager,
       std::string& invalidType,
       std::string& useId) {  //
 
@@ -352,7 +352,7 @@ namespace vrml_proc::parser::model::utils::VrmlFieldExtractor {
   inline cpp::result<std::reference_wrapper<const vrml_proc::parser::VrmlNode>, ExtractVrmlNodeFromVariantError>
   ExtractVrmlNodeFromVariant(const boost::variant<boost::recursive_wrapper<vrml_proc::parser::VrmlNode>,
                                  boost::recursive_wrapper<vrml_proc::parser::UseNode>>& variant,
-      const vrml_proc::parser::VrmlNodeManager& manager) {
+      const vrml_proc::parser::service::VrmlNodeManager& manager) {
     std::string invalidType;
     std::string useId;
     return ExtractVrmlNodeFromVariantExtended(variant, manager, invalidType, useId);

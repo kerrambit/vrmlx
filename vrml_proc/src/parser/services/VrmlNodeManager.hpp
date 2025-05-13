@@ -9,7 +9,7 @@
 #include "VrmlNode.hpp"
 #include "VrmlProcExport.hpp"
 
-namespace vrml_proc::parser {
+namespace vrml_proc::parser::service {
   /**
    * @brief Manages DEF-defined VRML nodes, enabling lookup and registration.
    *
@@ -49,4 +49,4 @@ namespace vrml_proc::parser {
    private:
     std::unordered_map<std::string, std::reference_wrapper<const VrmlNode>> m_definitionNodes;
   };
-}  // namespace vrml_proc::parser
+}  // namespace vrml_proc::parser::service

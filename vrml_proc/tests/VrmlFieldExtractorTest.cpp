@@ -31,7 +31,7 @@
 TEST_CASE("Initialization") { vrml_proc::core::logger::InitLogging(); }
 
 TEST_CASE("IsNamePresent - Valid", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(first, manager);
   REQUIRE(parseResult);
 
@@ -42,7 +42,7 @@ TEST_CASE("IsNamePresent - Valid", "[valid]") {
 }
 
 TEST_CASE("IsNamePresent - Inalid", "[invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(first, manager);
   REQUIRE(parseResult);
 
@@ -53,7 +53,7 @@ TEST_CASE("IsNamePresent - Inalid", "[invalid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Missing Field", "[invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(nodesArray, manager);
   REQUIRE(parseResult);
 
@@ -68,7 +68,7 @@ TEST_CASE("ExtractByNameExtended - Missing Field", "[invalid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Validation Error", "[invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(nodesArray, manager);
   REQUIRE(parseResult);
 
@@ -84,7 +84,7 @@ TEST_CASE("ExtractByNameExtended - Validation Error", "[invalid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - VrmlNode Non-recursive I.", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(nodesArray, manager);
   REQUIRE(parseResult);
 
@@ -99,7 +99,7 @@ TEST_CASE("ExtractByNameExtended - VrmlNode Non-recursive I.", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - VrmlNode Non-recursive II.", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(nodesArray, manager);
   REQUIRE(parseResult);
 
@@ -116,7 +116,7 @@ TEST_CASE("ExtractByNameExtended - VrmlNode Non-recursive II.", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - VrmlNode Array", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(children, manager);
   REQUIRE(parseResult);
 
@@ -139,7 +139,7 @@ TEST_CASE("ExtractByNameExtended - VrmlNode Array", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Empty Array of Vec2f's", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(emptyArray, manager);
   REQUIRE(parseResult);
 
@@ -154,7 +154,7 @@ TEST_CASE("ExtractByNameExtended - Empty Array of Vec2f's", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Empty Array of Vec3f's", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(emptyArray, manager);
   REQUIRE(parseResult);
 
@@ -170,7 +170,7 @@ TEST_CASE("ExtractByNameExtended - Empty Array of Vec3f's", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Empty Array of Int32's", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(emptyArray, manager);
   REQUIRE(parseResult);
 
@@ -185,7 +185,7 @@ TEST_CASE("ExtractByNameExtended - Empty Array of Int32's", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Empty Array of VRML nodes", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(emptyArray, manager);
   REQUIRE(parseResult);
 
@@ -200,7 +200,7 @@ TEST_CASE("ExtractByNameExtended - Empty Array of VRML nodes", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - String", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(simpleEntityTypes, manager);
   REQUIRE(parseResult);
 
@@ -215,7 +215,7 @@ TEST_CASE("ExtractByNameExtended - String", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Bool", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(simpleEntityTypes, manager);
   REQUIRE(parseResult);
 
@@ -230,7 +230,7 @@ TEST_CASE("ExtractByNameExtended - Bool", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Vec3f", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(simpleEntityTypes, manager);
   REQUIRE(parseResult);
 
@@ -245,7 +245,7 @@ TEST_CASE("ExtractByNameExtended - Vec3f", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Vec3fArray", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(simpleEntityTypes, manager);
   REQUIRE(parseResult);
 
@@ -261,7 +261,7 @@ TEST_CASE("ExtractByNameExtended - Vec3fArray", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Vec4", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(simpleEntityTypes, manager);
   REQUIRE(parseResult);
 
@@ -276,7 +276,7 @@ TEST_CASE("ExtractByNameExtended - Vec4", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Int32Array", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(simpleEntityTypes, manager);
   REQUIRE(parseResult);
 
@@ -292,7 +292,7 @@ TEST_CASE("ExtractByNameExtended - Int32Array", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - float", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(simpleEntityTypes, manager);
   REQUIRE(parseResult);
 
@@ -307,7 +307,7 @@ TEST_CASE("ExtractByNameExtended - float", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - int32", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(simpleEntityTypes, manager);
   REQUIRE(parseResult);
 
@@ -322,7 +322,7 @@ TEST_CASE("ExtractByNameExtended - int32", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Vec2f", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(simpleEntityTypes, manager);
   REQUIRE(parseResult);
 
@@ -337,7 +337,7 @@ TEST_CASE("ExtractByNameExtended - Vec2f", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Vec2fArray", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(simpleEntityTypes, manager);
   REQUIRE(parseResult);
 
@@ -357,7 +357,7 @@ TEST_CASE("ExtractByNameExtended - Vec2fArray", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - UseNode", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(nodesArray, manager);
   REQUIRE(parseResult);
 
@@ -373,7 +373,7 @@ TEST_CASE("ExtractByNameExtended - UseNode", "[valid]") {
 }
 
 TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - Invalid I.", "[invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(children, manager);
   REQUIRE(parseResult);
 
@@ -394,7 +394,7 @@ TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - Invalid I.", "[i
 }
 
 TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - Invalid II.", "[invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(children, manager);
   REQUIRE(parseResult);
 
@@ -414,7 +414,7 @@ TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - Invalid II.", "[
 }
 
 TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - VrmlNode", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(children, manager);
   REQUIRE(parseResult);
 
@@ -436,7 +436,7 @@ TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - VrmlNode", "[val
 }
 
 TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - UseNode", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(children, manager);
   REQUIRE(parseResult);
 
@@ -458,7 +458,7 @@ TEST_CASE("ExtractVrmlNodeFromVariantWithoutResolvingExtended - UseNode", "[vali
 }
 
 TEST_CASE("ExtractVrmlNodeFromVariantExtended - VrmlNode", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(children, manager);
   REQUIRE(parseResult);
 
@@ -483,7 +483,7 @@ TEST_CASE("ExtractVrmlNodeFromVariantExtended - VrmlNode", "[valid]") {
 }
 
 TEST_CASE("ExtractVrmlNodeFromVariantExtended - UseNode", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(children, manager);
   REQUIRE(parseResult);
 
@@ -506,7 +506,7 @@ TEST_CASE("ExtractVrmlNodeFromVariantExtended - UseNode", "[valid]") {
 }
 
 TEST_CASE("ExtractVrmlNodeFromVariantExtended - UseNode Is Missing", "[invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(children, manager);
   REQUIRE(parseResult);
 
@@ -530,7 +530,7 @@ TEST_CASE("ExtractVrmlNodeFromVariantExtended - UseNode Is Missing", "[invalid]"
 }
 
 TEST_CASE("ExtractVrmlNodeExtended - Field Not Found", "[invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(nodesArray, manager);
   REQUIRE(parseResult);
 
@@ -546,7 +546,7 @@ TEST_CASE("ExtractVrmlNodeExtended - Field Not Found", "[invalid]") {
 }
 
 TEST_CASE("ExtractVrmlNodeExtended - Validation Error", "[invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(nodesArray, manager);
   REQUIRE(parseResult);
 
@@ -563,7 +563,7 @@ TEST_CASE("ExtractVrmlNodeExtended - Validation Error", "[invalid]") {
 }
 
 TEST_CASE("ExtractVrmlNodeExtended - Missing USE Id Error", "[invalid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(nodesArray, manager);
   REQUIRE(parseResult);
 
@@ -580,7 +580,7 @@ TEST_CASE("ExtractVrmlNodeExtended - Missing USE Id Error", "[invalid]") {
 }
 
 TEST_CASE("ExtractVrmlNodeExtended - USENode", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(nodesArray, manager);
   REQUIRE(parseResult);
 
@@ -596,7 +596,7 @@ TEST_CASE("ExtractVrmlNodeExtended - USENode", "[valid]") {
 }
 
 TEST_CASE("ExtractVrmlNodeExtended - VrmlNode", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(nodesArray, manager);
   REQUIRE(parseResult);
 
@@ -613,7 +613,7 @@ TEST_CASE("ExtractVrmlNodeExtended - VrmlNode", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Edge cases - Int as int", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(floatIntEdgeCase, manager);
   REQUIRE(parseResult);
 
@@ -628,7 +628,7 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Int as int", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Edge cases - Int as float", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(floatIntEdgeCase, manager);
   REQUIRE(parseResult);
 
@@ -643,7 +643,7 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Int as float", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Edge cases - Float without decimal as int", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(floatIntEdgeCase, manager);
   REQUIRE(parseResult);
 
@@ -657,7 +657,7 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Float without decimal as int", "
 }
 
 TEST_CASE("ExtractByNameExtended - Edge cases - Float without decimal as float", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(floatIntEdgeCase, manager);
   REQUIRE(parseResult);
 
@@ -673,7 +673,7 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Float without decimal as float",
 }
 
 TEST_CASE("ExtractByNameExtended - Edge cases - Float as int", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(floatIntEdgeCase, manager);
   REQUIRE(parseResult);
 
@@ -687,7 +687,7 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Float as int", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Edge cases - Float as float", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(floatIntEdgeCase, manager);
   REQUIRE(parseResult);
 
@@ -703,7 +703,7 @@ TEST_CASE("ExtractByNameExtended - Edge cases - Float as float", "[valid]") {
 }
 
 TEST_CASE("ExtractByNameExtended - Edge cases - Complicated example", "[valid]") {
-  vrml_proc::parser::VrmlNodeManager manager;
+  vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(complicatedEdgeCase, manager);
   REQUIRE(parseResult);
 
