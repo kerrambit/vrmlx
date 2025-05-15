@@ -592,20 +592,20 @@ TEST_CASE("IndexedFaceSetCalculator - valid III.", "[valid]") {
   indices.integers.emplace_back(2);
   indices.integers.emplace_back(3);
   indices.integers.emplace_back(-1);
+  indices.integers.emplace_back(1);
   indices.integers.emplace_back(0);
-  indices.integers.emplace_back(1);
-  indices.integers.emplace_back(4);
-  indices.integers.emplace_back(-1);
-  indices.integers.emplace_back(1);
-  indices.integers.emplace_back(2);
   indices.integers.emplace_back(4);
   indices.integers.emplace_back(-1);
   indices.integers.emplace_back(2);
-  indices.integers.emplace_back(3);
+  indices.integers.emplace_back(1);
   indices.integers.emplace_back(4);
   indices.integers.emplace_back(-1);
   indices.integers.emplace_back(3);
+  indices.integers.emplace_back(2);
+  indices.integers.emplace_back(4);
+  indices.integers.emplace_back(-1);
   indices.integers.emplace_back(0);
+  indices.integers.emplace_back(3);
   indices.integers.emplace_back(4);
   indices.integers.emplace_back(-1);
 
