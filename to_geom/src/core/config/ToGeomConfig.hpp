@@ -60,7 +60,6 @@ namespace to_geom::core::config {
      */
     struct IfsSettigs {
       bool checkRange = true;
-      bool onlyTriangularFaces = false;
     };
 
     /**
@@ -93,7 +92,7 @@ namespace to_geom::core::config {
     ToGeomConfig()
         : vrml_proc::core::config::VrmlProcConfig(),
           exportFormat(to_geom::core::io::ExportFormat::Stl),
-          ifsSettings({true, false}),
+          ifsSettings({true}),
           parallelismSettings({true, std::thread::hardware_concurrency()}) {}
 
     to_geom::core::io::ExportFormat exportFormat = to_geom::core::io::ExportFormat::Stl;
@@ -132,7 +131,6 @@ namespace to_geom::core::config {
           if (json.value().contains("IFSSettings") && (json.value())["IFSSettings"].is_object()) {
             const auto& ifs = (json.value())["IFSSettings"];
             ifsSettings.checkRange = ifs.value("checkRange", true);
-            ifsSettings.onlyTriangularFaces = ifs.value("onlyTriangularFaces", false);
           }
           if (json.value().contains("parallelismSettings") && (json.value())["parallelismSettings"].is_object()) {
             const auto& parallelism = (json.value())["parallelismSettings"];

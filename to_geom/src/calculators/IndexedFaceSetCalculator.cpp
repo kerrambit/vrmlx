@@ -1,7 +1,9 @@
 #include "IndexedFaceSetCalculator.hpp"
 
 #include <cstdint>
+#include <functional>
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 #include <CGAL/Kernel/interface_macros.h>
@@ -11,46 +13,27 @@
 #include <result.hpp>
 
 #include "CalculatorError.hpp"
+#include "CalculatorResult.hpp"
+#include "CalculatorUtils.hpp"
 #include "CGALBaseTypesForVrml.hpp"
-#include "Vec3f.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
 #include "Int32Array.hpp"
 #include "Logger.hpp"
 #include "ManualTimer.hpp"
 #include "Mesh.hpp"
-#include "ModelValidationError.hpp"
 #include "Range.hpp"
 #include "UnsupportedOperationError.hpp"
-#include "CalculatorResult.hpp"
-#include "IndexedTriangularFaceSetCalculator.hpp"
-
-static to_geom::calculator::CalculatorResult ReturnVertexIndexOutOfRangeError(
-    const vrml_proc::core::utils::Range<int32_t>& range, int32_t actualValue) {  //
-
-  using namespace to_geom::calculator::error;
-  using vrml_proc::parser::model::validator::error::NumberOutOfRangeError;
-
-  return cpp::fail(std::make_shared<IndexedFaceSetCalculatorError>()
-                   << (std::make_shared<PropertiesError>()
-                          << (std::make_shared<VertexIndexOutOfRangeError>()
-                                 << std::make_shared<NumberOutOfRangeError<int32_t>>(range, actualValue))));
-}
+#include "Vec3f.hpp"
+#include "Vec3fArray.hpp"
 
 namespace to_geom::calculator {
+
   to_geom::calculator::CalculatorResult IndexedFaceSetCalculator::Generate3DMesh(
       std::reference_wrapper<const vrml_proc::parser::model::Int32Array> coordinateIndices,
       std::reference_wrapper<const vrml_proc::parser::model::Vec3fArray> coordinates,
       const vrml_proc::math::TransformationMatrix& matrix,
-      bool checkRange,
-      bool onlyTriangularFaces) {  //
-
-    // When it is guaranteed that coordinate indices form only triangular faces, we can call specializedand optimazed
-    // calculator.
-    if (onlyTriangularFaces) {
-      to_geom::calculator::IndexedTriangularFaceSetCalculator calculator;
-      return calculator.Generate3DMesh(coordinateIndices, coordinates, matrix, checkRange);
-    }
+      bool checkRange) {  //
 
     using to_geom::calculator::error::IndexedFaceSetCalculatorError;
     using to_geom::calculator::error::InvalidNumberOfCoordinatesForFaceError;
