@@ -48,12 +48,12 @@ add_library(togeom SHARED
 
     # Calculators.
     "src/calculators/CalculatorResult.hpp"
+    "src/calculators/CalculatorUtils.hpp"
     "src/calculators/BoxCalculator.hpp"
     "src/calculators/BoxCalculator.cpp"
     "src/calculators/IndexedFaceSetCalculator.hpp"
     "src/calculators/IndexedFaceSetCalculator.cpp"
-    "src/calculators/IndexedTriangularFaceSetCalculator.hpp"
-    "src/calculators/IndexedTriangularFaceSetCalculator.cpp"
+    
     "src/calculators/IndexedLineSetCalculator.hpp"
     "src/calculators/IndexedLineSetCalculator.cpp"
     "src/calculators/MeshSimplificator.hpp"

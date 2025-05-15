@@ -3,8 +3,8 @@
 #include <functional>
 
 #include "CalculatorResult.hpp"
-#include "TransformationMatrix.hpp"
 #include "Int32Array.hpp"
+#include "TransformationMatrix.hpp"
 #include "Vec3fArray.hpp"
 
 #include "ToGeomExport.hpp"
@@ -23,18 +23,14 @@ namespace to_geom::calculator {
      * @param matrix transformation matrix applied to points
      * @param checkRange flag indicating if coordinate index should be checked for range when accessing `coordinates`
      * list
-     * @param onlyTriangularFaces flag indicating the `coordinatesIndices` contain only tringular faces
-     *
-     * @important It is crucial to set `checkRange` to false and mainly `onlyTriangularFaces` to true (if the data are
-     * in this representation), as the calculations are hugely optimilized for this case.
-     *
+     * @note You may want to set `checkRange` to false, if you know the indicis in your file are valid, as the
+     * calculations are (slightly) optimzed for this case.
      * @returns calculator result (mesh object or error if generation failed)
      */
     to_geom::calculator::CalculatorResult Generate3DMesh(
         std::reference_wrapper<const vrml_proc::parser::model::Int32Array> coordinateIndices,
         std::reference_wrapper<const vrml_proc::parser::model::Vec3fArray> coordinates,
         const vrml_proc::math::TransformationMatrix& matrix,
-        bool checkRange = true,
-        bool onlyTriangularFaces = false);
+        bool checkRange = true);
   };
 }  // namespace to_geom::calculator

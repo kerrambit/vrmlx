@@ -80,11 +80,10 @@ namespace to_geom::action {
     std::reference_wrapper<const Int32Array> indices = m_properties.coordIndex;
     TransformationMatrix matrix = m_geometryProperties.matrix;
     bool checkRange = m_properties.config->ifsSettings.checkRange;
-    bool onlyTriangularFaces = m_properties.config->ifsSettings.onlyTriangularFaces;
 
     result->Add([=]() {
       to_geom::calculator::IndexedFaceSetCalculator calculator = to_geom::calculator::IndexedFaceSetCalculator();
-      return calculator.Generate3DMesh(indices, points, matrix, checkRange, onlyTriangularFaces);
+      return calculator.Generate3DMesh(indices, points, matrix, checkRange);
     });
 
     return result;

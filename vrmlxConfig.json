@@ -18,7 +18,6 @@
     "percentageOfAllEdgesToSimplify": 80
   },
   "IFSSettings": {
-    "checkRange": false,
-    "onlyTriangularFaces": true
+    "checkRange": false
   }
 }
