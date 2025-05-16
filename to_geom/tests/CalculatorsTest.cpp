@@ -665,7 +665,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range c
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, false, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, false);
     REQUIRE(result.has_value());
     REQUIRE(result.value()->is_empty());
   }
@@ -696,7 +696,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range c
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, false, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, false);
     REQUIRE(result.has_value());
 
     GENERATE_TEST_OUTPUT_FILENAME(filepath);
@@ -748,7 +748,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces without their range c
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, false, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, false);
     REQUIRE(result.has_value());
     GENERATE_TEST_OUTPUT_FILENAME(filepath);
     to_geom::core::io::StlFileWriter writer;
@@ -767,7 +767,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true);
     REQUIRE(result.has_value());
     REQUIRE(result.value()->is_empty());
   }
@@ -798,7 +798,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true);
     REQUIRE(result.has_value());
 
     GENERATE_TEST_OUTPUT_FILENAME(filepath);
@@ -850,7 +850,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true);
     REQUIRE(result.has_value());
     GENERATE_TEST_OUTPUT_FILENAME(filepath);
     to_geom::core::io::StlFileWriter writer;
@@ -875,7 +875,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::EmptyArrayError>(result.error()));
     LogError(result.error());
@@ -903,7 +903,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -932,7 +932,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -961,7 +961,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -990,7 +990,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -1019,7 +1019,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));
@@ -1048,7 +1048,7 @@ TEST_CASE("IndexedFaceSetCalculator (only triangular faces with their range chec
   vrml_proc::math::TransformationMatrix matrix;
 
   {
-    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true, true);
+    auto result = calculator.Generate3DMesh(std::cref(indices), std::cref(points), matrix, true);
     REQUIRE(result.has_error());
     CHECK(CheckInnermostError<vrml_proc::parser::model::validator::error::NumberOutOfRangeError<int32_t>>(
         result.error()));

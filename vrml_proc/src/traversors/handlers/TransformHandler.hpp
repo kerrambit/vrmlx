@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <functional>
 
 #include <result.hpp>
 
@@ -9,6 +10,7 @@
 #include "ConversionContextActionMap.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
+#include "HandlerParameters.hpp"
 #include "HandlerToActionBundle.hpp"
 #include "Logger.hpp"
 #include "NodeTraversorError.hpp"
@@ -17,14 +19,13 @@
 #include "TraversorResult.hpp"
 #include "Vec3f.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
+#include "NodeView.hpp"
 
 // Forward declaration.
-namespace vrml_proc::traversor::VrmlNodeTraversor {
+namespace vrml_proc::traversor {
   template <ConversionContextable ConversionContext>
-  cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> Traverse(
-      vrml_proc::traversor::VrmlNodeTraversorParameters context,
-      const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap);
-}
+  class VrmlNodeTraversor;
+}  // namespace vrml_proc::traversor
 
 namespace vrml_proc::traversor::handler::TransformHandler {
   /**
@@ -38,9 +39,7 @@ namespace vrml_proc::traversor::handler::TransformHandler {
    * @returns ConversionContext object, or error if there is some error (in handler or in action)
    */
   template <ConversionContextable ConversionContext>
-  TraversorResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters params,
-      const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
-      std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {  //
+  TraversorResult<ConversionContext> Handle(HandlerParameters<ConversionContext> params) {  //
 
     using namespace vrml_proc::core::logger;
     using namespace vrml_proc::core::utils;
@@ -48,34 +47,44 @@ namespace vrml_proc::traversor::handler::TransformHandler {
     using namespace vrml_proc::parser::model;
     using namespace vrml_proc::traversor::utils;
 
-    LogDebug(FormatString("Handle VRML node <", params.node.header, ">."), LOGGING_INFO);
+    LogDebug(FormatString("Handle VRML node <", params.nodeView->GetName(), ">."), LOGGING_INFO);
 
     /** Update transformation data via copying. */
     Transformation transformationData;
-    transformationData.center = nd->GetField<std::reference_wrapper<const Vec3f>>("center").get();
-    transformationData.rotation = nd->GetField<std::reference_wrapper<const Vec4f>>("rotation").get();
-    transformationData.scale = nd->GetField<std::reference_wrapper<const Vec3f>>("scale").get();
-    transformationData.scaleOrientation = nd->GetField<std::reference_wrapper<const Vec4f>>("scaleOrientation").get();
-    transformationData.translation = nd->GetField<std::reference_wrapper<const Vec3f>>("translation").get();
+    /* auto& nodeView = params.nodeView;
+     using ConstVec3fRef = std::reference_wrapper<const Vec3f>;*/
+    // auto center = params.nodeView->template GetField<std::reference_wrapper<const Vec3f>>("center");
+    transformationData.center = params.nodeView->template GetField<std::reference_wrapper<const Vec3f>>("center").get();
+    transformationData.rotation =
+        params.nodeView->template GetField<std::reference_wrapper<const Vec4f>>("rotation").get();
+    transformationData.scale = params.nodeView->template GetField<std::reference_wrapper<const Vec3f>>("scale").get();
+    transformationData.scaleOrientation =
+        params.nodeView->template GetField<std::reference_wrapper<const Vec4f>>("scaleOrientation").get();
+    transformationData.translation =
+        params.nodeView->template GetField<std::reference_wrapper<const Vec3f>>("translation").get();
 
     TransformationMatrix transformation = UpdateTransformationMatrix(params.transformation, transformationData);
 
+    VrmlNodeTraversor<ConversionContext> traversor(params.manager, params.config, params.actionMap, params.headersMap);
+
     std::vector<std::shared_ptr<ConversionContext>> resolvedChildren;
-    for (const auto& child : nd->GetField<std::vector<std::reference_wrapper<const VrmlNode>>>("children")) {
-      auto recursiveResult = vrml_proc::traversor::VrmlNodeTraversor::Traverse<ConversionContext>(
-          {child, params.manager, params.IsDescendantOfShape, transformation, params.config}, actionMap);
+    for (const auto& child :
+        params.nodeView->template GetField<std::vector<std::reference_wrapper<const VrmlNode>>>("children")) {
+      auto traversorParams = VrmlNodeTraversorParameters(child, params.IsDescendantOfShape, transformation);
+      auto recursiveResult = traversor.Traverse(traversorParams);
       if (recursiveResult.has_error()) {
         return cpp::fail(recursiveResult.error());
       }
       resolvedChildren.push_back(recursiveResult.value());
     }
 
-    nd->SetShapeDescendant(params.IsDescendantOfShape);
-    nd->SetTransformationMatrix(transformation);
-    auto data = HandlerToActionBundle<ConversionContext>(nd);
+    params.nodeView->SetShapeDescendant(params.IsDescendantOfShape);
+    params.nodeView->SetTransformationMatrix(transformation);
+    auto data = HandlerToActionBundle<ConversionContext>(params.nodeView);
     data.ccGroup = resolvedChildren;
     data.config = params.config;
 
-    return ConversionContextActionExecutor::TryToExecute<ConversionContext>(actionMap, nd->GetName(), data);
+    return ConversionContextActionExecutor::TryToExecute<ConversionContext>(
+        params.actionMap, params.nodeView->GetName(), data);
   }
 }  // namespace vrml_proc::traversor::handler::TransformHandler

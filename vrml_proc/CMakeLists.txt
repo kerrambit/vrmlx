@@ -103,7 +103,6 @@ add_library(vrmlproc SHARED
     "src/traversors/VrmlNodeTraversor.hpp"
     "src/traversors/VrmlFileTraversor.hpp"
     "src/traversors/VrmlNodeTraversorParameters.hpp"
-    "src/traversors/VrmlFileTraversorParameters.hpp"
     "src/traversors/TraversorResult.hpp"
 
     "src/traversors/errors/FileTraversorError.hpp"
@@ -114,10 +113,11 @@ add_library(vrmlproc SHARED
     "src/traversors/node_descriptors/NodeView.hpp"
     
     "src/traversors/node_descriptors/NodeDescriptorMap.hpp"
-    "src/traversors/node_descriptors/VrmlCanonicalHeaders.hpp"
+    "src/traversors/node_descriptors/VrmlCanonicalHeaderHashes.hpp"
 
     "src/traversors/utils/ConversionContextActionExecutor.hpp"
 
+    "src/traversors/handlers/HandlerParameters.hpp"
     "src/traversors/handlers/AppearanceHandler.hpp"
     "src/traversors/handlers/BasicHandler.hpp"
     "src/traversors/handlers/ElevationGridHandler.hpp"

@@ -19,6 +19,7 @@
 #include "TraversorResult.hpp"
 #include "HandlerToActionBundle.hpp"
 #include "ConversionContextable.hpp"
+#include "HandlerParameters.hpp"
 
 namespace vrml_proc::traversor::handler::IndexedLineSetHandler {
   /**
@@ -32,9 +33,7 @@ namespace vrml_proc::traversor::handler::IndexedLineSetHandler {
    * @returns ConversionContext object, or error if there is some error (in handler or in action)
    */
   template <ConversionContextable ConversionContext>
-  TraversorResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters params,
-      const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
-      std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {  //
+  TraversorResult<ConversionContext> Handle(HandlerParameters<ConversionContext> params) {  //
 
     using namespace vrml_proc::core::logger;
     using namespace vrml_proc::core::utils;
@@ -42,31 +41,33 @@ namespace vrml_proc::traversor::handler::IndexedLineSetHandler {
     using namespace vrml_proc::traversor::error;
     using namespace vrml_proc::traversor::handler::HandlerUtils;
 
-    LogDebug(FormatString("Handle VRML node <", params.node.header, ">."), LOGGING_INFO);
+    LogDebug(FormatString("Handle VRML node <", params.nodeView->GetName(), ">."), LOGGING_INFO);
 
     // There are geometry primitive nodes 'coord' and 'color'. They are sent as VrmlNodes into the given action where
     // they can be traversed if needed. The main point is they are not traversed inside this handler. But they have to
     // be validated nonetheless.
     {
-      auto validationResult = ValidateGeometryPrimitiveNode(nd, params.manager, "color");
+      auto validationResult =
+          ValidateGeometryPrimitiveNode(params.nodeView, params.manager, "color", params.headersMap);
       if (validationResult.has_error()) {
         return cpp::fail(validationResult.error());
       }
     }
 
     {
-      auto validationResult = ValidateGeometryPrimitiveNode(nd, params.manager, "coord");
+      auto validationResult =
+          ValidateGeometryPrimitiveNode(params.nodeView, params.manager, "coord", params.headersMap);
       if (validationResult.has_error()) {
         return cpp::fail(validationResult.error());
       }
     }
 
-    nd->SetShapeDescendant(params.IsDescendantOfShape);
-    nd->SetTransformationMatrix(params.transformation);
-    auto data = HandlerToActionBundle<ConversionContext>(nd);
+    params.nodeView->SetShapeDescendant(params.IsDescendantOfShape);
+    params.nodeView->SetTransformationMatrix(params.transformation);
+    auto data = HandlerToActionBundle<ConversionContext>(params.nodeView);
     data.config = params.config;
 
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
-        actionMap, nd->GetName(), data);
+        params.actionMap, params.nodeView->GetName(), data);
   }
 }  // namespace vrml_proc::traversor::handler::IndexedLineSetHandler

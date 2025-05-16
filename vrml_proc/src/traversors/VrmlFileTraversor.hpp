@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "ConversionContextable.hpp"
 #include "ConversionContextActionMap.hpp"
 #include "Error.hpp"
 #include "FileTraversorError.hpp"
@@ -11,68 +12,93 @@
 #include "NullPointerError.hpp"
 #include "TraversorResult.hpp"
 #include "VrmlFile.hpp"
-#include "VrmlFileTraversorParameters.hpp"
+#include "VrmlHeaders.hpp"
 #include "VrmlNodeManager.hpp"
 #include "VrmlNodeTraversor.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
-#include "ConversionContextable.hpp"
+#include "VrmlProcConfig.hpp"
 
-namespace vrml_proc::traversor::VrmlFileTraversor {
+namespace vrml_proc::traversor {
   /**
-   * @brief Traverses the VRML file (connection of root nodes). Function calls for each root VRML node a
-   * VrmlNodeTraversor. Accumulated result is agggregated from all nodes into ConversionContext.
-   *
-   * @tparam ConversionContext type of conversion context (result type of the traversal)
-   * @param params parameters for the traversal
-   * @param actionMap map with defined actions
+   * @brief Class responsible for VrmlFile traversal.
+   * @tparam ConversionContext conversion context
    */
   template <ConversionContextable ConversionContext>
-  inline TraversorResult<ConversionContext> Traverse(const VrmlFileTraversorParameters& params,
-      const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap) {  //
+  class VrmlFileTraversor {
+   public:
+    /**
+     * @brief Constructs new object,
+     *
+     * @param manager manager
+     * @param config configuration file
+     * @param actionMap map with stored actions
+     * @param headersMap synonyms-to-canonical names mappings
+     */
+    VrmlFileTraversor(const vrml_proc::parser::service::VrmlNodeManager& manager,
+        std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config,
+        const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
+        const vrml_proc::traversor::node_descriptor::VrmlHeaders& headersMap)
+        : m_manager(manager), m_config(config), m_actionMap(actionMap), m_headersMap(headersMap) {}
 
-    using vrml_proc::core::error::NullPointerError;
-    using vrml_proc::math::TransformationMatrix;
-    using vrml_proc::traversor::error::FileTraversorError;
-    using namespace vrml_proc::core::logger;
-    using namespace vrml_proc::core::utils;
+    /**
+     * @brief Traverses the VRML file (collection of root nodes). Function calls for each root VRML node a
+     * VrmlNodeTraversor. Accumulated result is agggregated from all nodes and merged into ConversionContext.
+     *
+     * @tparam ConversionContext type of conversion context (result type of the traversal)
+     * @param file file to traverse
+     */
+    TraversorResult<ConversionContext> Traverse(const vrml_proc::parser::model::VrmlFile& file) {  //
 
-    LogInfo("Traverse VRML file.", LOGGING_INFO);
+      using vrml_proc::core::error::NullPointerError;
+      using vrml_proc::math::TransformationMatrix;
+      using vrml_proc::traversor::error::FileTraversorError;
+      using namespace vrml_proc::core::logger;
+      using namespace vrml_proc::core::utils;
 
-    ManualTimer timer;
-    timer.Start();
+      LogInfo("Traverse VRML file.", LOGGING_INFO);
 
-    std::shared_ptr<ConversionContext> traversedFile = std::make_shared<ConversionContext>();
+      ManualTimer timer;
+      timer.Start();
 
-    size_t index = 1;
-    for (const auto& root : params.file) {
-      LogInfo(FormatString("Found ", index, ". root node. It is type <", root.header, ">."), LOGGING_INFO);
+      std::shared_ptr<ConversionContext> traversedFile = std::make_shared<ConversionContext>();
+      auto traversor = VrmlNodeTraversor<ConversionContext>(m_manager, m_config, m_actionMap, m_headersMap);
 
-      auto result = vrml_proc::traversor::VrmlNodeTraversor::Traverse<ConversionContext>(
-          VrmlNodeTraversorParameters(root, params.manager, false, TransformationMatrix(), params.config), actionMap);
+      size_t index = 1;
+      for (const auto& root : file) {
+        LogInfo(FormatString("Found ", index, ". root node. It is type <", root.header, ">."), LOGGING_INFO);
 
-      if (result.has_error()) {
-        auto time = timer.End();
-        LogError(FormatString("While traversing ", index, ". root node <", root.header,
-                     "> error occured! The process was aborted after ", time, " seconds."),
-            LOGGING_INFO);
-        return cpp::fail(std::make_shared<FileTraversorError>(result.error(), root));
+        auto result = traversor.Traverse(VrmlNodeTraversorParameters(root, false, TransformationMatrix()));
+
+        if (result.has_error()) {
+          auto time = timer.End();
+          LogError(FormatString("While traversing ", index, ". root node <", root.header,
+                       "> error occured! The process was aborted after ", time, " seconds."),
+              LOGGING_INFO);
+          return cpp::fail(std::make_shared<FileTraversorError>(result.error(), root));
+        }
+
+        if (result.value() == nullptr) {
+          auto time = timer.End();
+          LogError(FormatString("While traversing ", index, ". root node <",
+                       "> unxpected internal error occured! The process was aborted after ", time, " seconds."),
+              LOGGING_INFO);
+          return cpp::fail(std::make_shared<FileTraversorError>(root) << std::make_shared<NullPointerError>());
+        }
+
+        traversedFile->Merge(result.value().get());
+        index++;
       }
 
-      if (result.value() == nullptr) {
-        auto time = timer.End();
-        LogError(FormatString("While traversing ", index, ". root node <",
-                     "> unxpected internal error occured! The process was aborted after ", time, " seconds."),
-            LOGGING_INFO);
-        return cpp::fail(std::make_shared<FileTraversorError>(root) << std::make_shared<NullPointerError>());
-      }
+      auto time = timer.End();
+      LogInfo(FormatString("Traversing finished successfully. The process took ", time, " seconds."), LOGGING_INFO);
 
-      traversedFile->Merge(result.value().get());
-      index++;
+      return traversedFile;
     }
 
-    auto time = timer.End();
-    LogInfo(FormatString("Traversing finished successfully. The process took ", time, " seconds."), LOGGING_INFO);
-
-    return traversedFile;
-  }
-}  // namespace vrml_proc::traversor::VrmlFileTraversor
+   private:
+    const vrml_proc::parser::service::VrmlNodeManager& m_manager;
+    std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> m_config;
+    const vrml_proc::action::ConversionContextActionMap<ConversionContext>& m_actionMap;
+    const vrml_proc::traversor::node_descriptor::VrmlHeaders& m_headersMap;
+  };
+}  // namespace vrml_proc::traversor

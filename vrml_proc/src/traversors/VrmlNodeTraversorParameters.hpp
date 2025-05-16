@@ -2,8 +2,6 @@
 
 #include "TransformationMatrix.hpp"
 #include "VrmlNode.hpp"
-#include "VrmlNodeManager.hpp"
-#include "VrmlProcConfig.hpp"
 
 namespace vrml_proc::traversor {
   /**
@@ -11,29 +9,19 @@ namespace vrml_proc::traversor {
    */
   struct VrmlNodeTraversorParameters {
     /**
-     * @brief Constructs an object.
+     * @brief Constructs new object.
      *
      * @param node node to traverse
-     * @param manager manager to use when resolving USE nodes
      * @param isDescendantOfShape flag if the node is descedent of a shape node
      * @param transformation current transformation in the form of a matrix
-     * @param config configuration file
      */
     VrmlNodeTraversorParameters(const vrml_proc::parser::model::VrmlNode& node,
-        const vrml_proc::parser::service::VrmlNodeManager& manager,
         bool isDescendantOfShape,
-        vrml_proc::math::TransformationMatrix transformation,
-        std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config)
-        : node(node),
-          manager(manager),
-          IsDescendantOfShape(isDescendantOfShape),
-          transformation(transformation),
-          config(config) {}
+        vrml_proc::math::TransformationMatrix transformation)
+        : node(node), IsDescendantOfShape(isDescendantOfShape), transformation(transformation) {}
 
     const vrml_proc::parser::model::VrmlNode& node;
-    const vrml_proc::parser::service::VrmlNodeManager& manager;
     bool IsDescendantOfShape;
     vrml_proc::math::TransformationMatrix transformation;
-    std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config;
   };
 }  // namespace vrml_proc::traversor

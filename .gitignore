@@ -34,6 +34,7 @@
 # Other
 out/
 .vs/
+./vrmlxConfig.json
 pypi/vrmlxpy/*.pyd
 vendor/pybind11
 vendor/CGAL-6.0.1
