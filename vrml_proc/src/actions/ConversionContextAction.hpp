@@ -10,7 +10,7 @@ namespace vrml_proc::action {
    * with method called Execute() which returns a shared pointer owning a ConversionContext object.
    * The Action object is encapsulation of a "program" or a "function", which returns a ConversionContext object.
    */
-  template <ConversionContextable ConversionContext>
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
   class ConversionContextAction {
    public:
     /**

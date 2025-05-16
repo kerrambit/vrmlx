@@ -40,6 +40,7 @@ namespace vrml_proc::core::config {
     bool ignoreUnknownNode = false;
     std::string logFileDirectory = std::filesystem::current_path().string();
     std::string logFileName = "vrmlproc";
+    std::string synonymsFile = std::filesystem::current_path().string();
 
     /**
      * @brief Loads configuration file from JSON file.
@@ -66,6 +67,7 @@ namespace vrml_proc::core::config {
         ignoreUnknownNode = json.value("ignoreUnknownNode", false);
         logFileDirectory = json.value("logFileDirectory", std::filesystem::current_path().string());
         logFileName = json.value("logFileName", "vrmlproc");
+        synonymsFile = json.value("synonymsFile", std::filesystem::current_path().string());
       } catch (const nlohmann::json::exception& e) {
         return cpp::fail(std::make_shared<vrml_proc::core::io::error::JsonError>(e.what()));
       }

@@ -30,6 +30,7 @@
 #include <ThreadTaskRunner.hpp>
 #include <MeshTask.hpp>
 #include <MeshSimplificator.hpp>
+#include <VrmlHeaders.hpp>
 
 static unsigned int g_task = 1;
 
@@ -39,9 +40,17 @@ static void PrintApplicationError(std::shared_ptr<vrml_proc::core::error::Error>
 }
 
 static void PrintProgressInformation(const std::string& information) {
-  std::cout << "[" << g_task << "/6]: " << information << std::endl;
+  std::cout << "[" << g_task << "/7]: " << information << std::endl;
   g_task++;
-  if (g_task > 6) {
+  if (g_task > 7) {
+    g_task = 1;
+  }
+}
+
+static void PrintProgressInformationWithWarning(const std::string& information) {
+  std::cout << "[" << g_task << "/7] Warning: " << information << std::endl;
+  g_task++;
+  if (g_task > 7) {
     g_task = 1;
   }
 }
@@ -100,7 +109,8 @@ namespace vrmlx {
     using namespace to_geom::core::config;
     using namespace vrml_proc::core::logger;
     using namespace vrml_proc::parser;
-    using namespace vrml_proc::traversor::VrmlFileTraversor;
+    using vrml_proc::traversor::VrmlFileTraversor;
+    using namespace vrml_proc::traversor::node_descriptor;
     using namespace to_geom::conversion_context;
     using namespace vrml_proc::core::io;
     using namespace to_geom::core::io;
@@ -131,6 +141,20 @@ namespace vrmlx {
 
     // -------------------------------------------------------------------------------------------------------------
 
+    VrmlHeaders headers;
+    auto headersResult = headers.Load(path(config->synonymsFile));
+    if (headersResult.has_error()) {
+      PrintProgressInformationWithWarning(
+          FormatString("file with synonyms could not be found, or JSON file is not valid. Default values will be used. "
+                       "See details:\n",
+              headersResult.error()->GetMessage()));
+    } else {
+      PrintProgressInformation(
+          FormatString("file with synonyms <", path(config->synonymsFile).string(), "> was succesfully read."));
+    }
+
+    // -------------------------------------------------------------------------------------------------------------
+
     MemoryMappedFileReader reader;
     auto readResult = reader.Read(path(inputFilename));
     if (readResult.has_error()) {
@@ -154,7 +178,8 @@ namespace vrmlx {
 
     // -------------------------------------------------------------------------------------------------------------
 
-    auto convertResult = Traverse<MeshTaskConversionContext>({parseResult.value(), manager, config}, GetActionMap());
+    auto traversor = VrmlFileTraversor<MeshTaskConversionContext>(manager, config, GetActionMap(), headers);
+    auto convertResult = traversor.Traverse(parseResult.value());
     if (convertResult.has_error()) {
       PrintApplicationError(convertResult.error());
       return false;

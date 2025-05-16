@@ -6,7 +6,6 @@
 #include "Vec2fArray.hpp"
 #include "Vec3fArray.hpp"
 #include "Vec4f.hpp"
-#include "VrmlCanonicalHeaders.hpp"
 
 namespace vrml_proc::traversor::node_descriptor {
 
@@ -36,7 +35,7 @@ namespace vrml_proc::traversor::node_descriptor {
     }
 
     nodeDescriptionMap["Group"] = []() {
-      auto nd = NodeDescriptor("Group", GetPossibleNamesForCanonical("Group"));
+      auto nd = NodeDescriptor("Group");
       static vrml_proc::parser::model::Vec3f defaultBoxCenter = {0.0f, 0.0f, 0.0f};
       static vrml_proc::parser::model::Vec3f defaultBoxSize = {-1.0f, -1.0f, -1.0f};
       nd.BindField("bboxSize", defaultBoxSize);
@@ -47,21 +46,20 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["Shape"] = []() {
-      auto nd = NodeDescriptor("Shape", GetPossibleNamesForCanonical("Shape"));
+      auto nd = NodeDescriptor("Shape");
       static vrml_proc::parser::model::VrmlNode defaultAppearance;
       static vrml_proc::parser::model::VrmlNode defaultGeometry;
-      nd.BindVrmlNode("appearance", GetPossibleNamesForCanonical("Appearance"), defaultAppearance);
+      nd.BindVrmlNode("appearance", {"Appearance"}, defaultAppearance);
       nd.BindVrmlNode("geometry",
-          {"Box", "VRMLBox", "Cone", "VRMLCone", "Cylinder", "VRMLCylinder", "ElevationGrid", "VRMLElevationGrid",
-              "Extrusion", "VRMLExtrusion", "IndexedFaceSet", "VRMLIndexedFaceSet", "IndexedLineSet",
-              "VRMLIndexedLineSet", "PointSet", "VRMLPointSet", "Sphere", "VRMLSphere", "Text", "VRMLText"},
+          {"Box", "Cone", "Cylinder", "ElevationGrid", "Extrusion", "IndexedFaceSet", "IndexedLineSet", "PointSet",
+              "Sphere", "Text"},
           defaultGeometry);  // TODO: fucntion will take set of names
 
       return nd;
     };
 
     nodeDescriptionMap["Box"] = []() {
-      auto nd = NodeDescriptor("Box", GetPossibleNamesForCanonical("Box"));
+      auto nd = NodeDescriptor("Box");
       static vrml_proc::parser::model::Vec3f defaultSize = {2.0f, 2.0f, 2.0f};
       nd.BindField("size", defaultSize);
 
@@ -69,7 +67,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["Color"] = []() {
-      auto nd = NodeDescriptor("Color", GetPossibleNamesForCanonical("Color"));
+      auto nd = NodeDescriptor("Color");
       static vrml_proc::parser::model::Vec3fArray defaultColor;
       nd.BindField("color", defaultColor);
 
@@ -77,7 +75,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["Coordinate"] = []() {
-      auto nd = NodeDescriptor("Coordinate", GetPossibleNamesForCanonical("Coordinate"));
+      auto nd = NodeDescriptor("Coordinate");
       static vrml_proc::parser::model::Vec3fArray defaultPoint;
       nd.BindField("point", defaultPoint);
 
@@ -85,7 +83,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["IndexedFaceSet"] = []() {
-      auto nd = NodeDescriptor("IndexedFaceSet", GetPossibleNamesForCanonical("IndexedFaceSet"));
+      auto nd = NodeDescriptor("IndexedFaceSet");
 
       static vrml_proc::parser::model::VrmlNode defaultColor;
       static vrml_proc::parser::model::VrmlNode defaultCoord;
@@ -114,16 +112,16 @@ namespace vrml_proc::traversor::node_descriptor {
       nd.BindField("solid", defaultSolid);
       nd.BindField("texCoordIndex", defaultTexCoordIndex);
 
-      nd.BindVrmlNode("color", GetPossibleNamesForCanonical("Color"), defaultColor);
-      nd.BindVrmlNode("coord", GetPossibleNamesForCanonical("Coordinate"), defaultCoord);
-      nd.BindVrmlNode("normal", GetPossibleNamesForCanonical("Normal"), defaultNormal);
-      nd.BindVrmlNode("texCoord", GetPossibleNamesForCanonical("TextureCoordinate"), defaultTexCoord);
+      nd.BindVrmlNode("color", {"Color"}, defaultColor);
+      nd.BindVrmlNode("coord", {"Coordinate"}, defaultCoord);
+      nd.BindVrmlNode("normal", {"Normal"}, defaultNormal);
+      nd.BindVrmlNode("texCoord", {"TextureCoordinate"}, defaultTexCoord);
 
       return nd;
     };
 
     nodeDescriptionMap["IndexedLineSet"] = []() {
-      auto nd = NodeDescriptor("IndexedLineSet", GetPossibleNamesForCanonical("IndexedLineSet"));
+      auto nd = NodeDescriptor("IndexedLineSet");
 
       static vrml_proc::parser::model::VrmlNode defaultColor;
       static vrml_proc::parser::model::VrmlNode defaultCoord;
@@ -136,14 +134,14 @@ namespace vrml_proc::traversor::node_descriptor {
       nd.BindField("colorPerVertex", defaultColorPerVertex);
       nd.BindField("coordIndex", defaultCoordIndex);
 
-      nd.BindVrmlNode("color", GetPossibleNamesForCanonical("Color"), defaultColor);
-      nd.BindVrmlNode("coord", GetPossibleNamesForCanonical("Coordinate"), defaultCoord);
+      nd.BindVrmlNode("color", {"Color"}, defaultColor);
+      nd.BindVrmlNode("coord", {"Coordinate"}, defaultCoord);
 
       return nd;
     };
 
     nodeDescriptionMap["Normal"] = []() {
-      auto nd = NodeDescriptor("Normal", GetPossibleNamesForCanonical("Normal"));
+      auto nd = NodeDescriptor("Normal");
       static vrml_proc::parser::model::Vec3fArray defaultVector;
       nd.BindField("vector", defaultVector);
 
@@ -151,7 +149,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["Switch"] = []() {
-      auto nd = NodeDescriptor("Switch", GetPossibleNamesForCanonical("Switch"));
+      auto nd = NodeDescriptor("Switch");
       static int32_t defaultWhichChoice = -1;
       nd.BindField("whichChoice", defaultWhichChoice);
       nd.BindVrmlNodeArray("choice");
@@ -160,7 +158,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["TextureCoordinate"] = []() {
-      auto nd = NodeDescriptor("TextureCoordinate", GetPossibleNamesForCanonical("TextureCoordinate"));
+      auto nd = NodeDescriptor("TextureCoordinate");
       static vrml_proc::parser::model::Vec2fArray defaultPoint;
       nd.BindField("point", defaultPoint);
 
@@ -168,11 +166,12 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["Transform"] = []() {
-      auto nd = NodeDescriptor("Transform", GetPossibleNamesForCanonical("Transform"));
+      auto nd = NodeDescriptor("Transform");
       static vrml_proc::parser::model::Vec3f defaultCenter;
       static vrml_proc::parser::model::Vec4f defaultRotation = vrml_proc::parser::model::Vec4f(0.0f, 0.0f, 1.0f, 0.0f);
       static vrml_proc::parser::model::Vec3f defaultScale = vrml_proc::parser::model::Vec3f(1.0f, 1.0f, 1.0f);
-      static vrml_proc::parser::model::Vec4f defaultScaleOrientation = vrml_proc::parser::model::Vec4f(0.0f, 0.0f, 1.0f, 0.0f);
+      static vrml_proc::parser::model::Vec4f defaultScaleOrientation =
+          vrml_proc::parser::model::Vec4f(0.0f, 0.0f, 1.0f, 0.0f);
       static vrml_proc::parser::model::Vec3f defaultTranslation;
       static vrml_proc::parser::model::Vec3f defaultBoxCenter = {0.0f, 0.0f, 0.0f};
       static vrml_proc::parser::model::Vec3f defaultBoxSize = {-1.0f, -1.0f, -1.0f};
@@ -189,7 +188,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["WorldInfo"] = []() {
-      auto nd = NodeDescriptor("WorldInfo", GetPossibleNamesForCanonical("WorldInfo"));
+      auto nd = NodeDescriptor("WorldInfo");
       static std::string defaultInfo = "";
       static std::string defaultTitle = "";
       nd.BindField("info", defaultInfo);
@@ -199,7 +198,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["Material"] = []() {
-      auto nd = NodeDescriptor("Material", GetPossibleNamesForCanonical("Material"));
+      auto nd = NodeDescriptor("Material");
       static vrml_proc::parser::model::float32_t defaultAmbientIntensity = 0.2f;
       static vrml_proc::parser::model::Vec3f defaultDiffuseColor = {0.8f, 0.8f, 0.8f};
       static vrml_proc::parser::model::Vec3f defaultEmissiveColor = {0.0f, 0.0f, 0.0f};
@@ -217,7 +216,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["ImageTexture"] = []() {
-      auto nd = NodeDescriptor("ImageTexture", GetPossibleNamesForCanonical("ImageTexture"));
+      auto nd = NodeDescriptor("ImageTexture");
       static std::string defaultUrl = "";
       static bool defaultRepeatS = true;
       static bool defaultRepeatT = true;
@@ -229,7 +228,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["PixelTexture"] = []() {
-      auto nd = NodeDescriptor("PixelTexture", GetPossibleNamesForCanonical("PixelTexture"));
+      auto nd = NodeDescriptor("PixelTexture");
       static vrml_proc::parser::model::Vec3f defaultImage = {0.0f, 0.0f, 0.0f};
       static bool defaultRepeatS = true;
       static bool defaultRepeatT = true;
@@ -241,7 +240,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["TextureTransform"] = []() {
-      auto nd = NodeDescriptor("TextureTransform", GetPossibleNamesForCanonical("TextureTransform"));
+      auto nd = NodeDescriptor("TextureTransform");
       static vrml_proc::parser::model::Vec2f defaultCenter = {0.0f, 0.0f};
       static vrml_proc::parser::model::float32_t defaultRotation = 0.0f;
       static vrml_proc::parser::model::Vec2f defaultScale = {1.0f, 1.0f};
@@ -255,22 +254,21 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["Appearance"] = []() {
-      auto nd = NodeDescriptor("Appearance", GetPossibleNamesForCanonical("Appearance"));
+      auto nd = NodeDescriptor("Appearance");
 
       static vrml_proc::parser::model::VrmlNode defaultMaterial;
       static vrml_proc::parser::model::VrmlNode defaultTexture;
       static vrml_proc::parser::model::VrmlNode defaultTextureTransform;
 
-      nd.BindVrmlNode("material", GetPossibleNamesForCanonical("Material"), defaultMaterial);
-      nd.BindVrmlNode(
-          "texture", GetPossibleNamesForCanonical("ImageTexture", "MovieTexture", "PixelTexture"), defaultTexture);
-      nd.BindVrmlNode("textureTransform", GetPossibleNamesForCanonical("TextureTransform"), defaultTextureTransform);
+      nd.BindVrmlNode("material", {"Material"}, defaultMaterial);
+      nd.BindVrmlNode("texture", {"ImageTexture", "MovieTexture", "PixelTexture"}, defaultTexture);
+      nd.BindVrmlNode("textureTransform", {"TextureTransform"}, defaultTextureTransform);
 
       return nd;
     };
 
     nodeDescriptionMap["Cone"] = []() {
-      auto nd = NodeDescriptor("Cone", GetPossibleNamesForCanonical("Cone"));
+      auto nd = NodeDescriptor("Cone");
 
       static vrml_proc::parser::model::float32_t defaultBottomRadius = 1.0f;
       static vrml_proc::parser::model::float32_t defaultHeight = 2.0f;
@@ -285,7 +283,7 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["Cylinder"] = []() {
-      auto nd = NodeDescriptor("Cylinder", GetPossibleNamesForCanonical("Cylinder"));
+      auto nd = NodeDescriptor("Cylinder");
 
       static bool defaultBottom = true;
       static vrml_proc::parser::model::float32_t defaultHeight = 2.0f;
@@ -302,14 +300,17 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["ElevationGrid"] = []() {
-      auto nd = NodeDescriptor("ElevationGrid", GetPossibleNamesForCanonical("ElevationGrid"));
+      auto nd = NodeDescriptor("ElevationGrid");
 
       static vrml_proc::parser::model::VrmlNode defaultColor;
       static vrml_proc::parser::model::VrmlNode defaultNormal;
       static vrml_proc::parser::model::VrmlNode defaultTexCoord;
 
-      // static vrml_proc::parser::Float32Array defaultHeight; // TODO: first Float32Array have to be implemented in
-      // parser
+      /**
+       * @todo New type `Float32Array` have to be implemented in parser.
+       */
+
+      // static vrml_proc::parser::Float32Array defaultHeight;
       static bool defaultCcw = true;
       static bool defaultColorPerVertex = true;
       static vrml_proc::parser::model::float32_t defaultCreaseAngle = 0.0f;
@@ -331,15 +332,15 @@ namespace vrml_proc::traversor::node_descriptor {
       nd.BindField("zDimension", defaultZDimension);
       nd.BindField("zSpacing", defaultZSpacing);
 
-      nd.BindVrmlNode("color", GetPossibleNamesForCanonical("Color"), defaultColor);
-      nd.BindVrmlNode("normal", GetPossibleNamesForCanonical("Normal"), defaultNormal);
-      nd.BindVrmlNode("texCoord", GetPossibleNamesForCanonical("TextureCoordinate"), defaultTexCoord);
+      nd.BindVrmlNode("color", {"Color"}, defaultColor);
+      nd.BindVrmlNode("normal", {"Normal"}, defaultNormal);
+      nd.BindVrmlNode("texCoord", {"TextureCoordinate"}, defaultTexCoord);
 
       return nd;
     };
 
     nodeDescriptionMap["Extrusion"] = []() {
-      auto nd = NodeDescriptor("Extrusion", GetPossibleNamesForCanonical("Extrusion"));
+      auto nd = NodeDescriptor("Extrusion");
 
       static bool defaultBeginCap = true;
       static bool defaultCcw = true;
@@ -369,19 +370,19 @@ namespace vrml_proc::traversor::node_descriptor {
     };
 
     nodeDescriptionMap["PointSet"] = []() {
-      auto nd = NodeDescriptor("PointSet", GetPossibleNamesForCanonical("PointSet"));
+      auto nd = NodeDescriptor("PointSet");
 
       static vrml_proc::parser::model::VrmlNode defaultColor;
       static vrml_proc::parser::model::VrmlNode defaultCoord;
 
-      nd.BindVrmlNode("color", GetPossibleNamesForCanonical("Color"), defaultColor);
-      nd.BindVrmlNode("coord", GetPossibleNamesForCanonical("Coordinate"), defaultCoord);
+      nd.BindVrmlNode("color", {"Color"}, defaultColor);
+      nd.BindVrmlNode("coord", {"Coordinate"}, defaultCoord);
 
       return nd;
     };
 
     nodeDescriptionMap["Sphere"] = []() {
-      auto nd = NodeDescriptor("Sphere", GetPossibleNamesForCanonical("Sphere"));
+      auto nd = NodeDescriptor("Sphere");
 
       static vrml_proc::parser::model::float32_t defaultRadius = 1.0f;
       nd.BindField("radius", defaultRadius);
@@ -395,14 +396,14 @@ namespace vrml_proc::traversor::node_descriptor {
   /**
    * @brief Helper function, which queires a NodeDescriptor from NodeDescriptorMap.
    *
-   * @param name name of the node to create
+   * @param name canonical name of the node to create
    * @returns node descriptor or nullopt, if given node descriptor cannot be found
    *
    * @todo This functionality rather should be excapsulated in the class together with NodeDescriptorMap.
    */
   inline std::optional<NodeDescriptor> CreateNodeDescriptor(const std::string& name) {
     auto descriptorMap = GetNodeDescriptorMap();
-    auto it = descriptorMap.find(ConvertToCanonicalHeader(name));
+    auto it = descriptorMap.find(name);
     if (it != descriptorMap.end()) {
       return it->second();
     }

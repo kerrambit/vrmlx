@@ -25,6 +25,7 @@
 #include <VrmlFileTraversor.hpp>
 #include <VrmlNodeManager.hpp>
 #include <VrmlProcConfig.hpp>
+#include <VrmlHeaders.hpp>
 
 #include "./TestCommon.hpp"
 
@@ -37,11 +38,13 @@
  */
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::model::VrmlFile> parseResult,
     const vrml_proc::parser::service::VrmlNodeManager& manager,
-    size_t expectedConversionContextSize) {
+    size_t expectedConversionContextSize) {  //
+
   auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
-  auto traversorResult =
-      vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
-          {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
+  auto headersMap = vrml_proc::traversor::node_descriptor::VrmlHeaders();
+  auto traversor = vrml_proc::traversor::VrmlFileTraversor<to_geom::conversion_context::MeshTaskConversionContext>(
+      manager, config, to_geom::conversion_context::GetActionMap(), headersMap);
+  auto traversorResult = traversor.Traverse(parseResult.value());
   if (traversorResult.has_error()) {
     LogError(traversorResult.error());
     return false;
@@ -73,9 +76,10 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
     const std::filesystem::path& outputFilepath,
     size_t expectedSubmeshesCount) {
   auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
-  auto traversorResult =
-      vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
-          {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
+  auto headersMap = vrml_proc::traversor::node_descriptor::VrmlHeaders();
+  auto traversor = vrml_proc::traversor::VrmlFileTraversor<to_geom::conversion_context::MeshTaskConversionContext>(
+      manager, config, to_geom::conversion_context::GetActionMap(), headersMap);
+  auto traversorResult = traversor.Traverse(parseResult.value());
   if (traversorResult.has_error()) {
     LogError(traversorResult.error());
     return false;
@@ -142,9 +146,10 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
     size_t expectedSubmeshesCount,
     std::shared_ptr<vrml_proc::core::config::VrmlProcConfig> config) {  //
 
-  auto traversorResult =
-      vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
-          {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
+  auto headersMap = vrml_proc::traversor::node_descriptor::VrmlHeaders();
+  auto traversor = vrml_proc::traversor::VrmlFileTraversor<to_geom::conversion_context::MeshTaskConversionContext>(
+      manager, config, to_geom::conversion_context::GetActionMap(), headersMap);
+  auto traversorResult = traversor.Traverse(parseResult.value());
   if (traversorResult.has_error()) {
     LogError(traversorResult.error());
     return false;
@@ -200,9 +205,10 @@ static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc
 static bool TraverseVrmlFileToMeshTask(vrml_proc::parser::ParserResult<vrml_proc::parser::model::VrmlFile> parseResult,
     const vrml_proc::parser::service::VrmlNodeManager& manager) {
   auto config = std::make_shared<to_geom::core::config::ToGeomConfig>();
-  auto traversorResult =
-      vrml_proc::traversor::VrmlFileTraversor::Traverse<to_geom::conversion_context::MeshTaskConversionContext>(
-          {parseResult.value(), manager, config}, to_geom::conversion_context::GetActionMap());
+  auto headersMap = vrml_proc::traversor::node_descriptor::VrmlHeaders();
+  auto traversor = vrml_proc::traversor::VrmlFileTraversor<to_geom::conversion_context::MeshTaskConversionContext>(
+      manager, config, to_geom::conversion_context::GetActionMap(), headersMap);
+  auto traversorResult = traversor.Traverse(parseResult.value());
   if (traversorResult.has_error()) {
     LogError(traversorResult.error());
     return false;

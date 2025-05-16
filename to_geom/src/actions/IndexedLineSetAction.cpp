@@ -21,6 +21,7 @@
 #include "ToGeomConfig.hpp"
 #include "NodeView.hpp"
 #include "HandlerToActionBundle.hpp"
+#include "VrmlHeaders.hpp"
 
 namespace to_geom::action {
 
@@ -35,8 +36,8 @@ namespace to_geom::action {
     using vrml_proc::math::TransformationMatrix;
     using vrml_proc::parser::model::Int32Array;
     using vrml_proc::parser::model::Vec3fArray;
-    using vrml_proc::traversor::VrmlNodeTraversor::Traverse;
     using namespace vrml_proc::core::logger;
+    using vrml_proc::traversor::node_descriptor::VrmlHeaders;
 
     LogDebug("Execute IndexedLineSetAction.", LOGGING_INFO);
 
@@ -54,6 +55,7 @@ namespace to_geom::action {
      * should have been validated already in the IndexedLineSet handler.
      */
     vrml_proc::parser::service::VrmlNodeManager manager;
+    vrml_proc::traversor::node_descriptor::VrmlHeaders headersMap;
     vrml_proc::action::ConversionContextActionMap<Vec3fArrayConversionContext> map;
     map.AddAction(
         "Coordinate", [this](vrml_proc::traversor::handler::HandlerToActionBundle<Vec3fArrayConversionContext> data) {
@@ -61,8 +63,10 @@ namespace to_geom::action {
               data.nodeView->GetField<std::reference_wrapper<const vrml_proc::parser::model::Vec3fArray>>("point")});
         });
 
-    auto coordResult = Traverse<Vec3fArrayConversionContext>(
-        {m_properties.coord.get(), manager, false, TransformationMatrix(), std::make_shared<ToGeomConfig>()}, map);
+    vrml_proc::traversor::VrmlNodeTraversor<Vec3fArrayConversionContext> traversor =
+        vrml_proc::traversor::VrmlNodeTraversor<Vec3fArrayConversionContext>(
+            manager, std::make_shared<ToGeomConfig>(), map, headersMap);
+    auto coordResult = traversor.Traverse({m_properties.coord.get(), false, TransformationMatrix()});
 
     /**
      * Geometry primitive node has been traversed, so we can check if it has any data.

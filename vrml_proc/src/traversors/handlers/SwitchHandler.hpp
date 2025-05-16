@@ -16,65 +16,73 @@
 #include "NodeTraversorError.hpp"
 #include "TraversorResult.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
+#include "HandlerParameters.hpp"
 
-namespace vrml_proc::traversor::VrmlNodeTraversor {
-  template <ConversionContextable ConversionContext>
-  cpp::result<std::shared_ptr<ConversionContext>, std::shared_ptr<vrml_proc::core::error::Error>> Traverse(
-      vrml_proc::traversor::VrmlNodeTraversorParameters context,
-      const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap);
-}
+// Forward declaration.
+namespace vrml_proc::traversor {
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
+  class VrmlNodeTraversor;
+}  // namespace vrml_proc::traversor
 
 namespace vrml_proc::traversor::handler::SwitchHandler {
   /**
-   * @brief Handles given node represented by `nd` and calls appropriate action for it stored in `actionMap`.
+   * @brief Handles the given VRML node by dispatching it to the corresponding action
+   *        defined in the provided action map.
    *
-   * @tparam ConversionContext type of conversion params
-   * @param params parameters received from traversor
-   * @param actionMap action map
-   * @param nd current node view of the node
+   * This function retrieves the appropriate action for the current node's header hash
+   * from `actionMap` and invokes it using the provided parameters. It handles node-specific
+   * logic and delegates actual processing to the matching action.
    *
-   * @returns ConversionContext object, or error if there is some error (in handler or in action)
+   * @tparam ConversionContext type that satisfies the ConversionContextable concept
+   * @param params handler parameters
+   * @return A TraversorResult containing either the resulting ConversionContext or an error
+   *         if the node was unhandled or an error occurred during processing
    */
-  template <ConversionContextable ConversionContext>
-  TraversorResult<ConversionContext> Handle(vrml_proc::traversor::VrmlNodeTraversorParameters params,
-      const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
-      std::shared_ptr<vrml_proc::traversor::node_descriptor::NodeView> nd) {  //
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
+  TraversorResult<ConversionContext> Handle(HandlerParameters<ConversionContext> params) {  //
 
-    using namespace vrml_proc::traversor::VrmlNodeTraversor;
     using vrml_proc::parser::model::VrmlNode;
+    using namespace vrml_proc::core::logger;
+    using namespace vrml_proc::core::utils;
 
-    vrml_proc::core::logger::LogDebug(
-        vrml_proc::core::utils::FormatString("Handle VRML node <", params.node.header, ">."), LOGGING_INFO);
+    // ---------------------------------------------------
 
-    const int32_t& whichChoice = (nd->GetField<std::reference_wrapper<const int32_t>>("whichChoice")).get();
+    LogDebug(FormatString("Handle VRML node <", params.nodeView->GetName(), ">."), LOGGING_INFO);
+
+    const int32_t& whichChoice =
+        (params.nodeView->template GetField<std::reference_wrapper<const int32_t>>("whichChoice")).get();
     std::shared_ptr<ConversionContext> resolvedChild = std::make_shared<ConversionContext>();
 
-    if (whichChoice >= 0 && nd->GetField<std::vector<std::reference_wrapper<const VrmlNode>>>("choice").size() != 0 &&
-        whichChoice <= nd->GetField<std::vector<std::reference_wrapper<const VrmlNode>>>("choice").size() - 1) {
-      auto recursiveResult = Traverse<ConversionContext>(
-          {nd->GetField<std::vector<std::reference_wrapper<const VrmlNode>>>("choice").at(whichChoice), params.manager,
-              params.IsDescendantOfShape, params.transformation, params.config},
-          actionMap);
+    VrmlNodeTraversor<ConversionContext> traversor(params.manager, params.config, params.actionMap, params.headersMap);
+
+    size_t choiceSize =
+        params.nodeView->template GetField<std::vector<std::reference_wrapper<const VrmlNode>>>("choice").size();
+    if ((whichChoice >= 0) && (choiceSize != 0) && (whichChoice <= (choiceSize - 1))) {  //
+
+      auto choices = params.nodeView->template GetField<std::vector<std::reference_wrapper<const VrmlNode>>>("choice");
+      auto traversorParams =
+          VrmlNodeTraversorParameters(choices[whichChoice], params.IsDescendantOfShape, params.transformation);
+
+      auto recursiveResult = traversor.Traverse(traversorParams);
       if (recursiveResult.has_error()) {
         return cpp::fail(recursiveResult.error());
       }
-
       resolvedChild = recursiveResult.value();
     } else {
-      vrml_proc::core::logger::LogWarning(
-          vrml_proc::core::utils::FormatString(
-              "Skipping traversing VRML node in 'choice' field, as 'whichChoice' value is <", whichChoice,
-              "> and is out of range!"),
+      LogWarning(FormatString("Skipping traversing VRML node in 'choice' field, as 'whichChoice' value is <",
+                     whichChoice, "> and is out of range!"),
           LOGGING_INFO);
     }
 
-    nd->SetShapeDescendant(params.IsDescendantOfShape);
-    nd->SetTransformationMatrix(params.transformation);
-    auto data = HandlerToActionBundle<ConversionContext>(nd);
+    // ---------------------------------------------------
+
+    params.nodeView->SetShapeDescendant(params.IsDescendantOfShape);
+    params.nodeView->SetTransformationMatrix(params.transformation);
+    auto data = HandlerToActionBundle<ConversionContext>(params.nodeView);
     data.cc1 = resolvedChild;
     data.config = params.config;
 
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
-        actionMap, nd->GetName(), data);
+        params.actionMap, params.nodeView->GetName(), data);
   }
 }  // namespace vrml_proc::traversor::handler::SwitchHandler

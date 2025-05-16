@@ -2,6 +2,7 @@
   "ignoreUnknownNode": false,
   "logFileName": "vrmlx",
   "logFileDirectory": ".",
+  "synonymsFile": "..\\..\\..\\vrmlprocSynonyms.json",
 
   "exportFormat": {
     "format": "stl",

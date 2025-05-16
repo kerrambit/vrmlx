@@ -428,7 +428,7 @@ std::string validTransformatioNodeNested = R"(
 
     #VRML V2.0 utf8
 
-    DEF box VRMLBox { } # size 2 2 2
+    DEF box Box { } # size 2 2 2
 
     Transform {
       center 0.5 0.669 0.789
@@ -743,7 +743,7 @@ std::string validIndexedFaceSetPyramid = R"(
         bboxSize 0 0 0
         children [
             Shape {
-                geometry VRMLIndexedFaceSet {
+                geometry IndexedFaceSet {
                     coord Coordinate {
                         point [
                             0 0 0, 1 0 0, 1 1 0, 0 1 0,  # Base square (0-3)

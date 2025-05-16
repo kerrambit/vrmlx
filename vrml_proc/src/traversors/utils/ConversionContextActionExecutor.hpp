@@ -18,7 +18,7 @@ namespace vrml_proc::traversor::utils::ConversionContextActionExecutor {
    * @param key string which chooses action from the map
    * @param data object which will be passed into action constructor when creating action instance from the map
    */
-  template <ConversionContextable ConversionContext>
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
   static std::shared_ptr<ConversionContext> TryToExecute(
       const vrml_proc::action::ConversionContextActionMap<ConversionContext>& actionMap,
       const std::string& key,

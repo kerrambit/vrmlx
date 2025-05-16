@@ -13,6 +13,7 @@
 #include <Vec3fArray.hpp>
 #include <Vec4f.hpp>
 #include <VrmlField.hpp>
+#include <VrmlHeaders.hpp>
 #include <VrmlNode.hpp>
 #include <VrmlNodeManager.hpp>
 
@@ -91,70 +92,68 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
   // ------------------------------------------------------------------- //
 
   {
-    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("VRML");
-    CHECK(nd.GetName() == "VRML");
-    CHECK(nd.GetSynonyms().size() == 0);
-  }
-
-  {
-    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("vrml", "A");
-    CHECK(nd.GetName() == "vrml");
-    CHECK(nd.GetSynonyms().size() == 1);
-    CHECK(nd.GetSynonyms().find("A") != nd.GetSynonyms().end());
-  }
-
-  {
-    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("vrml", {"A", "B", "C"});
-    CHECK(nd.GetName() == "vrml");
-    CHECK(nd.GetSynonyms().size() == 3);
-    CHECK(nd.GetSynonyms().find("A") != nd.GetSynonyms().end());
-    CHECK(nd.GetSynonyms().find("B") != nd.GetSynonyms().end());
-    CHECK(nd.GetSynonyms().find("C") != nd.GetSynonyms().end());
-    CHECK(nd.GetSynonyms().find("D") == nd.GetSynonyms().end());
+    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Group");
+    CHECK(nd.GetName() == "Group");
   }
 
   {
     vrml_proc::parser::service::VrmlNodeManager manager;
     vrml_proc::parser::model::VrmlNode node;
-    node.header = "Root";
+    node.header = "Group";
 
-    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("vrml");
-    CHECK(nd.Validate(node, manager).has_value());
+    vrml_proc::traversor::node_descriptor::VrmlHeaders headersMap;
+    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Group");
 
-    nd = vrml_proc::traversor::node_descriptor::NodeDescriptor("vrml");
-    CHECK(nd.Validate(node, manager, false).has_value());
+    CHECK(nd.Validate(node, manager, headersMap, true).has_value());
 
-    nd = vrml_proc::traversor::node_descriptor::NodeDescriptor("vrml");
-    CHECK(nd.Validate(node, manager, true).has_error());
-  }
+    node.header = "VRMLGroup";
 
-  {
-    vrml_proc::traversor::node_descriptor::NodeDescriptor nd(
-        "vrml", std::unordered_set<std::string>{"vrml2.0", "vrml3.0"});
-    vrml_proc::parser::model::VrmlNode node;
-    node.header = "vrml2.0";
-    vrml_proc::parser::service::VrmlNodeManager manager;
-    CHECK(nd.Validate(node, manager, true).has_value());
-    node.header = "vrml4.0";
-    CHECK(nd.Validate(node, manager, true).has_error());
+    CHECK(nd.Validate(node, manager, headersMap, false).has_value());
+
+    CHECK(nd.Validate(node, manager, headersMap).has_value());
+
+    CHECK(nd.Validate(node, manager, headersMap, true).has_error());
+
+    headersMap.AddSynonym("VRMLGroup", "Group");
+    headersMap.AddSynonym("VRMLGroup2", "Group");
+
+    CHECK(headersMap.ConvertToCanonicalHeader("VRMLGroup") == "Group");
+    CHECK(headersMap.ConvertToCanonicalHeader("VRMLGroup2") == "Group");
+    CHECK(headersMap.ConvertToCanonicalHeader("VRMLGroup3") == "VRMLGroup3");
+
+    CHECK(nd.Validate(node, manager, headersMap, true).has_value());
+
+    node.header = "VRMLGroup2";
+    CHECK(nd.Validate(node, manager, headersMap, true).has_value());
+
+    headersMap.AddSynonym("VRMLGroup", "Sphere");
+    headersMap.AddSynonym("VRMLGroup2", "Sphere");
+
+    CHECK(nd.Validate(node, manager, headersMap, true).has_error());
+
+    CHECK(headersMap.GetSynonymsForCanonicalHeaders({"Group"}).size() == 1);
+    CHECK(headersMap.GetSynonymsForCanonicalHeaders({"Sphere"}).size() == 3);
   }
 
   // ------------------------------------------------------------------- //
 
   {  // Expected no fields.
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Root");
+    vrml_proc::traversor::node_descriptor::VrmlHeaders headersMap;
 
     vrml_proc::parser::model::VrmlNode node;
     node.header = "Root";
     node.fields.push_back(f1);
     vrml_proc::parser::service::VrmlNodeManager manager;
-    auto result = nd.Validate(node, manager);
+    auto result = nd.Validate(node, manager, headersMap, false);
     REQUIRE(result.has_error());
     LogError(result.error());
   }
 
   {  // Valid case.
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Root");
+    vrml_proc::traversor::node_descriptor::VrmlHeaders headersMap;
+
     std::string s = "";
     bool b = false;
     float f = 0.0f;
@@ -195,7 +194,7 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
     node.fields.push_back(f12);
     vrml_proc::parser::service::VrmlNodeManager manager;
     manager.AddDefinitionNode("ID", n);
-    auto result = nd.Validate(node, manager);
+    auto result = nd.Validate(node, manager, headersMap, false);
     REQUIRE(result.has_value());
     CHECK(result.value()->GetName() == "Root");
 
@@ -210,19 +209,23 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
 
     CHECK(result.value()->GetFieldType("float32") == vrml_proc::traversor::node_descriptor::FieldType::Float32);
     CHECK(
-        result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::model::float32_t>>("float32").get() == 5.0f);
+        result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::model::float32_t>>("float32").get() ==
+        5.0f);
 
     CHECK(result.value()->GetFieldType("int32") == vrml_proc::traversor::node_descriptor::FieldType::Int32);
     CHECK(result.value()->GetField<std::reference_wrapper<const int32_t>>("int32").get() == 8);
 
     CHECK(result.value()->GetFieldType("vec2f") == vrml_proc::traversor::node_descriptor::FieldType::Vec2f);
-    CHECK(result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::model::Vec2f>>("vec2f").get().v == 1.0f);
+    CHECK(result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::model::Vec2f>>("vec2f").get().v ==
+          1.0f);
 
     CHECK(result.value()->GetFieldType("vec3f") == vrml_proc::traversor::node_descriptor::FieldType::Vec3f);
-    CHECK(result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::model::Vec3f>>("vec3f").get().z == 2.0f);
+    CHECK(result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::model::Vec3f>>("vec3f").get().z ==
+          2.0f);
 
     CHECK(result.value()->GetFieldType("vec4f") == vrml_proc::traversor::node_descriptor::FieldType::Vec4f);
-    CHECK(result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::model::Vec4f>>("vec4f").get().w == 3.0f);
+    CHECK(result.value()->GetField<std::reference_wrapper<const vrml_proc::parser::model::Vec4f>>("vec4f").get().w ==
+          3.0f);
 
     CHECK(result.value()->GetFieldType("int32array") == vrml_proc::traversor::node_descriptor::FieldType::Int32Array);
     {
@@ -288,6 +291,8 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
 
   {  // Valid case, checking that default value is used.
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Root");
+    vrml_proc::traversor::node_descriptor::VrmlHeaders headersMap;
+
     std::string s = "";
     bool b = false;
     float f = 0.0f;
@@ -327,7 +332,7 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
     node.fields.push_back(f12);
     vrml_proc::parser::service::VrmlNodeManager manager;
     manager.AddDefinitionNode("ID", n);
-    auto result = nd.Validate(node, manager);
+    auto result = nd.Validate(node, manager, headersMap, false);
     REQUIRE(result.has_value());
     if (result.has_error()) LogError(result.error());
 
