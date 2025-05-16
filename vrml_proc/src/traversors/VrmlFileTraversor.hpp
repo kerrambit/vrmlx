@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <memory>
 
 #include "ConversionContextable.hpp"
@@ -46,6 +47,7 @@ namespace vrml_proc::traversor {
      *
      * @tparam ConversionContext type of conversion context (result type of the traversal)
      * @param file file to traverse
+     * @returns Conversion context or error
      */
     TraversorResult<ConversionContext> Traverse(const vrml_proc::parser::model::VrmlFile& file) {  //
 
@@ -54,6 +56,8 @@ namespace vrml_proc::traversor {
       using vrml_proc::traversor::error::FileTraversorError;
       using namespace vrml_proc::core::logger;
       using namespace vrml_proc::core::utils;
+
+      // ---------------------------------------------------
 
       LogInfo("Traverse VRML file.", LOGGING_INFO);
 
@@ -67,7 +71,8 @@ namespace vrml_proc::traversor {
       for (const auto& root : file) {
         LogInfo(FormatString("Found ", index, ". root node. It is type <", root.header, ">."), LOGGING_INFO);
 
-        auto result = traversor.Traverse(VrmlNodeTraversorParameters(root, false, TransformationMatrix()));
+        auto matrix = TransformationMatrix();
+        auto result = traversor.Traverse(VrmlNodeTraversorParameters(std::cref(root), false, matrix));
 
         if (result.has_error()) {
           auto time = timer.End();

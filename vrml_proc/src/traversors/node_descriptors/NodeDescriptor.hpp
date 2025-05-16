@@ -34,7 +34,7 @@ namespace vrml_proc::traversor::node_descriptor {
   class NodeDescriptor {
    public:
     /**
-     * @brief Creates new object.
+     * @brief Creates new empty object.
      */
     NodeDescriptor() : m_name("") {}
 
@@ -100,6 +100,7 @@ namespace vrml_proc::traversor::node_descriptor {
      *
      * @param node node to validate
      * @param manager manager
+     * @param headersMap object containing mappings from synonyms to canonical names
      * @param checkName flag indicating if the name of the `node` should be checked or not
      * @returns NodeView if the validation runs succesfully, otherwise NodeValidationError
      */
@@ -112,13 +113,17 @@ namespace vrml_proc::traversor::node_descriptor {
 
       using namespace vrml_proc::traversor::validation::NodeValidationUtils;
 
-      if (checkName && !((node.header == m_name) || (headersMap.ConvertToCanonicalHeader(node.header) != m_name))) {
+      // ---------------------------------------------------
+
+      // First, we may want to check node's name.
+      if (checkName && ((node.header != m_name) && (headersMap.ConvertToCanonicalHeader(node.header) != m_name))) {
         auto expectedHeaders = headersMap.GetSynonymsForCanonicalHeaders({node.header});
         expectedHeaders.insert(m_name);
         return cpp::fail(std::make_shared<vrml_proc::traversor::validation::error::InvalidVrmlNodeHeader>(
             node.header, expectedHeaders));
       }
 
+      // We copy default values into possible future result NodeView.
       NodeView::Builder builder;
       builder.SetName(m_name);
       builder.SetDefaultValues(m_fieldTypes, m_defaultBoolFields, m_defaultStringFields, m_defaultFloat32Fields,
@@ -126,6 +131,7 @@ namespace vrml_proc::traversor::node_descriptor {
           m_defaultVec2fArrayFields, m_defaultVec3fArrayFields, m_defaultInt32ArrayFields, m_defaultNodeFields,
           m_defaultNodeArrayFields);
 
+      // Nothing to check here.
       if (node.fields.empty()) {
         return builder.Build();
       }
@@ -136,6 +142,7 @@ namespace vrml_proc::traversor::node_descriptor {
         return cpp::fail(fieldsResult.error());
       }
 
+      // Iterate through all fields and checks types.
       for (const auto& field : node.fields) {
         FieldType type = m_fieldTypes[field.name];
         switch (type) {
@@ -156,7 +163,6 @@ namespace vrml_proc::traversor::node_descriptor {
               }
             }
             builder.AddField(field.name, vrmlNode.value());
-            m_defaultNodeFields[field.name] = vrmlNode.value();
           } break;
 
           case FieldType::NodeArray:
@@ -167,7 +173,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(vrmlNodeArray.error());
             }
             builder.AddField(field.name, vrmlNodeArray.value());
-            m_defaultNodeArrayFields[field.name] = vrmlNodeArray.value();
           } break;
 
           case FieldType::Vec3f:
@@ -178,7 +183,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(vec3f.error());
             }
             builder.AddField(field.name, vec3f.value());
-            m_defaultVec3fFields[field.name] = vec3f.value();
           } break;
 
           case FieldType::Vec3fArray:
@@ -190,7 +194,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(value.error());
             }
             builder.AddField(field.name, value.value());
-            m_defaultVec3fArrayFields[field.name] = value.value();
           } break;
 
           case FieldType::Int32Array:
@@ -202,7 +205,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(value.error());
             }
             builder.AddField(field.name, value.value());
-            m_defaultInt32ArrayFields[field.name] = value.value();
           } break;
 
           case FieldType::Float32:
@@ -214,7 +216,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(float32_t.error());
             }
             builder.AddField(field.name, float32_t.value());
-            m_defaultFloat32Fields[field.name] = float32_t.value();
           } break;
 
           case FieldType::Int32:
@@ -225,7 +226,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(int32.error());
             }
             builder.AddField(field.name, int32.value());
-            m_defaultInt32Fields[field.name] = int32.value();
           } break;
 
           case FieldType::Vec2f:
@@ -236,7 +236,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(vec2f.error());
             }
             builder.AddField(field.name, vec2f.value());
-            m_defaultVec2fFields[field.name] = vec2f.value();
           } break;
 
           case FieldType::Vec4f:
@@ -247,7 +246,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(vec4f.error());
             }
             builder.AddField(field.name, vec4f.value());
-            m_defaultVec4fFields[field.name] = vec4f.value();
           } break;
 
           case FieldType::Vec2fArray:
@@ -259,7 +257,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(value.error());
             }
             builder.AddField(field.name, value.value());
-            m_defaultVec2fArrayFields[field.name] = value.value();
           } break;
 
           case FieldType::Bool:
@@ -270,7 +267,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(boolean.error());
             }
             builder.AddField(field.name, boolean.value());
-            m_defaultBoolFields[field.name] = boolean.value();
           } break;
 
           case FieldType::String:
@@ -281,7 +277,6 @@ namespace vrml_proc::traversor::node_descriptor {
               return cpp::fail(string.error());
             }
             builder.AddField(field.name, string.value());
-            m_defaultStringFields[field.name] = string.value();
           } break;
 
           default:

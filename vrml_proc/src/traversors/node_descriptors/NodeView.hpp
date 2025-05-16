@@ -89,14 +89,34 @@ namespace vrml_proc::traversor::node_descriptor {
      */
     std::string GetName() const { return m_name; }
 
+    /**
+     * @brief Set shape descendant flag. It the flas is se to true, it means that node is contained withing Shape node.
+     *
+     * @param isNodeShapeDescendant shape descendant flag
+     */
     void SetShapeDescendant(bool isNodeShapeDescendant) { m_isDescendantOfShape = isNodeShapeDescendant; }
 
+    /**
+     * @brief Returns true if the node is contained within Shape node.
+     *
+     * @returns returns true if the node is contained within Shape node
+     */
     bool IsNodeShapeDescendant() const { return m_isDescendantOfShape; }
 
+    /**
+     * @brief Sets the transformation matrix to be applied during node traversal or conversion.
+     *
+     * @param matrix transformation matrix to set
+     */
     void SetTransformationMatrix(const vrml_proc::math::TransformationMatrix& matrix) {
       m_transformationMatrix = matrix;
     }
 
+    /**
+     * @brief Retrieves the current transformation matrix used in the context.
+     *
+     * @return stored transformation matrix
+     */
     vrml_proc::math::TransformationMatrix GetTransformationMatrix() const { return m_transformationMatrix; }
 
     /**
@@ -270,7 +290,9 @@ namespace vrml_proc::traversor::node_descriptor {
     }
 
     /**
-     * @returns Buils the NodeView object.
+     * @brief Builds the NodeView object.
+     *
+     * @returns buils the NodeView object
      */
     std::shared_ptr<NodeView> Build() { return m_view; }
 

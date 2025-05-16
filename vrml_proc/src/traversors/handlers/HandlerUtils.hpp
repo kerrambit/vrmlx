@@ -17,7 +17,6 @@
 #include "VrmlNodeManager.hpp"
 
 namespace vrml_proc::traversor::handler::HandlerUtils {
-
   /**
    * @brief Validates given geometry primitive node.
    *
@@ -39,11 +38,13 @@ namespace vrml_proc::traversor::handler::HandlerUtils {
     using namespace vrml_proc::traversor::node_descriptor;
     using namespace vrml_proc::traversor::error;
 
+    // ---------------------------------------------------
+
     auto node = nodeView->GetField<std::reference_wrapper<const vrml_proc::parser::model::VrmlNode>>(fieldName);
     auto ndResult = CreateNodeDescriptor(headersMap.ConvertToCanonicalHeader(node.get().header));
 
     if (ndResult.has_value()) {
-      auto validationResult = ndResult.value().Validate(node.get(), manager, headersMap, false);
+      auto validationResult = ndResult.value().Validate(node.get(), manager, headersMap, true);
       if (validationResult.has_error()) {
         LogError(FormatString("Validation for geometry primitive node <", node.get().header, "> from field <",
                      fieldName, "> failed!"),
@@ -53,5 +54,4 @@ namespace vrml_proc::traversor::handler::HandlerUtils {
     }
     return {};
   }
-
 }  // namespace vrml_proc::traversor::handler::HandlerUtils
