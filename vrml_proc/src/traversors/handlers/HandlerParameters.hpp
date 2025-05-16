@@ -15,7 +15,7 @@ namespace vrml_proc::traversor::handler {
    * @brief Represents a structure for all parameters passed to a handler.
    * @tparam ConversionContext conversion context
    */
-  template <ConversionContextable ConversionContext>
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
   struct HandlerParameters {
     /**
      * @brief Constructs a new HandlerParameters object.

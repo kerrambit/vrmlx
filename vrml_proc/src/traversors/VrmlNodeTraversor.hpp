@@ -39,7 +39,7 @@ namespace vrml_proc::traversor {
    * @brief Class responsible for VrmlNode traversal.
    * @tparam ConversionContext conversion context
    */
-  template <ConversionContextable ConversionContext>
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
   class VrmlNodeTraversor {
    public:
     /**

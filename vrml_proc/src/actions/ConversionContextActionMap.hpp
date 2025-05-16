@@ -15,7 +15,7 @@ namespace vrml_proc::action {
   /**
    * @brief Represents class which is responsible for storing and mapping `Action` functor value to a string key.
    */
-  template <ConversionContextable ConversionContext>
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
   class ConversionContextActionMap {
    public:
     /**

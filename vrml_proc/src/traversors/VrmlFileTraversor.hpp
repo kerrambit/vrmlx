@@ -24,7 +24,7 @@ namespace vrml_proc::traversor {
    * @brief Class responsible for VrmlFile traversal.
    * @tparam ConversionContext conversion context
    */
-  template <ConversionContextable ConversionContext>
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
   class VrmlFileTraversor {
    public:
     /**

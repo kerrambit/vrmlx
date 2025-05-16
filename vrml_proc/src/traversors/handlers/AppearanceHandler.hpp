@@ -20,7 +20,7 @@
 
 // Forward declaration.
 namespace vrml_proc::traversor {
-  template <ConversionContextable ConversionContext>
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
   class VrmlNodeTraversor;
 }  // namespace vrml_proc::traversor
 
@@ -38,7 +38,7 @@ namespace vrml_proc::traversor::handler::AppearanceHandler {
    * @return A TraversorResult containing either the resulting ConversionContext or an error
    *         if the node was unhandled or an error occurred during processing
    */
-  template <ConversionContextable ConversionContext>
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
   TraversorResult<ConversionContext> Handle(HandlerParameters<ConversionContext> params) {  //
 
     using vrml_proc::parser::model::VrmlNode;

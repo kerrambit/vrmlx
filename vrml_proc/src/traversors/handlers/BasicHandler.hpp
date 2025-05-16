@@ -27,7 +27,7 @@ namespace vrml_proc::traversor::handler::BasicHandler {
    * @return A TraversorResult containing either the resulting ConversionContext or an error
    *         if the node was unhandled or an error occurred during processing
    */
-  template <ConversionContextable ConversionContext>
+  template <vrml_proc::core::contract::ConversionContextable ConversionContext>
   TraversorResult<ConversionContext> Handle(HandlerParameters<ConversionContext> params) {  //
 
     vrml_proc::core::logger::LogDebug(
