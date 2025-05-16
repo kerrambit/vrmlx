@@ -91,35 +91,48 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
 
   // ------------------------------------------------------------------- //
 
-  vrml_proc::traversor::node_descriptor::VrmlHeaders headersMap;
-  headersMap.AddSynonym("A", "Group");
   {
     vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Group");
     CHECK(nd.GetName() == "Group");
   }
 
   {
-    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Group");
-    CHECK(nd.GetName() != "vrml");
-  }
-
-  {
     vrml_proc::parser::service::VrmlNodeManager manager;
     vrml_proc::parser::model::VrmlNode node;
-    node.header = "Root";
+    node.header = "Group";
 
-    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("vrml");
+    vrml_proc::traversor::node_descriptor::VrmlHeaders headersMap;
+    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("Group");
+
+    CHECK(nd.Validate(node, manager, headersMap, true).has_value());
+
+    node.header = "VRMLGroup";
+
     CHECK(nd.Validate(node, manager, headersMap, false).has_value());
 
     CHECK(nd.Validate(node, manager, headersMap).has_value());
 
     CHECK(nd.Validate(node, manager, headersMap, true).has_error());
 
-    headersMap.AddSynonym("vrml", "Root");
-    headersMap.AddSynonym("vrml2", "Root");
-    headersMap.AddSynonym("vrml", "Boot");
-    headersMap.AddSynonym("vrml", "Scooter");
+    headersMap.AddSynonym("VRMLGroup", "Group");
+    headersMap.AddSynonym("VRMLGroup2", "Group");
+
+    CHECK(headersMap.ConvertToCanonicalHeader("VRMLGroup") == "Group");
+    CHECK(headersMap.ConvertToCanonicalHeader("VRMLGroup2") == "Group");
+    CHECK(headersMap.ConvertToCanonicalHeader("VRMLGroup3") == "VRMLGroup3");
+
     CHECK(nd.Validate(node, manager, headersMap, true).has_value());
+
+    node.header = "VRMLGroup2";
+    CHECK(nd.Validate(node, manager, headersMap, true).has_value());
+
+    headersMap.AddSynonym("VRMLGroup", "Sphere");
+    headersMap.AddSynonym("VRMLGroup2", "Sphere");
+
+    CHECK(nd.Validate(node, manager, headersMap, true).has_error());
+
+    CHECK(headersMap.GetSynonymsForCanonicalHeaders({"Group"}).size() == 1);
+    CHECK(headersMap.GetSynonymsForCanonicalHeaders({"Sphere"}).size() == 3);
   }
 
   // ------------------------------------------------------------------- //
