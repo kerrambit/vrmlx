@@ -77,3 +77,5 @@ The `<config_file>` is a JSON file that defines behavior for the application. Al
 
 #### `IFSSettings`
 - **`checkRange`**: Enable range checking for `IndexedFaceSet` indices (`true` by default).
+
+You can find real example of JSON files both for Linux and Windows here: [Linux](../vrmlxConfig.linux.json),  [Windows](../vrmlxConfig.windows.json).
