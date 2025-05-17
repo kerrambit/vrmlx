@@ -7,6 +7,10 @@ The modular architecture allows users to define their own actions—custom funct
 ## License
 This project is licensed under the **GNU General Public License v3.0 or later** (GPL-3.0-or-later). See the [LICENSE](LICENSE) file for more details.
 
+## Manual
+- You can find detailed usage instructions in the [manual](doc/manual.md).  
+- However, before reading that, make sure to understand how to obtain and run the application as described below.
+
 ## Run as Docker container
 - Recommended way how to run *vrmlx* is to build *Docker* image and run it.
 - See steps in this [manual](doc/docker_steps.md).
