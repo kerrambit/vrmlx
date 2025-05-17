@@ -7,6 +7,7 @@
 
 #include "AppearanceHandler.hpp"
 #include "BasicHandler.hpp"
+#include "CollisionHandler.hpp"
 #include "ConversionContextable.hpp"
 #include "ConversionContextActionMap.hpp"
 #include "ElevationGridHandler.hpp"
@@ -24,6 +25,7 @@
 #include "ShapeHandler.hpp"
 #include "SwitchHandler.hpp"
 #include "TransformHandler.hpp"
+#include "LODHandler.hpp"
 #include "TraversorResult.hpp"
 #include "VrmlCanonicalHeaderHashes.hpp"
 #include "VrmlHeaders.hpp"
@@ -216,6 +218,21 @@ namespace vrml_proc::traversor {
           break;
         case CanonicalHeaderHashes::WorldInfo:
           handlerResult = BasicHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::Anchor:
+          handlerResult = GroupHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::Billboard:
+          handlerResult = GroupHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::Collision:
+          handlerResult = CollisionHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::Inline:
+          handlerResult = BasicHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::LOD:
+          handlerResult = LODHandler::Handle(inputHandlerParameters);
           break;
         default:
           assert(false && "Cannot find handler for VRML node. Unknown VRML node should not get into this stage!");

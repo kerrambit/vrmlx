@@ -60,8 +60,8 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - WorldInfo node", "
   CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 0));
 }
 
-TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - WorldInfo node - Wrong Field Type",
-          "[parsing][invalid]") {
+TEST_CASE(
+    "Parse VRML File - Invalid Input - Simple VRML File - WorldInfo node - Wrong Field Type", "[parsing][invalid]") {
   vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidWorldInfoNodeWrongDataType, manager);
   REQUIRE(parseResult);
@@ -69,8 +69,8 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - WorldInfo node -
   CHECK_FALSE(TraverseVrmlFileToMeshTask(parseResult, manager));
 }
 
-TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - WorldInfo node - Wrong Field Name",
-          "[parsing][invalid]") {
+TEST_CASE(
+    "Parse VRML File - Invalid Input - Simple VRML File - WorldInfo node - Wrong Field Name", "[parsing][invalid]") {
   vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(invalidWorldInfoNodeWrongFieldName, manager);
   REQUIRE(parseResult);
@@ -356,6 +356,46 @@ TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - IndexedLineSet n
   REQUIRE(parseResult);
 
   CHECK_FALSE(TraverseVrmlFileToMeshTask(parseResult, manager));
+}
+
+TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Anchor node", "[parsing][valid]") {
+  vrml_proc::parser::service::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(validAnchor, manager);
+  REQUIRE(parseResult);
+
+  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 0));
+}
+
+TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Billboard node", "[parsing][valid]") {
+  vrml_proc::parser::service::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(validBillboard, manager);
+  REQUIRE(parseResult);
+
+  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 0));
+}
+
+TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Collision node", "[parsing][valid]") {
+  vrml_proc::parser::service::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(validCollision, manager);
+  REQUIRE(parseResult);
+
+  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 0));
+}
+
+TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - Inline node", "[parsing][valid]") {
+  vrml_proc::parser::service::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(validInline, manager);
+  REQUIRE(parseResult);
+
+  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 0));
+}
+
+TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - LOD node", "[parsing][valid]") {
+  vrml_proc::parser::service::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(validLOD, manager);
+  REQUIRE(parseResult);
+
+  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 0));
 }
 
 TEST_CASE("Parse VRMLFile From File - Valid Input - Actin", "[parsing][valid][fromfile]") {

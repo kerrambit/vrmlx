@@ -45,6 +45,70 @@ namespace vrml_proc::traversor::node_descriptor {
       return nd;
     };
 
+    nodeDescriptionMap["Anchor"] = []() {
+      auto nd = NodeDescriptor("Anchor");
+      static vrml_proc::parser::model::Vec3f defaultBoxCenter = {0.0f, 0.0f, 0.0f};
+      static vrml_proc::parser::model::Vec3f defaultBoxSize = {-1.0f, -1.0f, -1.0f};
+      static std::string defaultDescription = "";
+      static std::string defaultParameter = "";
+      static std::string defaultUrl = "";
+      nd.BindField("description", defaultDescription);
+      nd.BindField("parameter", defaultParameter);
+      nd.BindField("url", defaultUrl);
+      nd.BindField("bboxSize", defaultBoxSize);
+      nd.BindField("bboxCenter", defaultBoxCenter);
+      nd.BindVrmlNodeArray("children");
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Billboard"] = []() {
+      auto nd = NodeDescriptor("Billboard");
+      static vrml_proc::parser::model::Vec3f defaultBoxCenter = {0.0f, 0.0f, 0.0f};
+      static vrml_proc::parser::model::Vec3f defaultBoxSize = {-1.0f, -1.0f, -1.0f};
+      static vrml_proc::parser::model::Vec3f defaultAxisOfRotation = {0.0f, 1.0f, 0.0f};
+      nd.BindField("bboxSize", defaultBoxSize);
+      nd.BindField("bboxCenter", defaultBoxCenter);
+      nd.BindField("axisOfRotation", defaultAxisOfRotation);
+      nd.BindVrmlNodeArray("children");
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Collision"] = []() {
+      auto nd = NodeDescriptor("Collision");
+      static vrml_proc::parser::model::Vec3f defaultBoxCenter = {0.0f, 0.0f, 0.0f};
+      static vrml_proc::parser::model::Vec3f defaultBoxSize = {-1.0f, -1.0f, -1.0f};
+      static bool defaultCollide = true;
+      static vrml_proc::parser::model::VrmlNode defaultProxy;
+      nd.BindField("bboxSize", defaultBoxSize);
+      nd.BindField("bboxCenter", defaultBoxCenter);
+      nd.BindField("collide", defaultCollide);
+      nd.BindVrmlNode("proxy",
+          {"Anchor", "LOD", "Sound", "Background", "NavigationInfo", "SpotLight", "Billboard", "NormalInterpolator",
+              "SphereSensor", "Collision", "OrientationInterpolator", "Switch", "ColorInterpolator", "PlaneSensor",
+              "TimeSensor", "CoordinateInterpolator", "PointLight", "TouchSensor", "CylinderSensor",
+              "PositionInterpolator", "Transform", "DirectionalLight", "ProximitySensor", "Viewpoint", "Fog",
+              "ScalarInterpolator", "VisibilitySensor", "Group", "Script", "WorldInfo", "Inline", "Shape"},
+          defaultProxy);
+      nd.BindVrmlNodeArray("children");
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Inline"] = []() {
+      auto nd = NodeDescriptor("Inline");
+      static vrml_proc::parser::model::Vec3f defaultBoxCenter = {0.0f, 0.0f, 0.0f};
+      static vrml_proc::parser::model::Vec3f defaultBoxSize = {-1.0f, -1.0f, -1.0f};
+      static std::string defaultUrl = "";
+      nd.BindField("bboxSize", defaultBoxSize);
+      nd.BindField("bboxCenter", defaultBoxCenter);
+      nd.BindField("url", defaultUrl);
+      nd.BindVrmlNodeArray("children");
+
+      return nd;
+    };
+
     nodeDescriptionMap["Shape"] = []() {
       auto nd = NodeDescriptor("Shape");
       static vrml_proc::parser::model::VrmlNode defaultAppearance;
@@ -53,7 +117,7 @@ namespace vrml_proc::traversor::node_descriptor {
       nd.BindVrmlNode("geometry",
           {"Box", "Cone", "Cylinder", "ElevationGrid", "Extrusion", "IndexedFaceSet", "IndexedLineSet", "PointSet",
               "Sphere", "Text"},
-          defaultGeometry);  // TODO: fucntion will take set of names
+          defaultGeometry);
 
       return nd;
     };
@@ -194,6 +258,19 @@ namespace vrml_proc::traversor::node_descriptor {
       nd.BindField("info", defaultInfo);
       nd.BindField("title", defaultTitle);
 
+      return nd;
+    };
+
+    nodeDescriptionMap["LOD"] = []() {
+      auto nd = NodeDescriptor("LOD");
+      /**
+       * @todo New type `Float32Array` have to be implemented in parser.
+       */
+
+      // static vrml_proc::parser::Float32Array defaultRange;
+      static vrml_proc::parser::model::Vec3f defaultCenter = {0.0f, 0.0f, 0.0f};
+      nd.BindField("center", defaultCenter);
+      nd.BindVrmlNodeArray("level");
       return nd;
     };
 

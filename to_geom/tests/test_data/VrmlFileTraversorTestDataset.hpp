@@ -1184,3 +1184,86 @@ std::string invalidIndexedLineSetNodeWrongUnknownField = R"(
         ]
     }
 )";
+
+std::string validAnchor = R"(
+
+    #VRML V2.0 utf8
+
+    Anchor {
+        bboxCenter 4.5 10.47 -10.0
+        bboxSize 0 0 0
+        description "Info VRML"
+        parameter "key=value"
+        url "http://gun.teipir.gr/VRML-amgem/spec/part1/nodesRef.html"
+        children [
+            Box {
+                size 1 1 1 
+            },
+            Box {
+                size 2 2 2
+            }
+        ]
+    }
+)";
+
+std::string validBillboard = R"(
+
+    #VRML V2.0 utf8
+
+    Billboard {
+        bboxCenter 4.5 10.47 -10.0
+        bboxSize 0 0 0
+        axisOfRotation  8 9.0 7.58
+        children [
+            Box {
+                size 1 1 1 
+            },
+            Box {
+                size 2 2 2
+            }
+        ]
+    }
+)";
+
+std::string validCollision = R"(
+
+    #VRML V2.0 utf8
+
+    Collision {
+        bboxCenter 4.5 10.47 -10.0
+        bboxSize 0 0 0
+        children [
+            Box {
+                size 1 1 1 
+            },
+            Box {
+                size 2 2 2
+            }
+        ]
+        collide TRUE
+        proxy Group {
+               children [ Box { size 2 2 2 } ]
+        }
+    }
+)";
+
+std::string validInline = R"(
+
+    #VRML V2.0 utf8
+
+    Inline {
+        bboxCenter 4.5 10.47 -10.0
+        bboxSize 0 0 0
+        url "http://gun.teipir.gr/VRML-amgem/spec/part1/nodesRef.html"
+    }
+)";
+
+std::string validLOD = R"(
+
+    #VRML V2.0 utf8
+
+    LOD {
+      center 5 8 -9.8E2
+      level [ Box { size 2 2 2 }, Box { size 1 1 1 }, Box { size 0.5 0.5 0.5 } ]
+    }
+)";
