@@ -13,7 +13,7 @@
 - After the image is built, you should be able to create and run container.
 <!-- Empty line here -->
 - Before running the container, make sure you have created two folders ```input``` and ```output``` on your current path. It is because we have to bind folders where the converted data and data to convert will be searched for.
-- Insert into ```input``` folder your ```.wrl``` files and the configuration file (it can look like [this](../vrmlxConfig.json.example)).
+- Insert into ```input``` folder your ```.wrl``` files and the configuration file (it can look like [this](../vrmlxConfig.linux.json)).
 - There is one application you run, but it has two modes: **single file** conversion and **bulk** conversion, respectively:
     - ```docker run -v $(pwd)/input:/app/input -v $(pwd)/output:/app/output <IMAGE_NAME> /app/vrmlxConversionApp /app/input/<YOUR_VRML_FILE> /app/output/<OUTPUT_FILENAME> /app/input/<CONFIG_FILE>```.
     <!-- Empty line here -->
