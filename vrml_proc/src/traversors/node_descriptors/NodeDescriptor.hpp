@@ -21,10 +21,10 @@
 #include "Vec3fArray.hpp"
 #include "Vec4f.hpp"
 #include "VrmlField.hpp"
+#include "VrmlHeaders.hpp"
 #include "VrmlNode.hpp"
 #include "VrmlNodeManager.hpp"
 #include "VrmlUnits.hpp"
-#include "VrmlHeaders.hpp"
 
 namespace vrml_proc::traversor::node_descriptor {
   /**
@@ -59,6 +59,26 @@ namespace vrml_proc::traversor::node_descriptor {
      */
     template <typename Type>
     void BindField(const std::string& fieldName, const Type& defaultValue);
+
+    /**
+     * @brief Constrains the values of a string field to a predefined set, effectively treating it as an enum.
+     *
+     * This function allows you to specify that a given string field (`fieldName`) must only contain values
+     * from the provided set (`validValues`). This is useful for enforcing enum-like behavior on string fields.
+     *
+     * @param fieldName name of the field to constrain
+     * @param validValues set of valid string values allowed for the field
+     *
+     * @return true if the specified field exists and the constraint was applied; false otherwise.
+     */
+    bool ConstrainStringFieldValues(const std::string& fieldName, const std::unordered_set<std::string>& validValues) {
+      if (m_fieldTypes.find(fieldName) != m_fieldTypes.end()) {
+        m_validEnumValues[fieldName] = validValues;
+        return true;
+      }
+
+      return false;
+    }
 
     /**
      * @brief Binds a VRML node as a field.
@@ -112,6 +132,7 @@ namespace vrml_proc::traversor::node_descriptor {
         bool checkName = false) {  //
 
       using namespace vrml_proc::traversor::validation::NodeValidationUtils;
+      using namespace vrml_proc::traversor::validation::error;
 
       // ---------------------------------------------------
 
@@ -119,8 +140,7 @@ namespace vrml_proc::traversor::node_descriptor {
       if (checkName && ((node.header != m_name) && (headersMap.ConvertToCanonicalHeader(node.header) != m_name))) {
         auto expectedHeaders = headersMap.GetSynonymsForCanonicalHeaders({node.header});
         expectedHeaders.insert(m_name);
-        return cpp::fail(std::make_shared<vrml_proc::traversor::validation::error::InvalidVrmlNodeHeader>(
-            node.header, expectedHeaders));
+        return cpp::fail(std::make_shared<InvalidVrmlNodeHeader>(node.header, expectedHeaders));
       }
 
       // We copy default values into possible future result NodeView.
@@ -276,6 +296,13 @@ namespace vrml_proc::traversor::node_descriptor {
             if (string.has_error()) {
               return cpp::fail(string.error());
             }
+            if (m_validEnumValues.find(field.name) != m_validEnumValues.end()) {
+              if (m_validEnumValues[field.name].find(string.value().value().get()) ==
+                  m_validEnumValues[field.name].end()) {
+                return cpp::fail(std::make_shared<InvalidStringValueError>(
+                    node.header, field.name, string.value().value().get(), m_validEnumValues[field.name]));
+              }
+            }
             builder.AddField(field.name, string.value());
           } break;
 
@@ -295,6 +322,7 @@ namespace vrml_proc::traversor::node_descriptor {
 
     std::map<std::string, std::optional<std::reference_wrapper<const bool>>> m_defaultBoolFields;
     std::map<std::string, std::optional<std::reference_wrapper<const std::string>>> m_defaultStringFields;
+    std::map<std::string, std::unordered_set<std::string>> m_validEnumValues;
     std::map<std::string, std::optional<std::reference_wrapper<const vrml_proc::parser::model::float32_t>>>
         m_defaultFloat32Fields;
     std::map<std::string, std::optional<std::reference_wrapper<const int32_t>>> m_defaultInt32Fields;
