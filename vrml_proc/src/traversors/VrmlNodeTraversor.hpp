@@ -13,7 +13,7 @@
 #include "ElevationGridHandler.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
-#include "GroupHandler.hpp"
+#include "GroupingHandler.hpp"
 #include "Hash.hpp"
 #include "IndexedFaceSetHandler.hpp"
 #include "IndexedLineSetHandler.hpp"
@@ -154,7 +154,7 @@ namespace vrml_proc::traversor {
 
       switch (Hash(header)) {
         case CanonicalHeaderHashes::Group:
-          handlerResult = GroupHandler::Handle(inputHandlerParameters);
+          handlerResult = GroupingHandler::Handle(inputHandlerParameters);
           break;
         case CanonicalHeaderHashes::Shape:
           handlerResult = ShapeHandler::Handle(inputHandlerParameters);

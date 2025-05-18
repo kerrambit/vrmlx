@@ -9,6 +9,7 @@
 #include "ConversionContextActionMap.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
+#include "HandlerParameters.hpp"
 #include "HandlerToActionBundle.hpp"
 #include "Logger.hpp"
 #include "NodeDescriptor.hpp"
@@ -16,7 +17,6 @@
 #include "TraversorResult.hpp"
 #include "Vec3f.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
-#include "HandlerParameters.hpp"
 
 // Forward declaration.
 namespace vrml_proc::traversor {
@@ -24,10 +24,11 @@ namespace vrml_proc::traversor {
   class VrmlNodeTraversor;
 }  // namespace vrml_proc::traversor
 
-namespace vrml_proc::traversor::handler::GroupHandler {
+namespace vrml_proc::traversor::handler::GroupingHandler {
   /**
    * @brief Handles the given VRML node by dispatching it to the corresponding action
-   *        defined in the provided action map.
+   *        defined in the provided action map. This handler can be used for a number of grouping nodes: Group,
+   *        Billboard and Collision.
    *
    * This function retrieves the appropriate action for the current node's header hash
    * from `actionMap` and invokes it using the provided parameters. It handles node-specific
@@ -75,4 +76,4 @@ namespace vrml_proc::traversor::handler::GroupHandler {
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
         params.actionMap, params.nodeView->GetName(), data);
   }
-}  // namespace vrml_proc::traversor::handler::GroupHandler
+}  // namespace vrml_proc::traversor::handler::GroupingHandler
