@@ -77,6 +77,36 @@ namespace vrml_proc::traversor::validation::error {
   };
 
   /**
+   * @brief Error for node with invalid string value.
+   */
+  class InvalidStringValueError : public NodeValidationError {
+   public:
+    InvalidStringValueError(const std::string& nodeName,
+        const std::string& fieldName,
+        const std::string& invalidValue,
+        const std::unordered_set<std::string>& expectedValues)
+        : m_nodeName(nodeName),
+          m_fieldName(fieldName),
+          m_invalidValue(invalidValue),
+          m_expectedValues(ConvertStringSetToString(expectedValues)) {}
+
+   protected:
+    std::string GetMessageInternal() const override {
+      std::ostringstream oss;
+      oss << NodeValidationError::GetMessageInternal() << "[InvalidStringValueError]: VRML field <" << m_fieldName
+          << "> in VRML node <" << m_nodeName << "> contains invalid string value <" << m_invalidValue
+          << ">. Expected values are: [" << m_expectedValues << "]!\n";
+      return oss.str();
+    }
+
+   private:
+    std::string m_nodeName;
+    std::string m_fieldName;
+    std::string m_invalidValue;
+    std::string m_expectedValues;
+  };
+
+  /**
    * @brief Error for node whose field expecting VRML node contains VRML node but with invalid header name.
    */
   class InvalidVrmlNodeForGivenField : public NodeValidationError {

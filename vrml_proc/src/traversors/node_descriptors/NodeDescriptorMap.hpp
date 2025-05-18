@@ -45,6 +45,99 @@ namespace vrml_proc::traversor::node_descriptor {
       return nd;
     };
 
+    nodeDescriptionMap["Anchor"] = []() {
+      auto nd = NodeDescriptor("Anchor");
+      static vrml_proc::parser::model::Vec3f defaultBoxCenter = {0.0f, 0.0f, 0.0f};
+      static vrml_proc::parser::model::Vec3f defaultBoxSize = {-1.0f, -1.0f, -1.0f};
+      static std::string defaultDescription = "";
+      static std::string defaultParameter = "";
+      static std::string defaultUrl = "";
+      nd.BindField("description", defaultDescription);
+      nd.BindField("parameter", defaultParameter);
+      nd.BindField("url", defaultUrl);
+      nd.BindField("bboxSize", defaultBoxSize);
+      nd.BindField("bboxCenter", defaultBoxCenter);
+      nd.BindVrmlNodeArray("children");
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Billboard"] = []() {
+      auto nd = NodeDescriptor("Billboard");
+      static vrml_proc::parser::model::Vec3f defaultBoxCenter = {0.0f, 0.0f, 0.0f};
+      static vrml_proc::parser::model::Vec3f defaultBoxSize = {-1.0f, -1.0f, -1.0f};
+      static vrml_proc::parser::model::Vec3f defaultAxisOfRotation = {0.0f, 1.0f, 0.0f};
+      nd.BindField("bboxSize", defaultBoxSize);
+      nd.BindField("bboxCenter", defaultBoxCenter);
+      nd.BindField("axisOfRotation", defaultAxisOfRotation);
+      nd.BindVrmlNodeArray("children");
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Collision"] = []() {
+      auto nd = NodeDescriptor("Collision");
+      static vrml_proc::parser::model::Vec3f defaultBoxCenter = {0.0f, 0.0f, 0.0f};
+      static vrml_proc::parser::model::Vec3f defaultBoxSize = {-1.0f, -1.0f, -1.0f};
+      static bool defaultCollide = true;
+      static vrml_proc::parser::model::VrmlNode defaultProxy;
+      nd.BindField("bboxSize", defaultBoxSize);
+      nd.BindField("bboxCenter", defaultBoxCenter);
+      nd.BindField("collide", defaultCollide);
+      nd.BindVrmlNode("proxy",
+          {"Anchor", "LOD", "Sound", "Background", "NavigationInfo", "SpotLight", "Billboard", "NormalInterpolator",
+              "SphereSensor", "Collision", "OrientationInterpolator", "Switch", "ColorInterpolator", "PlaneSensor",
+              "TimeSensor", "CoordinateInterpolator", "PointLight", "TouchSensor", "CylinderSensor",
+              "PositionInterpolator", "Transform", "DirectionalLight", "ProximitySensor", "Viewpoint", "Fog",
+              "ScalarInterpolator", "VisibilitySensor", "Group", "Script", "WorldInfo", "Inline", "Shape"},
+          defaultProxy);
+      nd.BindVrmlNodeArray("children");
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Inline"] = []() {
+      auto nd = NodeDescriptor("Inline");
+      static vrml_proc::parser::model::Vec3f defaultBoxCenter = {0.0f, 0.0f, 0.0f};
+      static vrml_proc::parser::model::Vec3f defaultBoxSize = {-1.0f, -1.0f, -1.0f};
+      static std::string defaultUrl = "";
+      nd.BindField("bboxSize", defaultBoxSize);
+      nd.BindField("bboxCenter", defaultBoxCenter);
+      nd.BindField("url", defaultUrl);
+      nd.BindVrmlNodeArray("children");
+
+      return nd;
+    };
+
+    nodeDescriptionMap["FontStyle"] = []() {
+      auto nd = NodeDescriptor("FontStyle");
+
+      static std::string defaultFamily = "SERIF";
+      static bool defaultHorizontal = true;
+      static std::string defaultJustify = "BEGIN";
+      static std::string defaultLanguage = "";
+      static bool defaultLeftToRight = true;
+      static vrml_proc::parser::model::float32_t defaultSize = 1.0f;
+      static vrml_proc::parser::model::float32_t defaultSpacing = 1.0f;
+      static std::string defaultStyle = "PLAIN";
+      static bool defaultTopToBottom = true;
+
+      nd.BindField("family", defaultFamily);
+      nd.ConstrainStringFieldValues("family", {"SERIF", "SANS", "TYPEWRITER", ""});
+      nd.BindField("horizontal", defaultHorizontal);
+      nd.BindField("justify", defaultJustify);
+      nd.ConstrainStringFieldValues("justify", {"FIRST", "BEGIN", "MIDDLE", "END", ""});
+      nd.BindField("language", defaultLanguage);
+      nd.BindField("leftToRight", defaultLeftToRight);
+      nd.BindField("size", defaultSize);
+      nd.BindField("spacing", defaultSpacing);
+      nd.BindField("style", defaultStyle);
+      nd.ConstrainStringFieldValues("style", {"PLAIN", "BOLD", "ITALIC", "BOLDITALIC", ""});
+      nd.BindField("topToBottom", defaultTopToBottom);
+
+      return nd;
+    };
+
     nodeDescriptionMap["Shape"] = []() {
       auto nd = NodeDescriptor("Shape");
       static vrml_proc::parser::model::VrmlNode defaultAppearance;
@@ -53,7 +146,7 @@ namespace vrml_proc::traversor::node_descriptor {
       nd.BindVrmlNode("geometry",
           {"Box", "Cone", "Cylinder", "ElevationGrid", "Extrusion", "IndexedFaceSet", "IndexedLineSet", "PointSet",
               "Sphere", "Text"},
-          defaultGeometry);  // TODO: fucntion will take set of names
+          defaultGeometry);
 
       return nd;
     };
@@ -193,6 +286,38 @@ namespace vrml_proc::traversor::node_descriptor {
       static std::string defaultTitle = "";
       nd.BindField("info", defaultInfo);
       nd.BindField("title", defaultTitle);
+
+      return nd;
+    };
+
+    nodeDescriptionMap["LOD"] = []() {
+      auto nd = NodeDescriptor("LOD");
+      /**
+       * @todo New type `Float32Array` have to be implemented in parser.
+       */
+
+      // static vrml_proc::parser::Float32Array defaultRange;
+      static vrml_proc::parser::model::Vec3f defaultCenter = {0.0f, 0.0f, 0.0f};
+      nd.BindField("center", defaultCenter);
+      nd.BindVrmlNodeArray("level");
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Text"] = []() {
+      auto nd = NodeDescriptor("Text");
+      /**
+       * @todo New type `Float32Array` have to be implemented in parser.
+       */
+
+      // static vrml_proc::parser::Float32Array defaultLength;
+      static std::string defaultString = "";
+      static vrml_proc::parser::model::VrmlNode defaultFontStyle;
+      static vrml_proc::parser::model::float32_t defaultMaxExtent = 0.0f;
+
+      nd.BindField("string", defaultString);
+      nd.BindVrmlNode("fontStyle", {"FontStyle"}, defaultFontStyle);
+      nd.BindField("maxExtent", defaultMaxExtent);
 
       return nd;
     };

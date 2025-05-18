@@ -6,6 +6,7 @@
 #include <Int32Array.hpp>
 #include <Logger.hpp>
 #include <NodeDescriptor.hpp>
+#include <NodeValidationError.hpp>
 #include <UseNode.hpp>
 #include <Vec2f.hpp>
 #include <Vec2fArray.hpp>
@@ -338,5 +339,37 @@ TEST_CASE("NodeDescriptor", "NodeDescriptor") {  //
 
     CHECK(result.value()->FieldExists("string"));
     CHECK(result.value()->GetField<std::reference_wrapper<const std::string>>("string").get() == "");
+  }
+
+  {  // Checking string contrains.
+    vrml_proc::traversor::node_descriptor::NodeDescriptor nd("FontStyle");
+    vrml_proc::traversor::node_descriptor::VrmlHeaders headersMap;
+    vrml_proc::parser::service::VrmlNodeManager manager;
+
+    std::string s = "PLAIN";
+    nd.BindField("style", s);
+    nd.ConstrainStringFieldValues("style", {"PLAIN", "BOLD", "ITALIC", "BOLDITALIC", ""});
+
+    vrml_proc::parser::model::VrmlNode node;
+    node.header = "FontStyle";
+    vrml_proc::parser::model::VrmlField stringValueField;
+    stringValueField.name = "style";
+    stringValueField.value = std::string("BOLD");
+    node.fields.push_back(stringValueField);
+
+    auto result = nd.Validate(node, manager, headersMap, true);
+    REQUIRE(result.has_value());
+    CHECK(result.value()->GetField<std::reference_wrapper<const std::string>>("style").get() == "BOLD");
+
+    vrml_proc::parser::model::VrmlNode node2;
+    node2.header = "FontStyle";
+    vrml_proc::parser::model::VrmlField stringValueField2;
+    stringValueField2.name = "style";
+    stringValueField2.value = std::string("unknown");
+    node2.fields.push_back(stringValueField2);
+
+    auto result2 = nd.Validate(node2, manager, headersMap, true);
+    REQUIRE(result2.has_error());
+    CHECK(CheckInnermostError<vrml_proc::traversor::validation::error::InvalidStringValueError>(result2.error()));
   }
 }

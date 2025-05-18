@@ -36,4 +36,11 @@ namespace vrml_proc::traversor::node_descriptor::CanonicalHeaderHashes {  //
   constexpr uint32_t Extrusion = Hash("Extrusion");
   constexpr uint32_t PointSet = Hash("PointSet");
   constexpr uint32_t Sphere = Hash("Sphere");
+  constexpr uint32_t Anchor = Hash("Anchor");
+  constexpr uint32_t Billboard = Hash("Billboard");
+  constexpr uint32_t Collision = Hash("Collision");
+  constexpr uint32_t Inline = Hash("Inline");
+  constexpr uint32_t LOD = Hash("LOD");
+  constexpr uint32_t FontStyle = Hash("FontStyle");
+  constexpr uint32_t Text = Hash("Text");
 }  // namespace vrml_proc::traversor::node_descriptor::CanonicalHeaderHashes

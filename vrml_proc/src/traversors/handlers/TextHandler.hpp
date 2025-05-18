@@ -9,14 +9,14 @@
 #include "ConversionContextActionMap.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
+#include "HandlerParameters.hpp"
 #include "HandlerToActionBundle.hpp"
 #include "Logger.hpp"
 #include "NodeDescriptor.hpp"
 #include "NodeTraversorError.hpp"
 #include "TraversorResult.hpp"
-#include "Vec3f.hpp"
+#include "VrmlNode.hpp"
 #include "VrmlNodeTraversorParameters.hpp"
-#include "HandlerParameters.hpp"
 
 // Forward declaration.
 namespace vrml_proc::traversor {
@@ -24,7 +24,7 @@ namespace vrml_proc::traversor {
   class VrmlNodeTraversor;
 }  // namespace vrml_proc::traversor
 
-namespace vrml_proc::traversor::handler::GroupHandler {
+namespace vrml_proc::traversor::handler::TextHandler {
   /**
    * @brief Handles the given VRML node by dispatching it to the corresponding action
    *        defined in the provided action map.
@@ -41,27 +41,22 @@ namespace vrml_proc::traversor::handler::GroupHandler {
   template <vrml_proc::core::contract::ConversionContextable ConversionContext>
   TraversorResult<ConversionContext> Handle(HandlerParameters<ConversionContext> params) {  //
 
-    using namespace vrml_proc::core::logger;
-    using namespace vrml_proc::core::utils;
     using vrml_proc::parser::model::VrmlNode;
 
     // ---------------------------------------------------
 
-    LogDebug(FormatString("Handle VRML node <", params.nodeView->GetName(), ">."), LOGGING_INFO);
-    auto traversor = vrml_proc::traversor::VrmlNodeTraversor<ConversionContext>(
-        params.manager, params.config, params.actionMap, params.headersMap);
+    vrml_proc::core::logger::LogDebug(
+        vrml_proc::core::utils::FormatString("Handle VRML node <", params.nodeView->GetName(), ">."), LOGGING_INFO);
 
-    std::vector<std::shared_ptr<ConversionContext>> resolvedChildren;
-    for (const auto& child :
-        params.nodeView->template GetField<std::vector<std::reference_wrapper<const VrmlNode>>>("children")) {
-      auto traversorParams = VrmlNodeTraversorParameters(child, params.IsDescendantOfShape, params.transformation);
-      auto recursiveResult = traversor.Traverse(traversorParams);
+    VrmlNodeTraversor<ConversionContext> traversor(params.manager, params.config, params.actionMap, params.headersMap);
 
-      if (recursiveResult.has_error()) {
-        return cpp::fail(recursiveResult.error());
-      }
+    auto traversorParams = VrmlNodeTraversorParameters(
+        params.nodeView->template GetField<std::reference_wrapper<const VrmlNode>>("fontStyle"), true,
+        params.transformation);
 
-      resolvedChildren.push_back(recursiveResult.value());
+    auto resolvedFontStyle = traversor.Traverse(traversorParams);
+    if (resolvedFontStyle.has_error()) {
+      return cpp::fail(resolvedFontStyle.error());
     }
 
     // ---------------------------------------------------
@@ -69,10 +64,10 @@ namespace vrml_proc::traversor::handler::GroupHandler {
     params.nodeView->SetShapeDescendant(params.IsDescendantOfShape);
     params.nodeView->SetTransformationMatrix(params.transformation);
     auto data = HandlerToActionBundle<ConversionContext>(params.nodeView);
-    data.ccGroup = resolvedChildren;
+    data.cc1 = resolvedFontStyle.value();
     data.config = params.config;
 
     return vrml_proc::traversor::utils::ConversionContextActionExecutor::TryToExecute<ConversionContext>(
         params.actionMap, params.nodeView->GetName(), data);
   }
-}  // namespace vrml_proc::traversor::handler::GroupHandler
+}  // namespace vrml_proc::traversor::handler::TextHandler

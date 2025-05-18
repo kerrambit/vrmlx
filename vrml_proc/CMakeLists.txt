@@ -124,7 +124,7 @@ add_library(vrmlproc SHARED
     "src/traversors/handlers/HandlerToActionBundle.hpp"
     "src/traversors/handlers/HandlerUtils.hpp"
     "src/traversors/handlers/ShapeHandler.hpp"
-    "src/traversors/handlers/GroupHandler.hpp"
+    "src/traversors/handlers/GroupingHandler.hpp"
     "src/traversors/handlers/TransformHandler.hpp"
     "src/traversors/handlers/IndexedFaceSetHandler.hpp"
     "src/traversors/handlers/IndexedLineSetHandler.hpp"

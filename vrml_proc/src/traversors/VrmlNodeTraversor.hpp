@@ -7,15 +7,17 @@
 
 #include "AppearanceHandler.hpp"
 #include "BasicHandler.hpp"
+#include "CollisionHandler.hpp"
 #include "ConversionContextable.hpp"
 #include "ConversionContextActionMap.hpp"
 #include "ElevationGridHandler.hpp"
 #include "Error.hpp"
 #include "FormatString.hpp"
-#include "GroupHandler.hpp"
+#include "GroupingHandler.hpp"
 #include "Hash.hpp"
 #include "IndexedFaceSetHandler.hpp"
 #include "IndexedLineSetHandler.hpp"
+#include "LODHandler.hpp"
 #include "Logger.hpp"
 #include "NodeDescriptor.hpp"
 #include "NodeDescriptorMap.hpp"
@@ -23,6 +25,7 @@
 #include "NodeView.hpp"
 #include "ShapeHandler.hpp"
 #include "SwitchHandler.hpp"
+#include "TextHandler.hpp"
 #include "TransformHandler.hpp"
 #include "TraversorResult.hpp"
 #include "VrmlCanonicalHeaderHashes.hpp"
@@ -152,7 +155,7 @@ namespace vrml_proc::traversor {
 
       switch (Hash(header)) {
         case CanonicalHeaderHashes::Group:
-          handlerResult = GroupHandler::Handle(inputHandlerParameters);
+          handlerResult = GroupingHandler::Handle(inputHandlerParameters);
           break;
         case CanonicalHeaderHashes::Shape:
           handlerResult = ShapeHandler::Handle(inputHandlerParameters);
@@ -216,6 +219,27 @@ namespace vrml_proc::traversor {
           break;
         case CanonicalHeaderHashes::WorldInfo:
           handlerResult = BasicHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::Anchor:
+          handlerResult = GroupingHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::Billboard:
+          handlerResult = GroupingHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::Collision:
+          handlerResult = CollisionHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::Inline:
+          handlerResult = BasicHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::LOD:
+          handlerResult = LODHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::FontStyle:
+          handlerResult = BasicHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::Text:
+          handlerResult = TextHandler::Handle(inputHandlerParameters);
           break;
         default:
           assert(false && "Cannot find handler for VRML node. Unknown VRML node should not get into this stage!");

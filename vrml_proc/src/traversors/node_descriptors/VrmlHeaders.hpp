@@ -104,30 +104,14 @@ namespace vrml_proc::traversor::node_descriptor {
     /**
      * @brief Maps keys (synonyms) to values (canonical headers).
      */
-    std::map<std::string, std::string> m_synonymsToCanonicalNames = {
-        {"Group", "Group"},
-        {"Transform", "Transform"},
-        {"Switch", "Switch"},
-        {"IndexedFaceSet", "IndexedFaceSet"},
-        {"IndexedLineSet", "IndexedLineSet"},
-        {"Box", "Box"},
-        {"Shape", "Shape"},
-        {"Color", "Color"},
-        {"Coordinate", "Coordinate"},
-        {"Normal", "Normal"},
-        {"TextureCoordinate", "TextureCoordinate"},
-        {"Appearance", "Appearance"},
-        {"WorldInfo", "WorldInfo"},
-        {"Material", "Material"},
-        {"ImageTexture", "ImageTexture"},
-        {"PixelTexture", "PixelTexture"},
-        {"TextureTransform", "TextureTransform"},
-        {"Cone", "Cone"},
-        {"Cylinder", "Cylinder"},
-        {"ElevationGrid", "ElevationGrid"},
-        {"Extrusion", "Extrusion"},
-        {"PointSet", "PointSet"},
-        {"Sphere", "Sphere"},
-    };
+    std::map<std::string, std::string> m_synonymsToCanonicalNames = {{"Group", "Group"}, {"Transform", "Transform"},
+        {"Switch", "Switch"}, {"IndexedFaceSet", "IndexedFaceSet"}, {"IndexedLineSet", "IndexedLineSet"},
+        {"Box", "Box"}, {"Shape", "Shape"}, {"Color", "Color"}, {"Coordinate", "Coordinate"}, {"Normal", "Normal"},
+        {"TextureCoordinate", "TextureCoordinate"}, {"Appearance", "Appearance"}, {"WorldInfo", "WorldInfo"},
+        {"Material", "Material"}, {"ImageTexture", "ImageTexture"}, {"PixelTexture", "PixelTexture"},
+        {"TextureTransform", "TextureTransform"}, {"Cone", "Cone"}, {"Cylinder", "Cylinder"},
+        {"ElevationGrid", "ElevationGrid"}, {"Extrusion", "Extrusion"}, {"PointSet", "PointSet"}, {"Sphere", "Sphere"},
+        {"Text", "Text"}, {"Anchor", "Anchor"}, {"Billboard", "Billboard"}, {"Collision", "Collision"},
+        {"Inline", "Inline"}, {"LOD", "LOD"}, {"FontStyle", "FontStyle"}};
   };
 }  // namespace vrml_proc::traversor::node_descriptor

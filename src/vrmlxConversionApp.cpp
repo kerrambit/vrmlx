@@ -5,11 +5,41 @@
 #include <string>
 
 static inline void PrintHelp(const std::string& app) {
-  std::cout << "There are two modes for this application. Either single conversion (default) or bulk conversion.\n";
+  std::cout << "\nThere are two modes for this application. Either single conversion (default) or bulk conversion.\n";
   std::cout << "For single conversion, you do not specify the mode:\n";
   std::cout << "\t" << app << " <input_file> <output_file> <config_file>\n\n";
   std::cout << "For bulk conversion, you must specify the mode by adding option '--bulk':\n";
-  std::cout << "\t" << app << " --bulk <input_folder> <output_folder>" << std::endl;
+  std::cout << "\t" << app << " --bulk <input_folder> <output_folder>\n";
+
+  std::cout << "\n-------------------------------------------------------------------------------------\n\nThe "
+               "<config_file> is a JSON file with the "
+               "following options (all have default values):\n";
+  std::cout << "  \"ignoreUnknownNode\": Whether to ignore unrecognized VRML nodes (default: false).\n";
+  std::cout << "  \"logFileName\": The base name of the log file (default: \"vrmlproc\").\n";
+  std::cout << "  \"logFileDirectory\": Directory where logs will be written (default: \".\").\n";
+  std::cout
+      << "  \"synonymsFile\": Path to a JSON file defining node name synonyms (default: file './synonymsFile.json').\n";
+
+  std::cout << "  \"exportFormat\":\n";
+  std::cout
+      << "    \"format\": The output format. Possible values are \"stl\", \"ply\", and \"obj\" (default: \"stl\").\n";
+  std::cout << "    \"options\":\n";
+  std::cout << "      \"binary\": Whether to export binary STL instead of ASCII (default: true).\n";
+
+  std::cout << "  \"parallelismSettings\":\n";
+  std::cout << "    \"active\": Enable parallel execution of conversion tasks (default: true).\n";
+  std::cout
+      << "    \"threadsNumberLimit\": Maximum number of threads to use (default: maximal number of threads on your "
+         "system).\n";
+
+  std::cout << "  \"meshSimplification\":\n";
+  std::cout << "    \"active\": Whether to simplify meshes after conversion (default: false).\n";
+  std::cout << "    \"percentageOfAllEdgesToSimplify\": Percentage of edges to simplify if enabled (default: 50).\n";
+
+  std::cout << "  \"IFSSettings\":\n";
+  std::cout << "    \"checkRange\": Enable range checking for IndexedFaceSet indices (default: true).\n\n";
+
+  std::cout << "Note that <config_file> must be in <input_folder> for bulk conversion!\n" << std::endl;
 }
 
 int main(int argc, char* argv[]) {

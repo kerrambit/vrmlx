@@ -19,7 +19,8 @@ namespace vrml_proc::core::config {
    * Configuration file for `vrmlproc` has following properties:
    *  - ignoreUnknownNode (bool),
    *  - logFileDirectory (string),
-   *  - logFileName (string).
+   *  - logFileName (string),
+   *  - synonymsFile (string).
    *
    * @implements `Config` class with Load() method.
    */
@@ -32,15 +33,29 @@ namespace vrml_proc::core::config {
     VrmlProcConfig()
         : ignoreUnknownNode(false),
           logFileDirectory(std::filesystem::current_path().string()),
-          logFileName("vrmlproc") {}
+          logFileName("vrmlproc"),
+          synonymsFile((std::filesystem::current_path() / std::filesystem::path("vrmlprocSynonyms.json")).string()) {}
 
     VrmlProcConfig(bool ignoreUnknownNode, const std::string& logFileDirectory, const std::string& logFileName)
-        : ignoreUnknownNode(ignoreUnknownNode), logFileDirectory(logFileDirectory), logFileName(logFileName){};
+        : ignoreUnknownNode(ignoreUnknownNode),
+          logFileDirectory(logFileDirectory),
+          logFileName(logFileName),
+          synonymsFile((std::filesystem::current_path() / std::filesystem::path("vrmlprocSynonyms.json")).string()){};
+
+    VrmlProcConfig(bool ignoreUnknownNode,
+        const std::string& logFileDirectory,
+        const std::string& logFileName,
+        const std::string& synonymsFile)
+        : ignoreUnknownNode(ignoreUnknownNode),
+          logFileDirectory(logFileDirectory),
+          logFileName(logFileName),
+          synonymsFile(synonymsFile){};
 
     bool ignoreUnknownNode = false;
     std::string logFileDirectory = std::filesystem::current_path().string();
     std::string logFileName = "vrmlproc";
-    std::string synonymsFile = std::filesystem::current_path().string();
+    std::string synonymsFile =
+        (std::filesystem::current_path() / std::filesystem::path("vrmlprocSynonyms.json")).string();
 
     /**
      * @brief Loads configuration file from JSON file.
