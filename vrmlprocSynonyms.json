@@ -22,9 +22,11 @@
   "VRMLExtrusion": "Extrusion",
   "VRMLPointSet": "PointSet",
   "VRMLSphere": "Sphere",
+  "VRMLText": "Text",
   "VRMLAnchor": "Anchor",
   "VRMLBillboard": "Billboard",
   "VRMLCollision": "Collision",
   "VRMLInline": "Inline",
-  "VRMLLOD": "LOD"
+  "VRMLLOD": "LOD",
+  "VRMLFontStyle": "FontStyle"
 }

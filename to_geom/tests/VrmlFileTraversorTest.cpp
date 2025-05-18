@@ -398,6 +398,30 @@ TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - LOD node", "[parsi
   CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 0));
 }
 
+TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - FontStyle node I.", "[parsing][valid]") {
+  vrml_proc::parser::service::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(validFontStyle1, manager);
+  REQUIRE(parseResult);
+
+  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 0));
+}
+
+TEST_CASE("Parse VRML File - Valid Input - Simple VRML File - FontStyle node II.", "[parsing][valid]") {
+  vrml_proc::parser::service::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(validFontStyle2, manager);
+  REQUIRE(parseResult);
+
+  CHECK(TraverseVrmlFileToMeshTask(parseResult, manager, 0));
+}
+
+TEST_CASE("Parse VRML File - Invalid Input - Simple VRML File - FontStyle node", "[parsing][invalid]") {
+  vrml_proc::parser::service::VrmlNodeManager manager;
+  auto parseResult = ParseVrmlFile(invalidFontStyle, manager);
+  REQUIRE(parseResult);
+
+  CHECK_FALSE(TraverseVrmlFileToMeshTask(parseResult, manager, 0));
+}
+
 TEST_CASE("Parse VRMLFile From File - Valid Input - Actin", "[parsing][valid][fromfile]") {
   vrml_proc::parser::service::VrmlNodeManager manager;
   auto parseResult = ParseVrmlFile(

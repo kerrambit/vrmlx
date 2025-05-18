@@ -109,6 +109,35 @@ namespace vrml_proc::traversor::node_descriptor {
       return nd;
     };
 
+    nodeDescriptionMap["FontStyle"] = []() {
+      auto nd = NodeDescriptor("FontStyle");
+
+      static std::string defaultFamily = "SERIF";
+      static bool defaultHorizontal = true;
+      static std::string defaultJustify = "BEGIN";
+      static std::string defaultLanguage = "";
+      static bool defaultLeftToRight = true;
+      static vrml_proc::parser::model::float32_t defaultSize = 1.0f;
+      static vrml_proc::parser::model::float32_t defaultSpacing = 1.0f;
+      static std::string defaultStyle = "PLAIN";
+      static bool defaultTopToBottom = true;
+
+      nd.BindField("family", defaultFamily);
+      nd.ConstrainStringFieldValues("family", {"SERIF", "SANS", "TYPEWRITER", ""});
+      nd.BindField("horizontal", defaultHorizontal);
+      nd.BindField("justify", defaultJustify);
+      nd.ConstrainStringFieldValues("justify", {"FIRST", "BEGIN", "MIDDLE", "END", ""});
+      nd.BindField("language", defaultLanguage);
+      nd.BindField("leftToRight", defaultLeftToRight);
+      nd.BindField("size", defaultSize);
+      nd.BindField("spacing", defaultSpacing);
+      nd.BindField("style", defaultStyle);
+      nd.ConstrainStringFieldValues("style", {"PLAIN", "BOLD", "ITALIC", "BOLDITALIC", ""});
+      nd.BindField("topToBottom", defaultTopToBottom);
+
+      return nd;
+    };
+
     nodeDescriptionMap["Shape"] = []() {
       auto nd = NodeDescriptor("Shape");
       static vrml_proc::parser::model::VrmlNode defaultAppearance;
@@ -271,6 +300,25 @@ namespace vrml_proc::traversor::node_descriptor {
       static vrml_proc::parser::model::Vec3f defaultCenter = {0.0f, 0.0f, 0.0f};
       nd.BindField("center", defaultCenter);
       nd.BindVrmlNodeArray("level");
+
+      return nd;
+    };
+
+    nodeDescriptionMap["Text"] = []() {
+      auto nd = NodeDescriptor("Text");
+      /**
+       * @todo New type `Float32Array` have to be implemented in parser.
+       */
+
+      // static vrml_proc::parser::Float32Array defaultLength;
+      static std::string defaultString = "";
+      static vrml_proc::parser::model::VrmlNode defaultFontStyle;
+      static vrml_proc::parser::model::float32_t defaultMaxExtent = 0.0f;
+
+      nd.BindField("string", defaultString);
+      nd.BindVrmlNode("fontStyle", {"FontStyle"}, defaultFontStyle);
+      nd.BindField("maxExtent", defaultMaxExtent);
+
       return nd;
     };
 

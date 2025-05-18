@@ -1267,3 +1267,54 @@ std::string validLOD = R"(
       level [ Box { size 2 2 2 }, Box { size 1 1 1 }, Box { size 0.5 0.5 0.5 } ]
     }
 )";
+
+std::string validFontStyle1 = R"(
+
+    #VRML V2.0 utf8
+
+      FontStyle {
+      family       "TYPEWRITER"
+      horizontal   TRUE
+      justify      "BEGIN"
+      language     "en"
+      leftToRight  TRUE
+      size         1.6
+      spacing      1.2
+      style        "BOLD"
+      topToBottom  TRUE
+      }
+)";
+
+std::string validFontStyle2 = R"(
+
+    #VRML V2.0 utf8
+
+      FontStyle {
+      family       "SANS"
+      horizontal   TRUE
+      justify      "END"
+      language     "en"
+      leftToRight  TRUE
+      size         1.6
+      spacing      1.2
+      style        "BOLDITALIC"
+      topToBottom  TRUE
+      }
+)";
+
+std::string invalidFontStyle = R"(
+
+    #VRML V2.0 utf8
+
+      FontStyle {
+      family       "HANDWRITING"
+      horizontal   TRUE
+      justify      "BEGIN"
+      language     "en"
+      leftToRight  TRUE
+      size         1.6
+      spacing      1.2
+      style        "BOLD"
+      topToBottom  TRUE
+      }
+)";

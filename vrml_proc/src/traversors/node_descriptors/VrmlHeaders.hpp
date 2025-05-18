@@ -111,7 +111,7 @@ namespace vrml_proc::traversor::node_descriptor {
         {"Material", "Material"}, {"ImageTexture", "ImageTexture"}, {"PixelTexture", "PixelTexture"},
         {"TextureTransform", "TextureTransform"}, {"Cone", "Cone"}, {"Cylinder", "Cylinder"},
         {"ElevationGrid", "ElevationGrid"}, {"Extrusion", "Extrusion"}, {"PointSet", "PointSet"}, {"Sphere", "Sphere"},
-        {"Anchor", "Anchor"}, {"Billboard", "Billboard"}, {"Collision", "Collision"}, {"Inline", "Inline"},
-        {"LOD", "LOD"}};
+        {"Text", "Text"}, {"Anchor", "Anchor"}, {"Billboard", "Billboard"}, {"Collision", "Collision"},
+        {"Inline", "Inline"}, {"LOD", "LOD"}, {"FontStyle", "FontStyle"}};
   };
 }  // namespace vrml_proc::traversor::node_descriptor

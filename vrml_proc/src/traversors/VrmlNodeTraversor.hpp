@@ -17,6 +17,7 @@
 #include "Hash.hpp"
 #include "IndexedFaceSetHandler.hpp"
 #include "IndexedLineSetHandler.hpp"
+#include "LODHandler.hpp"
 #include "Logger.hpp"
 #include "NodeDescriptor.hpp"
 #include "NodeDescriptorMap.hpp"
@@ -24,8 +25,8 @@
 #include "NodeView.hpp"
 #include "ShapeHandler.hpp"
 #include "SwitchHandler.hpp"
+#include "TextHandler.hpp"
 #include "TransformHandler.hpp"
-#include "LODHandler.hpp"
 #include "TraversorResult.hpp"
 #include "VrmlCanonicalHeaderHashes.hpp"
 #include "VrmlHeaders.hpp"
@@ -220,10 +221,10 @@ namespace vrml_proc::traversor {
           handlerResult = BasicHandler::Handle(inputHandlerParameters);
           break;
         case CanonicalHeaderHashes::Anchor:
-          handlerResult = GroupHandler::Handle(inputHandlerParameters);
+          handlerResult = GroupingHandler::Handle(inputHandlerParameters);
           break;
         case CanonicalHeaderHashes::Billboard:
-          handlerResult = GroupHandler::Handle(inputHandlerParameters);
+          handlerResult = GroupingHandler::Handle(inputHandlerParameters);
           break;
         case CanonicalHeaderHashes::Collision:
           handlerResult = CollisionHandler::Handle(inputHandlerParameters);
@@ -233,6 +234,12 @@ namespace vrml_proc::traversor {
           break;
         case CanonicalHeaderHashes::LOD:
           handlerResult = LODHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::FontStyle:
+          handlerResult = BasicHandler::Handle(inputHandlerParameters);
+          break;
+        case CanonicalHeaderHashes::Text:
+          handlerResult = TextHandler::Handle(inputHandlerParameters);
           break;
         default:
           assert(false && "Cannot find handler for VRML node. Unknown VRML node should not get into this stage!");
