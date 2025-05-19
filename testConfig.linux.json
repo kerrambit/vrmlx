@@ -1,0 +1,10 @@
+{
+  "baseInputPath": "./../../../../data/segmentation_data/",
+  "baseOutputPath": "./../../.././",
+  "baseExpectedOutputPath": "./../../../../data/expected_data/",
+  "testFiles": {
+    "ACTIN": "actin.wrl",
+    "NUCLEUS": "nucleus.wrl",
+    "TUBULIN": "tubulin.wrl"
+  }
+}

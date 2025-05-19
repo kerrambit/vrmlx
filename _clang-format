@@ -1,0 +1,10 @@
+---
+BasedOnStyle: Google
+IndentWidth: 2
+TabWidth: 2
+ColumnLimit: 120
+NamespaceIndentation: All
+SortIncludes: false
+AlignAfterOpenBracket: DontAlign
+BinPackParameters: false
+

@@ -1,0 +1,7 @@
+include vrmlxpy/*.pyd
+include vrmlxpy/*.so
+include vrmlxpy/*.dll
+include vrmlxpy/libboost_iostreams.so.1.74.0
+include vrmlxpy/libboost_log.so.1.74.0
+include vrmlxpy/libboost_thread.so.1.74.0
+include vrmlxpy/libboost_filesystem.so.1.74.0

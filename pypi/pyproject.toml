@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vrmlxpy"
+version = "1.0.0"
+description = "Toolkit for VRML parsing and traversing. Includes a standalone VRML parser library and a conversion library for transforming VRML geometry into geometry format such as STL, with modular C++ backends and Python bindings."
+readme = "README.md"
+authors = [{name = "Marek Eibel"}]
+license = {text = "GPL-3.0-or-later"}
+requires-python = ">=3.6"
+keywords = ["vrml", "stl", "3d", "graphics", "bindings"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: C++",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+]
+
+[tool.setuptools]
+packages = ["vrmlxpy"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"vrmlxpy" = [
+    "vrmlxpy/vrmlxpy.pyd", "vrmlxpy/vrmlproc.dll", "vrmlxpy/tostl.dll",
+    "vrmlxpy/vrmlxpy.so", "vrmlxpy/libvrmlproc.so", "vrmlxpy/libtogeom.so", "vrmlxpy/libboost_iostreams.so.1.74.0", "vrmlxpy/libboost_log.so.1.74.0", "vrmlxpy/libboost_thread.so.1.74.0", "vrmlxpy/libboost_filesystem.so.1.74.0"
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "vrmlxpy.__version__"}
