@@ -1,7 +1,11 @@
 #pragma once
 
 #include <CGAL/Surface_mesh_simplification/edge_collapse.h>
+#if __has_include(<CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Edge_count_ratio_stop_predicate.h>)
+#include <CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Edge_count_ratio_stop_predicate.h>
+#else
 #include <CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Count_ratio_stop_predicate.h>
+#endif
 
 #include "FormatString.hpp"
 #include "Logger.hpp"
@@ -41,7 +45,13 @@ namespace to_geom::calculator::MeshSimplificator {
     timer.Start();
 
     namespace SMS = CGAL::Surface_mesh_simplification;
+
+#if __has_include(<CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Edge_count_ratio_stop_predicate.h>)
+    SMS::Edge_count_ratio_stop_predicate<to_geom::core::Mesh> stop(stopRatio.GetValue());
+#else
     SMS::Count_ratio_stop_predicate<to_geom::core::Mesh> stop(stopRatio.GetValue());
+#endif
+
     int collapsedEdgesCount = SMS::edge_collapse(mesh, stop);
 
     double time = timer.End();
