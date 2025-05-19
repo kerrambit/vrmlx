@@ -38,3 +38,5 @@ Dockerfile
 
 # Ignore data folders
 data/
+docs/
+pypi/
