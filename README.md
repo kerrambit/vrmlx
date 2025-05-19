@@ -8,12 +8,12 @@ The modular architecture allows users to define their own actions—custom funct
 This project is licensed under the **GNU General Public License v3.0 or later** (GPL-3.0-or-later). See the [LICENSE](LICENSE) file for more details.
 
 ## Manual
-- You can find detailed usage instructions in the [manual](doc/manual.md).  
+- You can find detailed usage instructions in the [manual](docs/manual.md).  
 - However, before reading that, make sure to understand how to obtain and run the application as described below.
 
 ## Run as Docker container
 - Recommended way how to run *vrmlx* is to build *Docker* image and run it.
-- See steps in this [manual](doc/docker_steps.md).
+- See steps in this [manual](docs/docker_steps.md).
 
 ## Run as Executables
 - Whether you build the project yourself or use the executable from the **Releases** tab, running an executable is straightforward.
@@ -27,8 +27,8 @@ This project is licensed under the **GNU General Public License v3.0 or later** 
 - **Note:** this procedure has not been fully tested! It is possible that on Linux machine, you have to have certain *Boost* libraries installed. In theory, it should work out of box on Windows machines.
 
 ## Prerequisites
-- [Boost](https://www.boost.org/) - please follow instructions [here](doc/boost_installation.md)
-- [CGAL](https://www.cgal.org/) - study instructions [here](doc/cgal_installation.md)
+- [Boost](https://www.boost.org/) - please follow instructions [here](docs/boost_installation.md)
+- [CGAL](https://www.cgal.org/) - study instructions [here](docs/cgal_installation.md)
 - [CMake](https://cmake.org/)
 - [Ninja](https://ninja-build.org/)
 - C++ compiler supporting C++20
@@ -37,7 +37,7 @@ This project is licensed under the **GNU General Public License v3.0 or later** 
 
 - The *vrmlx* project primarily consists of two libraries: *vrmlproc* and *togeom*. However, these are not standalone executables. To use them, you need an application that links against these libraries:
 	- There are test executables that perform unit testing on the solution.
-	- Additionally, you can build and link C++ application: *vrmlxConversionApp* (more details [here](doc/docker_steps.md)).
+	- Additionally, you can build and link C++ application: *vrmlxConversionApp* (more details [here](docs/docker_steps.md)).
 	- Lastly, there is a *Python* binding that allows you to use *vrmlx* as a *Python* module ([example script](scripts/run_vrmlxpy_from_docker.py)).
 
 - The project supports these build configurations:
