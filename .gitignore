@@ -36,6 +36,10 @@ out/
 .vs/
 ./vrmlxConfig.json
 pypi/vrmlxpy/*.pyd
+pypi/vrmlxpy/libboost_filesystem.so.1.74.0
+pypi/vrmlxpy/libboost_log.so.1.74.0
+pypi/vrmlxpy/libboost_thread.so.1.74.0
+pypi/vrmlxpy/libboost_iostreams.so.1.74.0
 vendor/pybind11
 vendor/CGAL-6.0.1
 vendor/boost
