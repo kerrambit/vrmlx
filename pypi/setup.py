@@ -5,13 +5,13 @@ from setuptools import setup, find_packages
 if platform.system() == "Windows":
     binary_files = ["vrmlxpy/vrmlxpy.pyd", "vrmlxpy/vrmlproc.dll", "vrmlxpy/tostl.dll"]
 elif platform.system() == "Linux":
-    binary_files = ["vrmlxpy/vrmlxpy.so", "vrmlxpy/libvrmlproc.so", "vrmlxpy/libtogeom.so"]
+    binary_files = ["vrmlxpy/vrmlxpy.so", "vrmlxpy/libvrmlproc.so", "vrmlxpy/libtogeom.so", "vrmlxpy/libboost_iostreams.so.1.74.0", "vrmlxpy/libboost_log.so.1.74.0", "vrmlxpy/libboost_thread.so.1.74.0", "vrmlxpy/libboost_filesystem.so.1.74.0"]
 else:
     binary_files = []
 
 setup(
     name="vrmlxpy",
-    version="1.0.0-a.2",
+    version="1.0.0",
     author="Marek Eibel",
     description="Toolkit for VRML parsing and traversing. Includes a standalone VRML parser library and a conversion library for transforming VRML geometry into geometry format such as STL, with modular C++ backends and Python bindings.",
     long_description=open("README.md").read(),

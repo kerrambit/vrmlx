@@ -95,4 +95,7 @@ This project includes C++ unit tests that can be executed using either *CTest* o
   ```ctest --test-dir out\build\<BUILD_CONFIGURATION>\to_geom```.
 - Add ```--verbose``` for detailed output: ```ctest --test-dir out\build\<BUILD_CONFIGURATION>\to_geom --verbose```.
 
+## Developer documentation
+- Documentation is available at https://kerrambit.github.io/vrmlx/gh_pages/doxygen/index.html.
+
 ## Troubleshooting
