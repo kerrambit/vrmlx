@@ -7,7 +7,7 @@ There are two modes for this application: **single conversion** (default) and **
 You do **not** specify the mode for single conversion:
 
 ```bash
-./vrmlxpy <input_file> <output_file> <config_file>
+./vrmlxConversionApp <input_file> <output_file> <config_file>
 ```
 
 ### Bulk Conversion
@@ -15,7 +15,7 @@ You do **not** specify the mode for single conversion:
 For bulk conversion, you **must** specify the mode by adding the `--bulk` option:
 
 ```bash
-./vrmlxpy --bulk <input_folder> <output_folder>
+./vrmlxConversionApp --bulk <input_folder> <output_folder>
 ```
 
 > **Note**: The `<config_file>` must be present in the `<input_folder>` when using bulk conversion.
