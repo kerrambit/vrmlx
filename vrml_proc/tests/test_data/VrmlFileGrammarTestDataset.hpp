@@ -89,6 +89,7 @@ std::string quiteDeepRecursiveNode = R"(
 			ambientIntensity  0.2E-1
 			appearance Appearence {
 				lightExposure 42
+        lightOccurence -0x2148
 			}
 		}
        geometry [ 58.5 458.02 68.78 ,
@@ -162,7 +163,7 @@ std::string nodeWithSwitch = R"(
     Group {
           children [ 
             DEF A1 Switch {
-                whichChoice 0
+                whichChoice 0x0
                 choice DEF C2  Empty { }
               }
            ]
@@ -202,7 +203,7 @@ std::string nodeWithUtf8 = R"(
                   koordináty [ 944, 942, 943, -1, 947, 945, 946, -1,
                       947, 949, 948, -1, 945, 947, 948, -1,
                       946, 942, 944, -1, 946, 944, 947, -1,
-                      108889, 108856, 182463, -1, 108863, 108433, 182449, -1 ]
+                      108889, 108856, 182463, -1, 108863, 0x1A791, 182449, -1 ]
           }
       }
     }
