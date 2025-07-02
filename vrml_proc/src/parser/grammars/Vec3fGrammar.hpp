@@ -27,7 +27,8 @@ namespace vrml_proc::parser::grammar {
     /**
      * @brief Constructs new grammar and initializes parsing rules.
      */
-    Vec3fGrammar() : Vec3fGrammar::base_type(this->m_start) {
+    Vec3fGrammar() : Vec3fGrammar::base_type(this->m_start) {  //
+
       float32 = boost::spirit::qi::float_;
       this->m_start = float32 >> float32 >> float32;
 

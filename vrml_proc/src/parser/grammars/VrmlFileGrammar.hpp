@@ -28,6 +28,7 @@
 #include "QuotedStringGrammar.hpp"
 #include "BooleanGrammar.hpp"
 #include "BaseGrammar.hpp"
+#include "Int32Grammar.hpp"
 
 BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::model::VrmlNode,
     (boost::optional<std::string>, definitionName)(std::string, header)(
@@ -62,40 +63,34 @@ namespace vrml_proc::parser::grammar {
     /**
      * @brief Constructs new grammar and initializes parsing rules.
      */
-    VrmlFileGrammar() : VrmlFileGrammar::base_type(this->m_start) {  //
+    VrmlFileGrammar()
+        : VrmlFileGrammar::base_type(this->m_start),
+          m_identifier(),
+          m_quotedString(),
+          m_vec2f(),
+          m_vec3f(),
+          m_vec4f(),
+          m_vec2fArray(),
+          m_vec3fArray(),
+          m_int32Array(),
+          m_boolean(),
+          m_int32() {  //
 
-      m_identifier = std::make_unique<IdentifierGrammar<Iterator, Skipper>>();
+      m_vrmlFieldValue =
+          (m_vrmlNode | m_useNode | m_vrmlNodeArray | m_vec3fArray.GetStartRule() | m_int32Array.GetStartRule() |
+              m_vec2fArray.GetStartRule() | m_vec4f.GetStartRule() | m_vec3f.GetStartRule() | m_vec2f.GetStartRule() |
+              m_quotedString.GetStartRule() | m_boolean.GetStartRule() |
+              boost::spirit::qi::real_parser<model::float32_t, Float32Policy>() | m_int32.GetStartRule());
 
-      m_quotedString = std::make_unique<QuotedStringGrammar<Iterator, Skipper>>();
+      m_vrmlField = (m_identifier.GetStartRule() >> m_vrmlFieldValue);
 
-      m_vec2f = std::make_unique<Vec2fGrammar<Iterator, Skipper>>();
-
-      m_vec3f = std::make_unique<Vec3fGrammar<Iterator, Skipper>>();
-
-      m_vec4f = std::make_unique<Vec4fGrammar<Iterator, Skipper>>();
-
-      m_vec2fArray = std::make_unique<Vec2fArrayGrammar<Iterator, Skipper>>();
-
-      m_vec3fArray = std::make_unique<Vec3fArrayGrammar<Iterator, Skipper>>();
-
-      m_int32Array = std::make_unique<Int32ArrayGrammar<Iterator, Skipper>>();
-
-      m_boolean = std::make_unique<BooleanGrammar<Iterator, Skipper>>();
-
-      m_vrmlFieldValue = (m_quotedString->GetStartRule() | m_boolean->GetStartRule() | m_vec3fArray->GetStartRule() |
-                          m_vec2fArray->GetStartRule() | m_int32Array->GetStartRule() | m_vec4f->GetStartRule() |
-                          m_vec3f->GetStartRule() | m_vec2f->GetStartRule() |
-                          boost::spirit::qi::real_parser<model::float32_t, Float32Policy>() | boost::spirit::qi::int_ |
-                          m_useNode | m_vrmlNode | m_vrmlNodeArray);
-
-      m_vrmlField = (m_identifier->GetStartRule() >> m_vrmlFieldValue);
-
-      m_vrmlNode = (-(boost::spirit::qi::lit("DEF") >> m_identifier->GetStartRule()) >> m_identifier->GetStartRule() >>
+      m_vrmlNode = (-(boost::spirit::qi::lit("DEF") >> m_identifier.GetStartRule()) >> m_identifier.GetStartRule() >>
                     boost::spirit::qi::lit("{") >> *(m_vrmlField) >> boost::spirit::qi::lit("}"));
 
-      m_vrmlNodeArray = "[" >> ((m_vrmlNode | m_useNode) % ",") >> "]";
+      m_vrmlNodeArray = boost::spirit::qi::lit("[") >> ((m_vrmlNode | m_useNode) % boost::spirit::qi::lit(',')) >>
+                        boost::spirit::qi::lit("]");
 
-      m_useNode = boost::spirit::qi::lit("USE") >> m_identifier->GetStartRule();
+      m_useNode = boost::spirit::qi::lit("USE") >> m_identifier.GetStartRule();
 
       this->m_start = boost::spirit::qi::skip(boost::spirit::ascii::space)[boost::spirit::qi::lit("#VRML V2.0 utf8")] >>
                       *(m_vrmlNode);
@@ -113,14 +108,15 @@ namespace vrml_proc::parser::grammar {
     boost::spirit::qi::rule<Iterator, model::VrmlFieldValue(), Skipper> m_vrmlFieldValue;
     boost::spirit::qi::rule<Iterator, model::VrmlNodeArray(), Skipper> m_vrmlNodeArray;
 
-    std::unique_ptr<IdentifierGrammar<Iterator, Skipper>> m_identifier;
-    std::unique_ptr<Vec2fGrammar<Iterator, Skipper>> m_vec2f;
-    std::unique_ptr<Vec3fGrammar<Iterator, Skipper>> m_vec3f;
-    std::unique_ptr<Vec4fGrammar<Iterator, Skipper>> m_vec4f;
-    std::unique_ptr<Vec2fArrayGrammar<Iterator, Skipper>> m_vec2fArray;
-    std::unique_ptr<Vec3fArrayGrammar<Iterator, Skipper>> m_vec3fArray;
-    std::unique_ptr<Int32ArrayGrammar<Iterator, Skipper>> m_int32Array;
-    std::unique_ptr<QuotedStringGrammar<Iterator, Skipper>> m_quotedString;
-    std::unique_ptr<BooleanGrammar<Iterator, Skipper>> m_boolean;
+    IdentifierGrammar<Iterator, Skipper> m_identifier;
+    Vec2fGrammar<Iterator, Skipper> m_vec2f;
+    Vec3fGrammar<Iterator, Skipper> m_vec3f;
+    Vec4fGrammar<Iterator, Skipper> m_vec4f;
+    Vec2fArrayGrammar<Iterator, Skipper> m_vec2fArray;
+    Vec3fArrayGrammar<Iterator, Skipper> m_vec3fArray;
+    Int32ArrayGrammar<Iterator, Skipper> m_int32Array;
+    QuotedStringGrammar<Iterator, Skipper> m_quotedString;
+    BooleanGrammar<Iterator, Skipper> m_boolean;
+    Int32Grammar<Iterator, Skipper> m_int32;
   };
 }  // namespace vrml_proc::parser::grammar

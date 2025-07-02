@@ -1,10 +1,11 @@
 #pragma once
 
-#include <boost/spirit/include/qi.hpp>
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
+#include <boost/spirit/include/qi.hpp>
 
 #include "BaseGrammar.hpp"
 #include "Int32Array.hpp"
+#include "Int32Grammar.hpp"
 
 BOOST_FUSION_ADAPT_STRUCT(vrml_proc::parser::model::Int32Array, (std::vector<int32_t>, integers))
 
@@ -22,10 +23,13 @@ namespace vrml_proc::parser::grammar {
     /**
      * @brief Constructs new grammar and initializes parsing rules.
      */
-    Int32ArrayGrammar() : Int32ArrayGrammar::base_type(this->m_start) {
-      this->m_start = "[" >> (boost::spirit::qi::int_ % ",") >> -boost::spirit::qi::lit(',') >> "]";
+    Int32ArrayGrammar() : Int32ArrayGrammar::base_type(this->m_start), m_int32() {
+      this->m_start = "[" >> (m_int32.GetStartRule() % ",") >> -boost::spirit::qi::lit(',') >> "]";
 
       BOOST_SPIRIT_DEBUG_NODE(this->m_start);
     }
+
+   private:
+    Int32Grammar<Iterator, Skipper> m_int32;
   };
 }  // namespace vrml_proc::parser::grammar

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
 #include <boost/spirit/include/qi.hpp>
 
@@ -26,18 +24,20 @@ namespace vrml_proc::parser::grammar {
     /**
      * @brief Constructs new grammar and initializes parsing rules.
      */
-    Vec3fArrayGrammar() : Vec3fArrayGrammar::base_type(this->m_start) {  //
+    Vec3fArrayGrammar() : Vec3fArrayGrammar::base_type(this->m_start), m_vec3f() {  //
 
       using boost::spirit::qi::lit;
 
-      m_vec3f = std::make_unique<Vec3fGrammar<Iterator, Skipper>>();
+      const auto comma = lit(',');
+      const auto openBrace = lit("[");
+      const auto closeBrace = lit("]");
 
-      this->m_start = lit('[') >> -((m_vec3f->GetStartRule() % lit(',')) >> -lit(',')) >> lit(']');
+      this->m_start = openBrace >> -((m_vec3f.GetStartRule() % comma) >> -comma) >> closeBrace;
 
       BOOST_SPIRIT_DEBUG_NODE(this->m_start);
     }
 
    private:
-    std::unique_ptr<Vec3fGrammar<Iterator, Skipper>> m_vec3f;
+    Vec3fGrammar<Iterator, Skipper> m_vec3f;
   };
 }  // namespace vrml_proc::parser::grammar

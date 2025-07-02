@@ -26,17 +26,15 @@ namespace vrml_proc::parser::grammar {
     /**
      * @brief Constructs new grammar and initializes parsing rules.
      */
-    Vec2fArrayGrammar() : Vec2fArrayGrammar::base_type(this->m_start) {
-      m_vec2f = std::make_unique<Vec2fGrammar<Iterator, Skipper>>();
-
+    Vec2fArrayGrammar() : Vec2fArrayGrammar::base_type(this->m_start), m_vec2f() {
       this->m_start = boost::spirit::qi::lit('[') >>
-                      -((m_vec2f->GetStartRule() % boost::spirit::qi::lit(',')) >> -boost::spirit::qi::lit(',')) >>
+                      -((m_vec2f.GetStartRule() % boost::spirit::qi::lit(',')) >> -boost::spirit::qi::lit(',')) >>
                       boost::spirit::qi::lit(']');
 
       BOOST_SPIRIT_DEBUG_NODE(this->m_start);
     }
 
    private:
-    std::unique_ptr<Vec2fGrammar<Iterator, Skipper>> m_vec2f;
+    Vec2fGrammar<Iterator, Skipper> m_vec2f;
   };
 }  // namespace vrml_proc::parser::grammar
